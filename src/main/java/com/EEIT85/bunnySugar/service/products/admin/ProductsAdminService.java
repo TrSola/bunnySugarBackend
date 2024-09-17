@@ -41,7 +41,7 @@ public class ProductsAdminService {
         Long categoriesId =
                 findOrCreateCategoryIdService.findOrCreateCategoryId(productsInsertDto);
         //將dto的值取出放入新產品
-        Products products = new Products(productsInsertDto.getName(),
+        Products products = new Products(productsInsertDto.getProductName(),
                 LocalDateTime.now(), LocalDateTime.now(),
                 productsInsertDto.getStocks());
         //依照上面的id找出對應的Categories物件
@@ -115,7 +115,7 @@ public class ProductsAdminService {
     private void updateProductCategories(Products products,
                                 ProductsUpdateDto productsUpdateDto, Categories categories) {
         products.setCategories(categories);
-        products.setName(productsUpdateDto.getName());
+        products.setProductName(productsUpdateDto.getProductName());
         products.setUpdateTime(LocalDateTime.now());
         products.setStocks(productsUpdateDto.getStocks());
     }

@@ -2,7 +2,7 @@ package com.EEIT85.bunnySugar.dto;
 
 public class ProductsSelectDto {
     private Long id;
-    private String name;
+    private String productName;
     private Integer stocks;
     private String description;
     private Integer price;
@@ -15,9 +15,9 @@ public class ProductsSelectDto {
     public ProductsSelectDto() {
     }
 
-    public ProductsSelectDto(Long id, String name, Integer stocks, String description, Integer price, String imageUrl, String materialDescription, String categoryName, String flavor, String categoryDescription) {
+    public ProductsSelectDto(Long id, String productName, Integer stocks, String description, Integer price, String imageUrl, String materialDescription, String categoryName, String flavor, String categoryDescription) {
         this.id = id;
-        this.name = name;
+        this.productName = productName;
         this.stocks = stocks;
         this.description = description;
         this.price = price;
@@ -36,12 +36,12 @@ public class ProductsSelectDto {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public Integer getStocks() {

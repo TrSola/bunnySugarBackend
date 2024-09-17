@@ -16,7 +16,6 @@ public class ProductDetails {
     @OneToOne
     //被管理的一方(避免無窮層遞)
     @JsonBackReference
-
     @JoinColumn(name = "products_id", nullable = false)
     private Products products;  // 對應 products 表的 ID
     @Column(length = 255, nullable = false)

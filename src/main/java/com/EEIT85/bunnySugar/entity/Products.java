@@ -21,8 +21,8 @@ public class Products {
     @Column(name = "id", nullable = false)
     private Long id;
     //長度、不允許null、資料庫欄位名稱(物件屬性與資料庫欄位一樣可不寫)
-    @Column(name = "name", length = 55, nullable = false)
-    private String name;
+    @Column(name = "product_name", length = 55, nullable = false)
+    private String productName;
 
     @Column(name = "create_time", nullable = false)
     private LocalDateTime createTime;
@@ -53,7 +53,7 @@ public class Products {
     }
 
     public Products(String name, LocalDateTime createTime, LocalDateTime updateTime, Integer stocks) {
-        this.name = name;
+        this.productName = name;
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.stocks = stocks;
@@ -64,12 +64,12 @@ public class Products {
     }
 
 
-    public String getName() {
-        return name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public LocalDateTime getCreateTime() {
@@ -116,7 +116,7 @@ public class Products {
     public String toString() {
         return "Products{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + productName + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", stocks=" + stocks +

@@ -2,7 +2,7 @@ package com.EEIT85.bunnySugar.dto;
 
 public abstract class ProductsAdminBaseDto {
 
-    private String name;
+    private String productName;
     private Integer stocks;
     private String description;
     private Integer price;
@@ -16,8 +16,8 @@ public abstract class ProductsAdminBaseDto {
     public ProductsAdminBaseDto() {
     }
 
-    public ProductsAdminBaseDto(String name, Integer stocks, String description, Integer price, String imageUrl, String materialDescription, String categoryDescription, Boolean enable, String categoryName, String flavor) {
-        this.name = name;
+    public ProductsAdminBaseDto(String productName, Integer stocks, String description, Integer price, String imageUrl, String materialDescription, String categoryDescription, Boolean enable, String categoryName, String flavor) {
+        this.productName = productName;
         this.stocks = stocks;
         this.description = description;
         this.price = price;
@@ -29,12 +29,12 @@ public abstract class ProductsAdminBaseDto {
         this.flavor = flavor;
     }
 
-    public String getName() {
-        return name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public Integer getStocks() {
