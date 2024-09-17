@@ -9,12 +9,12 @@ public class ProductsUpdateDto extends ProductsAdminBaseDto {
         super();
     }
 
-    public ProductsUpdateDto(Long id, String name, Integer stocks,
+    public ProductsUpdateDto(Long id, String productName, Integer stocks,
                              String description, Integer price, String imageUrl,
                              String materialDescription,
                              String categoryDescription, Boolean enable,
                              String categoryName, String flavor, Long categoriesId) {
-        super(name, stocks, description, price, imageUrl, materialDescription,
+        super(productName, stocks, description, price, imageUrl, materialDescription,
                 categoryDescription, enable, categoryName, flavor);
         this.id = id;
         this.categoriesId = categoriesId;

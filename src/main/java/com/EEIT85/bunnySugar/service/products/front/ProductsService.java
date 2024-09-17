@@ -21,7 +21,7 @@ public class ProductsService {
     private ProductsSelectDto convertToDto(Products product) {
         return new ProductsSelectDto(
                 product.getId(),
-                product.getName(),
+                product.getProductName(),
                 product.getStocks(),
                 product.getProductDetails().getDescription(),
                 product.getProductDetails().getPrice(),
