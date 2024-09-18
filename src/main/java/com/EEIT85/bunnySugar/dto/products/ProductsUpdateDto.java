@@ -1,13 +1,9 @@
-package com.EEIT85.bunnySugar.dto;
+package com.EEIT85.bunnySugar.dto.products;
 
 public class ProductsUpdateDto extends ProductsAdminBaseDto {
 
-    private Long id;
+    private final Long id;
     private Long categoriesId;
-
-    public ProductsUpdateDto() {
-        super();
-    }
 
     public ProductsUpdateDto(Long id, String productName, Integer stocks,
                              String description, Integer price, String imageUrl,

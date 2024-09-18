@@ -1,4 +1,4 @@
-package com.EEIT85.bunnySugar.dto;
+package com.EEIT85.bunnySugar.dto.products;
 
 public abstract class ProductsAdminBaseDto {
 

@@ -1,8 +1,6 @@
 package com.EEIT85.bunnySugar.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -18,7 +16,7 @@ public class Products {
     @Id
     //mysql自增長id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, columnDefinition = "bigint")
     private Long id;
     //長度、不允許null、資料庫欄位名稱(物件屬性與資料庫欄位一樣可不寫)
     @Column(name = "product_name", length = 55, nullable = false)

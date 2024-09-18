@@ -1,6 +1,6 @@
 package com.EEIT85.bunnySugar.service.products.front;
 
-import com.EEIT85.bunnySugar.dto.ProductsSelectDto;
+import com.EEIT85.bunnySugar.dto.products.ProductsSelectDto;
 import com.EEIT85.bunnySugar.entity.Products;
 import com.EEIT85.bunnySugar.repository.ProductsRepository;
 import jakarta.persistence.EntityNotFoundException;

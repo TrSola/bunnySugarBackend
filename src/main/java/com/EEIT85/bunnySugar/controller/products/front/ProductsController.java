@@ -1,6 +1,6 @@
 package com.EEIT85.bunnySugar.controller.products.front;
 
-import com.EEIT85.bunnySugar.dto.ProductsSelectDto;
+import com.EEIT85.bunnySugar.dto.products.ProductsSelectDto;
 import com.EEIT85.bunnySugar.service.products.front.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

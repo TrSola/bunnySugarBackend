@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -71,9 +72,15 @@ public class Users {
     @Column(name = "token_expiration_time")
     private LocalDateTime tokenExpirationTime; // 新增字段
 
+     @JsonManagedReference
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval =
+            true)
+    private List<Anniversaries> anniversaries;
+
     // OneToOne關聯Cart
     @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+
+
     private Cart cart;
 
     // OneToOne關聯WishList
@@ -136,7 +143,6 @@ public class Users {
     public void setEmail(String email) {
         this.email = email;
     }
-
     public String getName() {
         return name;
     }

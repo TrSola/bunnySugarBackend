@@ -1,0 +1,112 @@
+package com.EEIT85.bunnySugar.service;
+
+import com.EEIT85.bunnySugar.dto.anniversaries.AnniversariesInsertDto;
+import com.EEIT85.bunnySugar.entity.Anniversaries;
+import com.EEIT85.bunnySugar.repository.AnniversariesRepository;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.MonthDay;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+@Service
+public class AnniversariesService {
+
+    @Autowired
+    AnniversariesRepository anniversariesRepository;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
+
+    @Autowired
+    private TemplateEngine templateEngine;
+
+    public List<Anniversaries> getAll() {
+        List<Anniversaries> anniversariesList = anniversariesRepository.findAll();
+        System.out.println(anniversariesList);
+
+        return anniversariesList;
+    }
+
+
+    public void sendAnniversaryEmail(String email, LocalDate anniversaryDate,
+                                     String anniversaryName,
+                                     Integer yearDifference) throws MessagingException {
+
+
+        // 創建 MimeMessage 物件來準備電子郵件
+        MimeMessage message = javaMailSender.createMimeMessage();
+
+        // 使用 MimeMessageHelper 來幫助設定郵件的內容
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        // 設定收件人和主題
+        helper.setTo(email);
+        helper.setSubject("紀念日提醒");
+
+        // 創建 Thymeleaf 上下文並設置變數
+        Context context = new Context();
+
+        // 設定紀念日名稱
+        context.setVariable("anniversaryName", anniversaryName);
+        // 設定格式化的紀念日日期
+        context.setVariable("anniversaryDate", anniversaryDate.format(DateTimeFormatter.ofPattern("MM-dd")));
+        //設定幾週年
+        context.setVariable("anniversaryYear", yearDifference);
+
+
+        // 使用模板引擎生成郵件內容（HTML 格式）
+        String body = templateEngine.process("anniversaryEmail", context);
+
+        // 將 HTML 內容設置為郵件正文
+        helper.setText(body, true); // true 表示內容是 HTML 格式
+
+        // 發送郵件
+        javaMailSender.send(message);
+    }
+
+    public void testGetFormattedDate() throws MessagingException {
+        // 設定示例的紀念日日期（2024年9月18日）
+        LocalDate anniversaryDate = LocalDate.of(1993, 9, 18);
+        calculateDateDifference(anniversaryDate);
+    }
+
+    public void calculateDateDifference(LocalDate anniversaryDate) throws MessagingException {
+        LocalDate nowDate = LocalDate.now();  // 取得今天的日期
+        String anniversaryName = "結婚紀念日";
+        // 只比較月份和日期，忽略年份
+        MonthDay nowMonthDay = MonthDay.from(nowDate);
+        MonthDay anniversaryMonthDay = MonthDay.from(anniversaryDate);
+
+        // 計算原始年份的差距
+        int yearDifference = nowDate.getYear() - anniversaryDate.getYear();
+
+        // 檢查紀念日是否是今天
+        if (nowMonthDay.equals(anniversaryMonthDay)) {
+            sendAnniversaryEmail("willy718066@gmail.com", anniversaryDate,
+                    anniversaryName, yearDifference);
+        }
+    }
+
+
+    @Transactional
+    public void insertAnniversaries(AnniversariesInsertDto anniversariesInsertDto) {
+        Anniversaries anniversaries =
+                new Anniversaries(anniversariesInsertDto.getAnniversaryName(),
+                        anniversariesInsertDto.getAnniversaryDate(), false,
+                        LocalDateTime.now(), LocalDateTime.now());
+        System.out.println(anniversaries);
+                anniversariesRepository.saveAnniversariesAndUsersId(anniversaries,
+                        anniversariesInsertDto.getUsersId());
+    }
+}

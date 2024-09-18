@@ -1,9 +1,8 @@
 package com.EEIT85.bunnySugar.controller.products.admin;
 
 
-import com.EEIT85.bunnySugar.dto.ProductsInsertDto;
-import com.EEIT85.bunnySugar.dto.ProductsSelectDto;
-import com.EEIT85.bunnySugar.dto.ProductsUpdateDto;
+import com.EEIT85.bunnySugar.dto.products.ProductsInsertDto;
+import com.EEIT85.bunnySugar.dto.products.ProductsUpdateDto;
 import com.EEIT85.bunnySugar.service.ResourceNotFoundException;
 import com.EEIT85.bunnySugar.service.products.admin.ProductsAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RequestMapping("/admin/products")
 @RestController

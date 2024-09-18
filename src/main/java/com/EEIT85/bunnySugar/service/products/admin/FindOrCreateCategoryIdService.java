@@ -1,6 +1,6 @@
 package com.EEIT85.bunnySugar.service.products.admin;
 
-import com.EEIT85.bunnySugar.dto.ProductsAdminBaseDto;
+import com.EEIT85.bunnySugar.dto.products.ProductsAdminBaseDto;
 import com.EEIT85.bunnySugar.entity.Categories;
 import com.EEIT85.bunnySugar.repository.CategoriesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
