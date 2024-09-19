@@ -6,11 +6,13 @@ import java.time.LocalDateTime;
 public class AnniversariesInsertDto extends AnniversariesBaseDto{
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
+    private Boolean mailSent;
 
-    public AnniversariesInsertDto(String anniversaryName, LocalDate anniversaryDate, Long usersId, LocalDateTime createTime, LocalDateTime updateTime) {
+    public AnniversariesInsertDto(String anniversaryName, LocalDate anniversaryDate, Long usersId, Boolean mailSent, LocalDateTime updateTime, LocalDateTime createTime) {
         super(anniversaryName, anniversaryDate, usersId);
-        this.createTime = createTime;
+        this.mailSent = mailSent;
         this.updateTime = updateTime;
+        this.createTime = createTime;
     }
 
     public LocalDateTime getCreateTime() {
@@ -27,5 +29,13 @@ public class AnniversariesInsertDto extends AnniversariesBaseDto{
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Boolean getMailSent() {
+        return mailSent;
+    }
+
+    public void setMailSent(Boolean mailSent) {
+        this.mailSent = mailSent;
     }
 }

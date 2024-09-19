@@ -1,10 +1,14 @@
 package com.EEIT85.bunnySugar.service;
 
 import com.EEIT85.bunnySugar.dto.anniversaries.AnniversariesInsertDto;
+import com.EEIT85.bunnySugar.dto.anniversaries.AnniversariesSelectDto;
+import com.EEIT85.bunnySugar.dto.products.ProductsSelectDto;
 import com.EEIT85.bunnySugar.entity.Anniversaries;
+import com.EEIT85.bunnySugar.entity.Products;
 import com.EEIT85.bunnySugar.repository.AnniversariesRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -18,6 +22,8 @@ import java.time.LocalDateTime;
 import java.time.MonthDay;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AnniversariesService {
@@ -31,12 +37,7 @@ public class AnniversariesService {
     @Autowired
     private TemplateEngine templateEngine;
 
-    public List<Anniversaries> getAll() {
-        List<Anniversaries> anniversariesList = anniversariesRepository.findAll();
-        System.out.println(anniversariesList);
 
-        return anniversariesList;
-    }
 
 
     public void sendAnniversaryEmail(String email, LocalDate anniversaryDate,
@@ -60,7 +61,8 @@ public class AnniversariesService {
         // 設定紀念日名稱
         context.setVariable("anniversaryName", anniversaryName);
         // 設定格式化的紀念日日期
-        context.setVariable("anniversaryDate", anniversaryDate.format(DateTimeFormatter.ofPattern("MM-dd")));
+        context.setVariable("anniversaryDate",
+                anniversaryDate.format(DateTimeFormatter.ofPattern("MM-dd")));
         //設定幾週年
         context.setVariable("anniversaryYear", yearDifference);
 
@@ -100,13 +102,27 @@ public class AnniversariesService {
 
 
     @Transactional
-    public void insertAnniversaries(AnniversariesInsertDto anniversariesInsertDto) {
-        Anniversaries anniversaries =
-                new Anniversaries(anniversariesInsertDto.getAnniversaryName(),
-                        anniversariesInsertDto.getAnniversaryDate(), false,
-                        LocalDateTime.now(), LocalDateTime.now());
-        System.out.println(anniversaries);
-                anniversariesRepository.saveAnniversariesAndUsersId(anniversaries,
-                        anniversariesInsertDto.getUsersId());
+    public void insertAnniversaries(AnniversariesInsertDto anniversariesInsertDto,
+                                    Long userId) {
+        anniversariesRepository.saveAnniversariesAndUsersId(
+                anniversariesInsertDto.getAnniversaryName(),
+                anniversariesInsertDto.getAnniversaryDate(),
+                false, LocalDateTime.now(), LocalDateTime.now(),
+                userId
+        );
+    }
+
+
+    public List<AnniversariesSelectDto> getAllById(Long userId) {
+        List<Anniversaries> result = anniversariesRepository.findByUsersId(userId);
+        return result.stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    private AnniversariesSelectDto mapToDto(Anniversaries anniversaries) {
+        return new AnniversariesSelectDto(anniversaries.getAnniversaryName(),
+                anniversaries.getAnniversaryDate(),
+                anniversaries.getUsers().getId());
     }
 }

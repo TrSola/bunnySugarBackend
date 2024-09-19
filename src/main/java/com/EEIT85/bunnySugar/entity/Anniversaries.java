@@ -44,6 +44,14 @@ public class Anniversaries {
         this.updateTime = updateTime;
     }
 
+    public Users getUsers() {
+        return users;
+    }
+
+    public void setUsers(Users users) {
+        this.users = users;
+    }
+
     public String getAnniversaryName() {
         return anniversaryName;
     }
@@ -96,4 +104,5 @@ public class Anniversaries {
                 ", users=" + users +
                 '}';
     }
+
 }
