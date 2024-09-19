@@ -7,6 +7,8 @@ import com.EEIT85.bunnySugar.repository.WishListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class WishListService {
 
@@ -15,6 +17,8 @@ public class WishListService {
 
     public Long createWishListForUserAndCart(Users user, Cart cart) {
         WishList wishList = new WishList();
+        wishList.setCreateTime(LocalDateTime.now());
+        wishList.setUpdateTime(LocalDateTime.now());
         wishList.setUsers(user);  // 设置 Users 对象
         wishList = wishListRepository.save(wishList);
         return wishList.getId();
