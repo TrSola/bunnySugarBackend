@@ -19,7 +19,7 @@ public class WishListService {
         WishList wishList = new WishList();
         wishList.setCreateTime(LocalDateTime.now());
         wishList.setUpdateTime(LocalDateTime.now());
-        wishList.setUsers(user);  // 设置 Users 对象
+        wishList.setUsers(user);  // 設置 Users的Object
         wishList = wishListRepository.save(wishList);
         return wishList.getId();
     }

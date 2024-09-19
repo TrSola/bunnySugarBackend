@@ -1,5 +1,6 @@
 package com.EEIT85.bunnySugar.controller.user;
 
+import com.EEIT85.bunnySugar.dto.UserLoginRequestDto;
 import com.EEIT85.bunnySugar.entity.Users;
 import com.EEIT85.bunnySugar.service.user.UserService;
 import com.EEIT85.bunnySugar.utils.JwtUtil;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,10 +21,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @PostMapping("/register")
     public Map<String, Object> registerUser(@RequestBody Users user) {
         Map<String, Object> response = new HashMap<>();
-        // Check if the account already exists
+        // Check if this account already exists
         Users existingUser = userService.findByUserAccount(user.getAccount());
         if (existingUser != null) {
             response.put("status", "error");
@@ -58,10 +63,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Map<String, Object> login(@RequestBody Map<String, Object> loginRequest) {
+    public Map<String, Object> login(@RequestBody UserLoginRequestDto loginRequest) {
         Map<String, Object> response = new HashMap<>();
         // Fetch user by account
-        Users loginedUser = userService.findByUserAccount(loginRequest.get("account").toString());
+        Users loginedUser = userService.findByUserAccount(loginRequest.getAccount());
 
         if (loginedUser == null) {
             response.put("status", "error");
@@ -70,7 +75,7 @@ public class UserController {
         }
 
         // Check password
-        if (!loginedUser.getPassword().equals(loginRequest.get("password").toString())) {
+        if (!loginedUser.getPassword().equals(loginRequest.getPassword())) {
             response.put("status", "error");
             response.put("message", "密碼錯誤");
             return response;
@@ -80,10 +85,12 @@ public class UserController {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", loginedUser.getId());
         claims.put("account", loginedUser.getAccount());
-        String token = JwtUtil.genToken(claims);
+        Date expirationTime = new Date(System.currentTimeMillis() + 3600 * 1000); // 1 hour expiration
+        String token = jwtUtil.generateToken(claims, expirationTime);
 
         response.put("status", "success");
         response.put("token", token);
         return response;
     }
+
 }

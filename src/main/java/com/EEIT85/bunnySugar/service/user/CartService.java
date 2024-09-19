@@ -21,6 +21,6 @@ public class CartService {
         cart.setCreateTime(LocalDateTime.now());
         cart.setUpdateTime(LocalDateTime.now());
         cart = cartRepository.save(cart);  // 使用注入的 cartRepository 來保存 Cart
-        return cart;  // 返回 Cart 對象
+        return cart;  // return Cart Object
     }
 }
