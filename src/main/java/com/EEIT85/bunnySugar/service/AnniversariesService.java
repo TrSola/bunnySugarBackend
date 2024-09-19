@@ -2,6 +2,7 @@ package com.EEIT85.bunnySugar.service;
 
 import com.EEIT85.bunnySugar.dto.anniversaries.AnniversariesInsertDto;
 import com.EEIT85.bunnySugar.dto.anniversaries.AnniversariesSelectDto;
+import com.EEIT85.bunnySugar.dto.anniversaries.AnniversariesUpdateDto;
 import com.EEIT85.bunnySugar.dto.products.ProductsSelectDto;
 import com.EEIT85.bunnySugar.entity.Anniversaries;
 import com.EEIT85.bunnySugar.entity.Products;
@@ -121,8 +122,34 @@ public class AnniversariesService {
     }
 
     private AnniversariesSelectDto mapToDto(Anniversaries anniversaries) {
-        return new AnniversariesSelectDto(anniversaries.getAnniversaryName(),
+        return new AnniversariesSelectDto(anniversaries.getId(),
+                anniversaries.getAnniversaryName(),
                 anniversaries.getAnniversaryDate(),
                 anniversaries.getUsers().getId());
+    }
+
+    public void deleteAnniversaries(Long id) {
+         anniversariesRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void updateAnniversaries(Long id, AnniversariesUpdateDto anniversariesUpdateDto) {
+        // 查詢符合條件的紀念日
+        Optional<Anniversaries> optionalAnniversary = anniversariesRepository
+                .findByIdAndUsersId(id, anniversariesUpdateDto.getUsersId());
+        System.out.println(anniversariesRepository
+                .findByIdAndUsersId(id, anniversariesUpdateDto.getUsersId()));
+        System.out.println(optionalAnniversary);
+        if (optionalAnniversary.isPresent()) {
+            Anniversaries anniversaries = optionalAnniversary.get();
+            // 更新紀念日的名稱和日期
+            anniversaries.setAnniversaryName(anniversariesUpdateDto.getAnniversaryName());
+            anniversaries.setAnniversaryDate(anniversariesUpdateDto.getAnniversaryDate());
+            anniversaries.setUpdateTime(LocalDateTime.now());
+            // 保存更新後的紀念日
+            anniversariesRepository.save(anniversaries);
+        } else {
+            throw new EntityNotFoundException("紀念日未找到");
+        }
     }
 }

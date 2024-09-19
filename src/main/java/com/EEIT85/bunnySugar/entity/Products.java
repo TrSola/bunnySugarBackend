@@ -3,9 +3,11 @@ package com.EEIT85.bunnySugar.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
 
+@DynamicUpdate
 //@Entity標記此物件對應資料庫欄位
 @Entity
 //對應資料庫表名稱(會自動幫你產生)

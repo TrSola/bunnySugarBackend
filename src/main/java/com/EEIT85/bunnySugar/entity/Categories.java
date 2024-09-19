@@ -2,9 +2,12 @@ package com.EEIT85.bunnySugar.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import org.hibernate.annotations.DynamicUpdate;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
+@DynamicUpdate
 @Entity
 @Table(name = "categories")
 public class Categories {

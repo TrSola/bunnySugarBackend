@@ -2,8 +2,11 @@ package com.EEIT85.bunnySugar.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import org.hibernate.annotations.DynamicUpdate;
+
 import java.time.LocalDateTime;
 
+@DynamicUpdate
 @Entity
 @Table(name = "product_details")
 public class ProductDetails {

@@ -2,11 +2,13 @@ package com.EEIT85.bunnySugar.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
+@DynamicUpdate
 @Table(name = "anniversaries")
 public class Anniversaries {
 
@@ -34,7 +36,7 @@ public class Anniversaries {
     public Anniversaries() {
     }
 
-    public Anniversaries(String anniversaryName, LocalDate anniversaryDate,
+    public Anniversaries(Long id, String anniversaryName, LocalDate anniversaryDate,
                          Boolean mailSent, LocalDateTime createTime,
                          LocalDateTime updateTime) {
         this.anniversaryName = anniversaryName;
@@ -42,6 +44,10 @@ public class Anniversaries {
         this.mailSent = mailSent;
         this.createTime = createTime;
         this.updateTime = updateTime;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Users getUsers() {
