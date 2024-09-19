@@ -1,6 +1,7 @@
 package com.EEIT85.bunnySugar.controller.user;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,4 +19,5 @@ public class MemberController {
         res.put("message", "JWT驗證成功，會員資料...");
         return res;
     }
+
 }

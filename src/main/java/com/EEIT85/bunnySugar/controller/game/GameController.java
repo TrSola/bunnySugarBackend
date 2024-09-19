@@ -21,7 +21,7 @@ public class GameController {
     }
 
     @PostMapping("/start/{id}")
-    public ResponseEntity<String> startGame(@PathVariable Integer id) {
+    public ResponseEntity<String> startGame(@PathVariable Long id) {
         boolean canPlay = gameService.startGame(id);
         if (canPlay) {
             return ResponseEntity.ok("User has enough game times!");
@@ -31,7 +31,7 @@ public class GameController {
     }
 
     @PostMapping("/end/{id}")
-    public ResponseEntity<Integer> endGame(@PathVariable Integer id, @RequestBody GameDetailsDto result) {
+    public ResponseEntity<Integer> endGame(@PathVariable Long id, @RequestBody GameDetailsDto result) {
         Integer gameTimes = gameService.endGame(id, result);
         return ResponseEntity.ok(gameTimes);
     }
