@@ -1,4 +1,4 @@
-package com.EEIT85.bunnySugar.service.game;
+package com.EEIT85.bunnySugar.service;
 
 import com.EEIT85.bunnySugar.dto.GameDetailsDto;
 import com.EEIT85.bunnySugar.entity.Users;
