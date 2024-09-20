@@ -8,19 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/game")
+@RequestMapping("/game")
 @CrossOrigin(origins = "http://localhost:5173")
 public class GameController {
 
     @Autowired
     private GameService gameService;
 
-    @GetMapping("/test")
-    public String test() {
-        return "GET request successful!";
-    }
-
-    @PostMapping("/start/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<String> startGame(@PathVariable Long id) {
         boolean canPlay = gameService.startGame(id);
         if (canPlay) {
@@ -30,9 +25,10 @@ public class GameController {
         }
     }
 
-    @PostMapping("/end/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Integer> endGame(@PathVariable Long id, @RequestBody GameDetailsDto result) {
         Integer gameTimes = gameService.endGame(id, result);
         return ResponseEntity.ok(gameTimes);
     }
 }
+

@@ -28,10 +28,15 @@ public class GameService {
     public Integer endGame(Long id, GameDetailsDto result) {
         Users user = gameRepository.findById(id).orElse(null);
         if (user != null) {
-            user.setBunnyCoin(user.getBunnyCoin() + result.getEarnedCoins());
+            Integer earnedCoins = result.getEarnedCoins();
+            if (earnedCoins == null) {
+                earnedCoins = 0;  // Default to 0 if earnedCoins is null
+            }
+            user.setBunnyCoin(user.getBunnyCoin() + earnedCoins);
             gameRepository.save(user);
             return user.getGameTimes();
         }
         return null;
     }
 }
+
