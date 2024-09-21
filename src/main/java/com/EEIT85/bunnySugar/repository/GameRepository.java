@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GameRepository extends JpaRepository<Users, Long> {
-    // Custom query methods can be added here if necessary
+
 }
