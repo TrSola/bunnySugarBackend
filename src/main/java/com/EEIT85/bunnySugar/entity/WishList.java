@@ -11,12 +11,12 @@ public class WishList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;  // Primary Key
+    private Long id;
 
     @OneToOne
     @JsonBackReference
     @JoinColumn(name = "users_id", nullable = false)
-    private Users users;  // 对应 users 表的 ID
+    private Users users;
 
     @Column(nullable = false, name = "create_time")
     private LocalDateTime createTime;
@@ -37,7 +37,10 @@ public class WishList {
     public Long getId() {
         return id;
     }
-    public void setId(Long id) {}
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Users getUsers() {
         return users;

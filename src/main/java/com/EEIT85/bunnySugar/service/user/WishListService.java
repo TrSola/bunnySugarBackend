@@ -15,12 +15,14 @@ public class WishListService {
     @Autowired
     private WishListRepository wishListRepository;
 
-    public Long createWishListForUserAndCart(Users user, Cart cart) {
+    public WishList createWishListForUser(Users user) {
         WishList wishList = new WishList();
+        wishList.setUsers(user);  // 設置 WishList 的 Users
+        // 設置其他 WishList 的屬性
         wishList.setCreateTime(LocalDateTime.now());
         wishList.setUpdateTime(LocalDateTime.now());
-        wishList.setUsers(user);  // 設置 Users的Object
-        wishList = wishListRepository.save(wishList);
-        return wishList.getId();
+        wishList = wishListRepository.save(wishList);  // 使用注入的 wishListRepository 來保存 WishList
+        return wishList;  // return WishList Object
     }
+
 }

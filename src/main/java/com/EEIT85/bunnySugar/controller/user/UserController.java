@@ -1,6 +1,8 @@
 package com.EEIT85.bunnySugar.controller.user;
 
-import com.EEIT85.bunnySugar.dto.UserLoginRequestDto;
+import com.EEIT85.bunnySugar.dto.users.UsersDetailsDto;
+import com.EEIT85.bunnySugar.dto.users.UsersLoginRequestDto;
+import com.EEIT85.bunnySugar.dto.users.UsersVerifyDto;
 import com.EEIT85.bunnySugar.entity.Users;
 import com.EEIT85.bunnySugar.service.user.UserService;
 import com.EEIT85.bunnySugar.utils.JwtUtil;
@@ -24,48 +26,65 @@ public class UserController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @PostMapping("/register")
-    public Map<String, Object> registerUser(@RequestBody Users user) {
+    @PostMapping("/registerVerify")
+    public Map<String, Object> registerVerify(@RequestBody Users user) {
         Map<String, Object> response = new HashMap<>();
-        // Check if this account already exists
-        Users existingUser = userService.findByUserAccount(user.getAccount());
-        if (existingUser != null) {
-            response.put("status", "error");
-            response.put("message", "帳號已存在");
-            return response;
-        }
 
-        // Register new user
-        Long userId = userService.registerUserAndAll(user);
-        response.put("status", "success");
-        response.put("message", "註冊成功！您的會員ID: " + userId);
+        Users registeredUser = userService.registerUserAndAll(user);
+        if (registeredUser != null) {
+            response.put("status", "success");
+            response.put("message", "請檢查您的信箱以獲取驗證碼");
+        } else {
+            response.put("status", "error");
+            response.put("message", "這個信箱已經註冊過BunnySugar囉！");
+        }
         return response;
     }
 
     @PostMapping("/verify")
-    public Map<String, Object> verifyUser(@RequestBody Map<String, Object> verifyRequest) {
+    public Map<String, Object> verifyUser(@RequestBody UsersVerifyDto userVerifyDto) {
         Map<String, Object> response = new HashMap<>();
-        try {
-            String token = verifyRequest.get("token").toString();
-            boolean verificationSuccess = userService.verifyUser(token);
-            if (verificationSuccess) {
-                response.put("status", "success");
-                response.put("message", "驗證成功，您的帳戶已啟用");
-            } else {
-                response.put("status", "error");
-                response.put("message", "驗證失敗，請重新嘗試");
-            }
-        } catch (Exception e) {
+        boolean isVerified = userService.verifyUser(userVerifyDto);
+
+        if (isVerified) {
+            response.put("status", "success");
+            response.put("message", "驗證成功，請輸入您的會員資料！");
+        } else {
             response.put("status", "error");
-            response.put("message", "驗證失敗，請重新嘗試");
+            response.put("message", "驗證失敗或驗證碼已過期！");
         }
         return response;
     }
 
-    @PostMapping("/login")
-    public Map<String, Object> login(@RequestBody UserLoginRequestDto loginRequest) {
+    @PostMapping("/completeDetails")
+    public Map<String, Object> completeDetails(@RequestBody UsersDetailsDto usersDetailsDto) {
         Map<String, Object> response = new HashMap<>();
-        // Fetch user by account
+
+        // 根據 email 獲取用戶
+        Users user = userService.findByUserEmail(usersDetailsDto.getEmail());
+        if (user == null) {
+            response.put("status", "error");
+            response.put("message", "用戶不存在");
+            return response;
+        }
+
+        // 更新用戶詳細資料
+        boolean updateSuccess = userService.updateUserDetails(usersDetailsDto.getEmail(), usersDetailsDto);
+        if (updateSuccess) {
+            response.put("status", "success");
+            response.put("message", "會員資料已成功完善！");
+        } else {
+            response.put("status", "error");
+            response.put("message", "更新失敗，請確認用戶是否已驗證");
+        }
+        return response;
+    }
+
+
+    @PostMapping("/login")
+    public Map<String, Object> login(@RequestBody UsersLoginRequestDto loginRequest) {
+        Map<String, Object> response = new HashMap<>();
+        // 根據帳號查找用戶
         Users loginedUser = userService.findByUserAccount(loginRequest.getAccount());
 
         if (loginedUser == null) {
@@ -74,23 +93,22 @@ public class UserController {
             return response;
         }
 
-        // Check password
+        // 驗證密碼
         if (!loginedUser.getPassword().equals(loginRequest.getPassword())) {
             response.put("status", "error");
             response.put("message", "密碼錯誤");
             return response;
         }
 
-        // Generate JWT token
+        // 生成 JWT token
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", loginedUser.getId());
         claims.put("account", loginedUser.getAccount());
-        Date expirationTime = new Date(System.currentTimeMillis() + 3600 * 1000); // 1 hour expiration
+        Date expirationTime = new Date(System.currentTimeMillis() + 3600 * 1000); // 1 小時過期
         String token = jwtUtil.generateToken(claims, expirationTime);
 
         response.put("status", "success");
         response.put("token", token);
         return response;
     }
-
 }

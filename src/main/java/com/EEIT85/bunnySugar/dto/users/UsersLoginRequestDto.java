@@ -1,6 +1,6 @@
-package com.EEIT85.bunnySugar.dto;
+package com.EEIT85.bunnySugar.dto.users;
 
-public class UserLoginRequestDto {
+public class UsersLoginRequestDto {
     private String account;
     private String password;
 

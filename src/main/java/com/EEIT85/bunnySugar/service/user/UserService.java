@@ -1,7 +1,10 @@
 package com.EEIT85.bunnySugar.service.user;
 
+import com.EEIT85.bunnySugar.dto.users.UsersDetailsDto;
+import com.EEIT85.bunnySugar.dto.users.UsersVerifyDto;
 import com.EEIT85.bunnySugar.entity.Cart;
 import com.EEIT85.bunnySugar.entity.Users;
+import com.EEIT85.bunnySugar.entity.WishList;
 import com.EEIT85.bunnySugar.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,56 +23,107 @@ public class UserService {
     @Autowired
     private WishListService wishListService;
 
-    // User registration logic including creating Cart and WishList
-    public Long registerUserAndAll(Users user) {
-        // Set default values for user registration
-        user.setActive(false);  // User starts as inactive
+    public Users registerUserAndAll(Users user) {
+        // 檢查信箱是否已存在
+        if (findByUserEmail(user.getEmail()) != null) {
+            return null; // return null 表示信箱已存在
+        }
+        user.setActive(0);  // 未驗證(信箱還沒驗證的意思)
         user.setCreateTime(LocalDateTime.now());
         user.setUpdateTime(LocalDateTime.now());
+        String verifyingToken = String.format("%06d", (int)(Math.random() * 1000000));
+        user.setVerifyingToken(verifyingToken);
+        user.setTokenExpirationTime(LocalDateTime.now().plusMinutes(10));
 
-        // Save the user in the database
         user = userRepository.save(user);
+        // 創車
+        cartService.createCartForUser(user);
+        // 創願望清單
+        wishListService.createWishListForUser(user);
 
-        // Create Cart for the user
-        Cart cart = cartService.createCartForUser(user);
-
-        // Create WishList for the user and cart
-        wishListService.createWishListForUserAndCart(user, cart);
-
-        // Return the user ID after successful registration
-        return user.getId();
+        return user; // 返回保存的使用者物件
     }
 
-    // User verification logic
-    public boolean verifyUser(String token) {
-        Users user = userRepository.findByVerifyingToken(token);
+    public boolean verifyUser(UsersVerifyDto userVerifyDto) {
+        // 從 Dto 中獲取 email 和驗證碼
+        String email = userVerifyDto.getEmail();
+        String token = userVerifyDto.getVerifyingToken();
+
+        Users user = userRepository.findByEmail(email);
         if (user == null) {
-            return false;  // Invalid token
+            return false; // 用戶不存在，return false
         }
-
-        // Check if token is expired
+        if (!user.getVerifyingToken().equals(token)) {
+            return false; // 驗證碼不正確，return false
+        }
         if (user.getTokenExpirationTime().isBefore(LocalDateTime.now())) {
-            return false;  // Token expired
+            return false; // 驗證碼已過期，return false
         }
 
-        // Update user status to active
-        user.setActive(true);
-        userRepository.save(user);  // Update user status in database
+        // 驗證成功，更新用戶狀態
+        user.setActive(1); // 更新為已驗證
+        userRepository.save(user); // 保存用戶狀態
 
-        return true;  // Verification successful
+        return true; // 驗證成功
     }
+    //////////////重要，這邊因為我是用email去找，但這個頁面不會讓用戶輸入email了，所以前端要用vuex儲存email放到下一個請求
+    public boolean updateUserDetails(String email, UsersDetailsDto usersDetailsDto) {
+        // 根據 email 查找用戶
+        Users user = userRepository.findByEmail(email);
 
-    // Update user's isActive status by userId
-    public void updateIsActiveForUser(Long userId, boolean active) {
-        Users user = userRepository.findById(userId).orElse(null);
-        if (user != null) {
-            user.setActive(active);
-            userRepository.save(user);
+        // 確認用戶是否存在，也去確認active是否為1
+        if (user == null || user.getActive() != 1) {
+            return false; // 用戶不存在或未驗證
         }
+
+        //這邊做了一個防止前端有人改資料，讓我原本拿的到的資料拿不到，但卻還是可以新增進去，這樣基本都可以有資料
+        if (usersDetailsDto.getAccount() != null) {
+            user.setAccount(usersDetailsDto.getAccount());
+        }
+        if (usersDetailsDto.getPassword() != null) {
+            user.setPassword(usersDetailsDto.getPassword());
+        }
+        if (usersDetailsDto.getName() != null) {
+            user.setName(usersDetailsDto.getName());
+        }
+        if (usersDetailsDto.getGender() != null) {
+            user.setGender(usersDetailsDto.getGender());
+        }
+        if (usersDetailsDto.getBirthday() != null) {
+            user.setBirthday(usersDetailsDto.getBirthday());
+        }
+        user.setBunnyCoin(0);
+        user.setGameTimes(0);
+        user.setCreateTime(LocalDateTime.now());
+        user.setUpdateTime(LocalDateTime.now()); // 更新時間設為當前時間
+
+        // 更新購物車物件的 createTime 和 updateTime
+        Cart cart = user.getCart();
+        if (cart != null) {
+            cart.setCreateTime(user.getUpdateTime());  // 使用用戶的更新時間作為購物車的創建時間
+            cart.setUpdateTime(user.getUpdateTime());  // 同理
+        }
+
+        // 更新願望清單物件的 createTime 和 updateTime
+        WishList wishList = user.getWishList();
+        if (wishList != null) {
+            wishList.setCreateTime(user.getUpdateTime());  // 使用用戶的更新時間作為願望清單的創建時間
+            wishList.setUpdateTime(user.getUpdateTime());  // 同理
+        }
+        // 儲存更新後的用戶資料與關聯物件
+        userRepository.save(user);
+        return true; // 資料更新成功
     }
+
+
+
 
     // Find user by account
     public Users findByUserAccount(String account) {
         return userRepository.findByAccount(account); // Ensure this method is present in UserRepository
+    }
+
+    public Users findByUserEmail(String email) {
+        return userRepository.findByEmail(email); // 確保這個方法在 UserRepository 中存在
     }
 }
