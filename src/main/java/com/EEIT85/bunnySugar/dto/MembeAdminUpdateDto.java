@@ -2,7 +2,7 @@ package com.EEIT85.bunnySugar.dto;
 
 import java.time.LocalDateTime;
 
-public class MemberUpdateDto {
+public class MembeAdminUpdateDto {
 
     private String name;
     private String gender;
@@ -10,11 +10,11 @@ public class MemberUpdateDto {
     private String phone;
     private LocalDateTime birthday;
 
-    public MemberUpdateDto() {
+    public MembeAdminUpdateDto() {
 
     }
 
-    public MemberUpdateDto(String name, String gender, String email, String phone) {
+    public MembeAdminUpdateDto(String name, String gender, String email, String phone) {
         this.name = name;
         this.gender = gender;
         this.email = email;
