@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,74 +16,71 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;  // 主键ID
+    private Long id;
 
-    @Column(length = 55, nullable = false, name = "account")
-    private String account;
-
-    @Column(length = 255, nullable = false, name = "password")
-    private String password;
-
-    @Column(length = 255, nullable = false, name = "email")
+    @Column(length = 255, nullable = false, name = "email")  // 信箱
     private String email;
 
-    @Column(length = 55, nullable = false, name = "name")
-    private String name;
-
-    @Column(length = 10, name = "gender")
-    private String gender;
-
-    @Column(length = 20, name = "phone")
+    @Column(length = 20, nullable = false, name = "phone")  // 手機
     private String phone;
 
-    @Column(name = "birthday")
-    private LocalDateTime birthday;
-
-    @Column(name = "bunny_coin")
-    private Integer bunnyCoin;
-
-    @Column(nullable = false, name = "active")
-    private Boolean active;
-
-    @Column(length = 255, name = "verifying_token")
+    @Column(length = 255, nullable = false, name = "verifying_token")  // 驗證碼
     private String verifyingToken;
 
-    @Column(length = 255, name = "forget_token")
+    @Column(length = 55, nullable = true, name = "account")  // 帳號，可為空
+    private String account;
+
+    @Column(length = 255, nullable = true, name = "password")  // 密碼，可為空
+    private String password;
+
+    @Column(length = 55, nullable = true, name = "username")  // 姓名，可為空
+    private String name;
+
+    @Column(length = 10, nullable = true, name = "gender")  // 性別，可為空
+    private String gender;
+
+    @Column(name = "birthday", nullable = true)  // 生日，可為空
+    private LocalDate birthday;
+
+    @Column(name = "bunny_coin", nullable = true)  // 小兔幣(紅利金)，可為空
+    private Integer bunnyCoin;
+
+    @Column(nullable = false, name = "active")  // 活躍狀態
+    private Integer active;
+
+    @Column(length = 255, nullable = true, name = "forget_token")  // 忘記密碼token，可為空
     private String forgetToken;
 
-    @Column(length = 20, name = "login_method")
+    @Column(length = 20, nullable = true, name = "login_method")  // 登入方式，可為空
     private String loginMethod;
 
-    @Column(length = 255, name = "google_token")
+    @Column(length = 255, nullable = true, name = "google_token")  // Google token，可為空
     private String googleToken;
 
-    @Column(length = 255, name = "facebook_token")
+    @Column(length = 255, nullable = true, name = "facebook_token")  // Facebook token，可為空
     private String facebookToken;
 
-    @Column(nullable = false, name = "create_time")
+    @Column(nullable = false, name = "create_time")  // 創建時間
     private LocalDateTime createTime;
 
-    @Column(nullable = false, name = "update_time")
+    @Column(nullable = false, name = "update_time")  // 更新時間
     private LocalDateTime updateTime;
 
-    @Column(name = "last_login_time")
+    @Column(name = "last_login_time", nullable = true)  // 最後登入時間，可為空
     private LocalDateTime lastLoginTime;
 
-    @Column(name = "game_times")
+    @Column(name = "game_times", nullable = true)  // 遊戲次數，可為空
     private Integer gameTimes;
 
-    @Column(name = "token_expiration_time")
-    private LocalDateTime tokenExpirationTime; // 新增字段
+    @Column(name = "token_expiration_time", nullable = true)  // token 到期時間，可為空
+    private LocalDateTime tokenExpirationTime;
 
-     @JsonManagedReference
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval =
-            true)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Anniversaries> anniversaries;
 
     // OneToOne關聯Cart
     @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
-
-
     private Cart cart;
 
     // OneToOne關聯WishList
@@ -90,36 +88,70 @@ public class Users {
     @JsonManagedReference
     private WishList wishList;
 
-    public Users() {
-    }
+    // Constructors, Getters, Setters...
+    public Users() {}
 
-    public Users(WishList wishList, Cart cart, LocalDateTime tokenExpirationTime, Integer gameTimes, LocalDateTime lastLoginTime, LocalDateTime updateTime, LocalDateTime createTime, String facebookToken, String googleToken, String loginMethod, String forgetToken, String verifyingToken, Boolean active, Integer bunnyCoin, LocalDateTime birthday, String phone, String gender, String name, String email, String password, String account, Long id) {
-        this.wishList = wishList;
-        this.cart = cart;
-        this.tokenExpirationTime = tokenExpirationTime;
-        this.gameTimes = gameTimes;
-        this.lastLoginTime = lastLoginTime;
-        this.updateTime = updateTime;
-        this.createTime = createTime;
-        this.facebookToken = facebookToken;
-        this.googleToken = googleToken;
-        this.loginMethod = loginMethod;
-        this.forgetToken = forgetToken;
-        this.verifyingToken = verifyingToken;
-        this.active = active;
-        this.bunnyCoin = bunnyCoin;
-        this.birthday = birthday;
-        this.phone = phone;
-        this.gender = gender;
-        this.name = name;
+    // 所有參數的構造函數
+    public Users(String email, String phone, String verifyingToken, String account, String password, String name,
+                 String gender, LocalDate birthday, Integer bunnyCoin, Integer active,
+                 String forgetToken, String loginMethod, String googleToken, String facebookToken,
+                 LocalDateTime createTime, LocalDateTime updateTime, LocalDateTime lastLoginTime,
+                 Integer gameTimes, LocalDateTime tokenExpirationTime, List<Anniversaries> anniversaries,
+                 Cart cart, WishList wishList) {
         this.email = email;
-        this.password = password;
+        this.phone = phone;
+        this.verifyingToken = verifyingToken;
         this.account = account;
-        this.id = id;
+        this.password = password;
+        this.name = name;
+        this.gender = gender;
+        this.birthday = birthday;
+        this.bunnyCoin = bunnyCoin;
+        this.active = active;
+        this.forgetToken = forgetToken;
+        this.loginMethod = loginMethod;
+        this.googleToken = googleToken;
+        this.facebookToken = facebookToken;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.lastLoginTime = lastLoginTime;
+        this.gameTimes = gameTimes;
+        this.tokenExpirationTime = tokenExpirationTime;
+        this.anniversaries = anniversaries;
+        this.cart = cart;
+        this.wishList = wishList;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getVerifyingToken() {
+        return verifyingToken;
+    }
+
+    public void setVerifyingToken(String verifyingToken) {
+        this.verifyingToken = verifyingToken;
     }
 
     public String getAccount() {
@@ -138,13 +170,6 @@ public class Users {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
     public String getName() {
         return name;
     }
@@ -161,19 +186,11 @@ public class Users {
         this.gender = gender;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public LocalDateTime getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDateTime birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
@@ -185,20 +202,12 @@ public class Users {
         this.bunnyCoin = bunnyCoin;
     }
 
-    public Boolean getActive() {
+    public Integer getActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(Integer active) {
         this.active = active;
-    }
-
-    public String getVerifyingToken() {
-        return verifyingToken;
-    }
-
-    public void setVerifyingToken(String verifyingToken) {
-        this.verifyingToken = verifyingToken;
     }
 
     public String getForgetToken() {
@@ -271,6 +280,14 @@ public class Users {
 
     public void setTokenExpirationTime(LocalDateTime tokenExpirationTime) {
         this.tokenExpirationTime = tokenExpirationTime;
+    }
+
+    public List<Anniversaries> getAnniversaries() {
+        return anniversaries;
+    }
+
+    public void setAnniversaries(List<Anniversaries> anniversaries) {
+        this.anniversaries = anniversaries;
     }
 
     public Cart getCart() {

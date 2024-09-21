@@ -15,7 +15,6 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // One-to-One relationship with Users entity
     @OneToOne
     @JoinColumn(name = "users_id", nullable = false)
     @JsonBackReference
@@ -27,12 +26,11 @@ public class Cart {
     @Column(nullable = false, name = "update_time")
     private LocalDateTime updateTime;
 
-    // Constructors, Getters, Setters
-
     public Cart() {
     }
 
-    public Cart(Users users, LocalDateTime createTime, LocalDateTime updateTime) {
+    public Cart(Long id, Users users, LocalDateTime createTime, LocalDateTime updateTime) {
+        this.id = id;
         this.users = users;
         this.createTime = createTime;
         this.updateTime = updateTime;
@@ -69,5 +67,4 @@ public class Cart {
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
     }
-
 }
