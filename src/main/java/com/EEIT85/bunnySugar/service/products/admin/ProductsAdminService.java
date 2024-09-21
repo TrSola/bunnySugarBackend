@@ -1,6 +1,7 @@
 package com.EEIT85.bunnySugar.service.products.admin;
 
 import com.EEIT85.bunnySugar.dto.products.ProductsInsertDto;
+import com.EEIT85.bunnySugar.dto.products.ProductsSelectDto;
 import com.EEIT85.bunnySugar.dto.products.ProductsUpdateDto;
 import com.EEIT85.bunnySugar.entity.Categories;
 import com.EEIT85.bunnySugar.entity.ProductDetails;
@@ -14,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductsAdminService {
@@ -125,5 +129,8 @@ public class ProductsAdminService {
         productDetails.setUpdateTime(LocalDateTime.now());
         productDetails.setEnable(productsUpdateDto.getEnable());
     }
+
+
+
 
 }

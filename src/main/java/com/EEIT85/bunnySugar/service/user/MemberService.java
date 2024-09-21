@@ -1,7 +1,7 @@
 package com.EEIT85.bunnySugar.service.user;
 
-import com.EEIT85.bunnySugar.dto.MembeAdminUpdateDto;
-import com.EEIT85.bunnySugar.dto.MemberAdminDto;
+import com.EEIT85.bunnySugar.dto.users.MembeAdminUpdateDto;
+import com.EEIT85.bunnySugar.dto.users.MemberAdminDto;
 import com.EEIT85.bunnySugar.entity.Users;
 import com.EEIT85.bunnySugar.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.EEIT85.bunnySugar.controller.game;
 
-import com.EEIT85.bunnySugar.dto.GameDetailsDto;
+import com.EEIT85.bunnySugar.dto.game.GameDetailsDto;
 import com.EEIT85.bunnySugar.service.game.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

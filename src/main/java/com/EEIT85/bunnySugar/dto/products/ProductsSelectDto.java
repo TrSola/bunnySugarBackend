@@ -28,6 +28,9 @@ public class ProductsSelectDto {
         this.categoryDescription = categoryDescription;
     }
 
+    public ProductsSelectDto(Long id, String productName, Integer price) {
+    }
+
     public Long getId() {
         return id;
     }

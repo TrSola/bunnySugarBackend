@@ -1,4 +1,4 @@
-package com.EEIT85.bunnySugar.dto;
+package com.EEIT85.bunnySugar.dto.users;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

@@ -50,4 +50,13 @@ public class ProductsService {
         Products product = findProduct.get();
         return convertToDto(product);  // 使用封裝的方法進行轉換
     }
+
+    // 透過產品名稱模糊查詢
+    public List<ProductsSelectDto> searchProductsByNameLike(String keyword) {
+        List<Products> productsList = productsRepository.findByProductNameContaining(keyword);
+        return productsList.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+
+    }
 }
