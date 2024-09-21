@@ -1,5 +1,6 @@
 package com.EEIT85.bunnySugar.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class MemberAdminDto {
@@ -18,11 +19,11 @@ public class MemberAdminDto {
 
     private String phone;
 
-    private LocalDateTime birthday;
+    private LocalDate birthday;
 
     private Integer bunnyCoin;
 
-    private Boolean active;
+    private Integer active;
 
     private String verifyingToken;
 
@@ -103,11 +104,11 @@ public class MemberAdminDto {
         this.phone = phone;
     }
 
-    public LocalDateTime getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDateTime birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
@@ -119,11 +120,11 @@ public class MemberAdminDto {
         this.bunnyCoin = bunnyCoin;
     }
 
-    public Boolean getActive() {
+    public Integer getActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(Integer active) {
         this.active = active;
     }
 

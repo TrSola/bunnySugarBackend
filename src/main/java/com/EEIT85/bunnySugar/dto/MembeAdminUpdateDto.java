@@ -1,5 +1,6 @@
 package com.EEIT85.bunnySugar.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class MembeAdminUpdateDto {
@@ -8,7 +9,7 @@ public class MembeAdminUpdateDto {
     private String gender;
     private String email;
     private String phone;
-    private LocalDateTime birthday;
+    private LocalDate birthday;
 
     public MembeAdminUpdateDto() {
 
@@ -19,7 +20,7 @@ public class MembeAdminUpdateDto {
         this.gender = gender;
         this.email = email;
         this.phone = phone;
-        this.birthday = LocalDateTime.now();
+        this.birthday = LocalDate.now();
 
     }
 
@@ -55,11 +56,11 @@ public class MembeAdminUpdateDto {
         this.phone = phone;
     }
 
-    public LocalDateTime getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDateTime birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 }
