@@ -1,15 +1,22 @@
 package com.EEIT85.bunnySugar.service.user;
 
 import com.EEIT85.bunnySugar.dto.users.UsersDetailsDto;
+import com.EEIT85.bunnySugar.dto.users.UsersLoginRequestDto;
 import com.EEIT85.bunnySugar.dto.users.UsersVerifyDto;
 import com.EEIT85.bunnySugar.entity.Cart;
 import com.EEIT85.bunnySugar.entity.Users;
 import com.EEIT85.bunnySugar.entity.WishList;
 import com.EEIT85.bunnySugar.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.EEIT85.bunnySugar.utils.JwtUtil;
 
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -22,6 +29,8 @@ public class UserService {
 
     @Autowired
     private WishListService wishListService;
+    @Autowired
+    private JwtUtil jwtUtil;
 
     public Users registerUserAndAll(Users user) {
         // 檢查信箱是否已存在
@@ -93,7 +102,10 @@ public class UserService {
             user.setAccount(usersDetailsDto.getAccount());
         }
         if (usersDetailsDto.getPassword() != null) {
-            user.setPassword(usersDetailsDto.getPassword());
+            // 將密碼轉換為 Bcrypt
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String encodedPassword = passwordEncoder.encode(usersDetailsDto.getPassword());
+            user.setPassword(encodedPassword);
         }
         if (usersDetailsDto.getName() != null) {
             user.setName(usersDetailsDto.getName());
@@ -128,7 +140,35 @@ public class UserService {
         return true; // 資料更新成功
     }
 
+    public Map<String, Object> login(UsersLoginRequestDto loginRequest) {
+        Map<String, Object> response = new HashMap<>();
+        // 根據帳號查找用戶
+        Users loginedUser = findByUserAccount(loginRequest.getAccount());
 
+        if (loginedUser == null) {
+            response.put("status", "error");
+            response.put("message", "帳號不存在");
+            return response;
+        }
+
+        // 驗證密碼
+        if (!BCrypt.checkpw(loginRequest.getPassword(), loginedUser.getPassword())) {
+            response.put("status", "error");
+            response.put("message", "密碼錯誤");
+            return response;
+        }
+
+        // 生成 JWT token
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", loginedUser.getId());
+        claims.put("account", loginedUser.getAccount());
+        Date expirationTime = new Date(System.currentTimeMillis() + 30 * 24 * 3600 * 1000); // 維持一個月
+        String token = jwtUtil.generateToken(claims, expirationTime);
+
+        response.put("status", "success");
+        response.put("token", token);
+        return response;
+    }
 
 
     // Find user by account
