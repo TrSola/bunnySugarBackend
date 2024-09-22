@@ -72,7 +72,7 @@ public class UserController {
         boolean updateSuccess = userService.updateUserDetails(usersDetailsDto.getEmail(), usersDetailsDto);
         if (updateSuccess) {
             response.put("status", "success");
-            response.put("message", "會員資料已成功完善！");
+            response.put("message", "註冊成功！歡迎光臨BunnySugar");
         } else {
             response.put("status", "error");
             response.put("message", "更新失敗，請確認用戶是否已驗證");

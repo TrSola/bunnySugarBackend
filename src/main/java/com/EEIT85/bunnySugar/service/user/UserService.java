@@ -25,9 +25,17 @@ public class UserService {
 
     public Users registerUserAndAll(Users user) {
         // 檢查信箱是否已存在
-        if (findByUserEmail(user.getEmail()) != null) {
-            return null; // return null 表示信箱已存在
+        Users existingUser = findByUserEmail(user.getEmail());
+
+        if (existingUser != null) {
+            if (existingUser.getDetailsCompleted() == 1) {
+                return null; // 信箱存在&&資料已完善(等於註冊成功了)，直接return null
+            } else {
+                // 他的資料沒完善，直接重新跑流程
+                userRepository.delete(existingUser);
+            }
         }
+
         user.setActive(0);  // 未驗證(信箱還沒驗證的意思)
         user.setCreateTime(LocalDateTime.now());
         user.setUpdateTime(LocalDateTime.now());
@@ -36,13 +44,17 @@ public class UserService {
         user.setTokenExpirationTime(LocalDateTime.now().plusMinutes(10));
 
         user = userRepository.save(user);
-        // 創車
+
+        // 創建購物車
         cartService.createCartForUser(user);
-        // 創願望清單
+
+        // 創建願望清單
         wishListService.createWishListForUser(user);
 
         return user; // 返回保存的使用者物件
     }
+
+
 
     public boolean verifyUser(UsersVerifyDto userVerifyDto) {
         // 從 Dto 中獲取 email 和驗證碼
@@ -68,7 +80,7 @@ public class UserService {
     }
     //////////////重要，這邊因為我是用email去找，但這個頁面不會讓用戶輸入email了，所以前端要用vuex儲存email放到下一個請求
     public boolean updateUserDetails(String email, UsersDetailsDto usersDetailsDto) {
-        // 根據 email 查找用戶
+        // 根據 email 找出那個用戶的資料
         Users user = userRepository.findByEmail(email);
 
         // 確認用戶是否存在，也去確認active是否為1
@@ -94,6 +106,7 @@ public class UserService {
         }
         user.setBunnyCoin(0);
         user.setGameTimes(0);
+        user.setDetailsCompleted(1);
         user.setCreateTime(LocalDateTime.now());
         user.setUpdateTime(LocalDateTime.now()); // 更新時間設為當前時間
 

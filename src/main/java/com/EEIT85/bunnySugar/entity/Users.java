@@ -45,7 +45,7 @@ public class Users {
     @Column(name = "bunny_coin", nullable = true)  // 小兔幣(紅利金)，可為空
     private Integer bunnyCoin;
 
-    @Column(nullable = false, name = "active")  // 活躍狀態
+    @Column(nullable = false, name = "active")  // 是否驗證
     private Integer active;
 
     @Column(length = 255, nullable = true, name = "forget_token")  // 忘記密碼token，可為空
@@ -75,6 +75,9 @@ public class Users {
     @Column(name = "token_expiration_time", nullable = true)  // token 到期時間，可為空
     private LocalDateTime tokenExpirationTime;
 
+    @Column(nullable = true, name = "Details_completed")
+    private Integer detailsCompleted;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Anniversaries> anniversaries;
@@ -96,7 +99,7 @@ public class Users {
                  String gender, LocalDate birthday, Integer bunnyCoin, Integer active,
                  String forgetToken, String loginMethod, String googleToken, String facebookToken,
                  LocalDateTime createTime, LocalDateTime updateTime, LocalDateTime lastLoginTime,
-                 Integer gameTimes, LocalDateTime tokenExpirationTime, List<Anniversaries> anniversaries,
+                 Integer gameTimes, LocalDateTime tokenExpirationTime, Integer detailsCompleted, List<Anniversaries> anniversaries,
                  Cart cart, WishList wishList) {
         this.email = email;
         this.phone = phone;
@@ -117,6 +120,7 @@ public class Users {
         this.lastLoginTime = lastLoginTime;
         this.gameTimes = gameTimes;
         this.tokenExpirationTime = tokenExpirationTime;
+        this.detailsCompleted = detailsCompleted;
         this.anniversaries = anniversaries;
         this.cart = cart;
         this.wishList = wishList;
@@ -280,6 +284,14 @@ public class Users {
 
     public void setTokenExpirationTime(LocalDateTime tokenExpirationTime) {
         this.tokenExpirationTime = tokenExpirationTime;
+    }
+
+    public Integer getDetailsCompleted() {
+        return detailsCompleted != null ? detailsCompleted : 0;
+    }
+
+    public void setDetailsCompleted(Integer detailsCompleted) {
+        this.detailsCompleted = detailsCompleted;
     }
 
     public List<Anniversaries> getAnniversaries() {
