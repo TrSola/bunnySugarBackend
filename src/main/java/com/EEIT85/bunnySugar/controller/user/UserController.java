@@ -80,35 +80,8 @@ public class UserController {
         return response;
     }
 
-
     @PostMapping("/login")
     public Map<String, Object> login(@RequestBody UsersLoginRequestDto loginRequest) {
-        Map<String, Object> response = new HashMap<>();
-        // 根據帳號查找用戶
-        Users loginedUser = userService.findByUserAccount(loginRequest.getAccount());
-
-        if (loginedUser == null) {
-            response.put("status", "error");
-            response.put("message", "帳號不存在");
-            return response;
-        }
-
-        // 驗證密碼
-        if (!loginedUser.getPassword().equals(loginRequest.getPassword())) {
-            response.put("status", "error");
-            response.put("message", "密碼錯誤");
-            return response;
-        }
-
-        // 生成 JWT token
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("id", loginedUser.getId());
-        claims.put("account", loginedUser.getAccount());
-        Date expirationTime = new Date(System.currentTimeMillis() + 3600 * 1000); // 1 小時過期
-        String token = jwtUtil.generateToken(claims, expirationTime);
-
-        response.put("status", "success");
-        response.put("token", token);
-        return response;
+        return userService.login(loginRequest);
     }
 }
