@@ -1,6 +1,6 @@
 package com.EEIT85.bunnySugar.repository;
 
-import com.EEIT85.bunnySugar.dto.users.MemberAdminSelectDto;
+import com.EEIT85.bunnySugar.dto.users.admin.MemberAdminSelectDto;
 import com.EEIT85.bunnySugar.entity.Users;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

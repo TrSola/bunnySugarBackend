@@ -1,8 +1,8 @@
-package com.EEIT85.bunnySugar.controller.user;
+package com.EEIT85.bunnySugar.controller.user.admin;
 
-import com.EEIT85.bunnySugar.dto.users.MembeAdminUpdateDto;
-import com.EEIT85.bunnySugar.dto.users.MemberAdminSelectDto;
-import com.EEIT85.bunnySugar.service.user.MemberAdminService;
+import com.EEIT85.bunnySugar.dto.users.admin.MembeAdminUpdateDto;
+import com.EEIT85.bunnySugar.dto.users.admin.MemberAdminSelectDto;
+import com.EEIT85.bunnySugar.service.user.admin.MemberAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberAdminController {
 
     @Autowired
-    private MemberAdminService memberService;
+    private MemberAdminService memberAdminService;
 
     // 查詢所有會員並分頁
     @GetMapping
@@ -25,14 +25,14 @@ public class MemberAdminController {
             @RequestParam(defaultValue = "10") int size   // 每頁顯示的資料數量，默認為10條
     ) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<MemberAdminSelectDto> membersPage = memberService.getAllMembers(pageable);
+        Page<MemberAdminSelectDto> membersPage = memberAdminService.getAllMembers(pageable);
         return ResponseEntity.ok(membersPage);
     }
 
     // 根據ID查詢會員
     @GetMapping("/{id}")
     public ResponseEntity<MemberAdminSelectDto> getMemberById(@PathVariable Long id) {
-        MemberAdminSelectDto member = memberService.getMemberById(id);
+        MemberAdminSelectDto member = memberAdminService.getMemberById(id);
         if (member != null) {
             return ResponseEntity.ok(member);
         } else {
@@ -44,7 +44,7 @@ public class MemberAdminController {
     @PutMapping("/{id}")
     public ResponseEntity<String> updateMember(
             @PathVariable Long id, @RequestBody MembeAdminUpdateDto updatedMemberDto) {
-        boolean success = memberService.updateMember(id, updatedMemberDto);
+        boolean success = memberAdminService.updateMember(id, updatedMemberDto);
         if (success) {
             return ResponseEntity.ok("會員資料更新成功");
         } else {
