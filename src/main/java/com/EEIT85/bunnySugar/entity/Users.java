@@ -75,7 +75,7 @@ public class Users {
     @Column(name = "token_expiration_time", nullable = true)  // token 到期時間，可為空
     private LocalDateTime tokenExpirationTime;
 
-    @Column(nullable = true, name = "Details_completed")
+    @Column(nullable = true, name = "details_completed")
     private Integer detailsCompleted;
 
     @JsonManagedReference
