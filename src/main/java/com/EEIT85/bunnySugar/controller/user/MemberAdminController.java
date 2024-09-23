@@ -1,7 +1,7 @@
 package com.EEIT85.bunnySugar.controller.user;
 
 import com.EEIT85.bunnySugar.dto.users.MembeAdminUpdateDto;
-import com.EEIT85.bunnySugar.dto.users.MemberAdminDto;
+import com.EEIT85.bunnySugar.dto.users.MemberAdminSelectDto;
 import com.EEIT85.bunnySugar.service.user.MemberAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,19 +20,19 @@ public class MemberAdminController {
 
     // 查詢所有會員並分頁
     @GetMapping
-    public ResponseEntity<Page<MemberAdminDto>> getAllMembers(
+    public ResponseEntity<Page<MemberAdminSelectDto>> getAllMembers(
             @RequestParam(defaultValue = "1") int page,   // 當前的頁碼，預設為第1頁（索引從0開始）
             @RequestParam(defaultValue = "10") int size   // 每頁顯示的資料數量，默認為10條
     ) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<MemberAdminDto> membersPage = memberService.getAllMembers(pageable);
+        Page<MemberAdminSelectDto> membersPage = memberService.getAllMembers(pageable);
         return ResponseEntity.ok(membersPage);
     }
 
     // 根據ID查詢會員
     @GetMapping("/{id}")
-    public ResponseEntity<MemberAdminDto> getMemberById(@PathVariable Long id) {
-        MemberAdminDto member = memberService.getMemberById(id);
+    public ResponseEntity<MemberAdminSelectDto> getMemberById(@PathVariable Long id) {
+        MemberAdminSelectDto member = memberService.getMemberById(id);
         if (member != null) {
             return ResponseEntity.ok(member);
         } else {

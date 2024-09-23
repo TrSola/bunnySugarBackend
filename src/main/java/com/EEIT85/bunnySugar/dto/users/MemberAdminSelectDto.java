@@ -3,7 +3,7 @@ package com.EEIT85.bunnySugar.dto.users;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class MemberAdminDto {
+public class MemberAdminSelectDto {
 
     private Long id;  // 主键ID
 
@@ -45,7 +45,22 @@ public class MemberAdminDto {
 
     private LocalDateTime tokenExpirationTime; // 新增字段
 
-    public MemberAdminDto() {
+    public MemberAdminSelectDto() {
+    }
+
+    public MemberAdminSelectDto(Long id, String account, String email, String name, String gender, String phone, LocalDate birthday, Integer bunnyCoin, Integer active, LocalDateTime createTime, LocalDateTime updateTime, LocalDateTime lastLoginTime) {
+        this.id = id;
+        this.account = account;
+        this.email = email;
+        this.name = name;
+        this.gender = gender;
+        this.phone = phone;
+        this.birthday = birthday;
+        this.bunnyCoin = bunnyCoin;
+        this.active = active;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.lastLoginTime = lastLoginTime;
     }
 
     public Long getId() {
