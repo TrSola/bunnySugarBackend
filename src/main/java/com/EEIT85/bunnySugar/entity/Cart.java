@@ -19,11 +19,11 @@ public class Cart {
 
     @OneToOne
     @JoinColumn(name = "users_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference("Users_Cart")
     private Users users;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("Cart_CartItems")
     private List<CartItems> cartItems;
 
     @Column(name = "total", nullable = false)
@@ -38,7 +38,10 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(Integer total, LocalDateTime createTime, LocalDateTime updateTime) {
+    public Cart(Long id, Users users, Integer total, LocalDateTime createTime,
+                LocalDateTime updateTime) {
+        this.id = id;
+        this.users =users;
         this.total = total;
         this.createTime = createTime;
         this.updateTime = updateTime;

@@ -1,5 +1,6 @@
 package com.EEIT85.bunnySugar.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -17,7 +18,7 @@ public class Categories {
 
     @OneToMany(mappedBy = "categories")
     //管理的一方(避免無窮層遞)
-    @JsonManagedReference
+    @JsonManagedReference("Products_Categories")
     private List<Products> products;
 
     @Column(length = 25, nullable = false)

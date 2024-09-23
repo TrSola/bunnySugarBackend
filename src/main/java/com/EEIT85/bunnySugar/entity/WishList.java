@@ -16,7 +16,7 @@ public class WishList {
     private Long id;
 
     @OneToOne
-    @JsonBackReference
+    @JsonBackReference("Users_WishList")
     @JoinColumn(name = "users_id", nullable = false)
     private Users users;
 

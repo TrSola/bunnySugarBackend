@@ -13,12 +13,12 @@ public interface UserRepository extends JpaRepository<Users, Long> {
     Users findByVerifyingToken(String token);
     Users findByEmail(String email);  // 根據信箱查詢用戶
 
-    @Query("SELECT NEW com.EEIT85.bunnySugar.dto.users.MemberAdminSelectDto(" +
+    @Query("SELECT NEW com.EEIT85.bunnySugar.dto.users.admin.MemberAdminSelectDto(" +
             "u.id, u.account, u.email, u.name, u.gender, u.phone, u.birthday, u.bunnyCoin, " +
             "u.active, u.createTime, u.updateTime, u.lastLoginTime) FROM Users u")
     Page<MemberAdminSelectDto> findAllMemberAdminSelectDto(Pageable pageable);
 
-    @Query("SELECT NEW com.EEIT85.bunnySugar.dto.users.MemberAdminSelectDto(" +
+    @Query("SELECT NEW com.EEIT85.bunnySugar.dto.users.admin.MemberAdminSelectDto(" +
             "u.id, u.account, u.email, u.name, u.gender, u.phone, u.birthday, u.bunnyCoin, " +
             "u.active, u.createTime, u.updateTime, u.lastLoginTime) FROM Users u WHERE u.id = :id")
     MemberAdminSelectDto findMemberAdminSelectDtoById(@Param("id") Long id);

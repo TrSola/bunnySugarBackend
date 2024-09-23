@@ -78,17 +78,18 @@ public class Users {
     @Column(nullable = true, name = "details_completed")
     private Integer detailsCompleted;
 
-    @JsonManagedReference
+    @JsonManagedReference("Users_Anniversaries")
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Anniversaries> anniversaries;
 
     // OneToOne關聯Cart
     @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("Users_Cart")
     private Cart cart;
 
     // OneToOne關聯WishList
     @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("Users_WishList")
     private WishList wishList;
 
     // Constructors, Getters, Setters...

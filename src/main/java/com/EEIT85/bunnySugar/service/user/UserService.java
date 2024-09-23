@@ -7,6 +7,7 @@ import com.EEIT85.bunnySugar.entity.Cart;
 import com.EEIT85.bunnySugar.entity.Users;
 import com.EEIT85.bunnySugar.entity.WishList;
 import com.EEIT85.bunnySugar.repository.UserRepository;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,30 +30,37 @@ public class UserService {
 
     @Autowired
     private WishListService wishListService;
+
+    @Autowired
+    private VerificationEmailService verificationEmailService;
+
     @Autowired
     private JwtUtil jwtUtil;
 
-    public Users registerUserAndAll(Users user) {
+    public Users registerUserAndAll(Users user) throws MessagingException {
         // 檢查信箱是否已存在
         Users existingUser = findByUserEmail(user.getEmail());
 
         if (existingUser != null) {
             if (existingUser.getDetailsCompleted() == 1) {
-                return null; // 信箱存在且資料已完善，返回 null
+                return null;
             } else {
-                // 更新未完善資料的用戶
-                existingUser.setActive(0); // 未驗證
+                existingUser.setActive(0);
                 existingUser.setUpdateTime(LocalDateTime.now());
                 String verifyingToken = String.format("%06d", (int)(Math.random() * 1000000));
                 existingUser.setVerifyingToken(verifyingToken);
                 existingUser.setTokenExpirationTime(LocalDateTime.now().plusMinutes(10));
-                // 更新資料
+
+                // 使用新的 VerificationEmailService 發送驗證信
+                verificationEmailService.sendVerificationEmail(existingUser.getEmail(), verifyingToken);
+
                 userRepository.save(existingUser);
-                return user; // 返回保存的使用者物件
+                return existingUser;
             }
         }
 
-        user.setActive(0);  // 未驗證(信箱還沒驗證的意思)
+        // 新用戶註冊
+        user.setActive(0);  // 未驗證
         user.setCreateTime(LocalDateTime.now());
         user.setUpdateTime(LocalDateTime.now());
         String verifyingToken = String.format("%06d", (int)(Math.random() * 1000000));
@@ -61,14 +69,16 @@ public class UserService {
 
         user = userRepository.save(user);
 
-        // 創建購物車
-        usersCartService.createCartForUser(user);
-
-        // 創建願望清單
         wishListService.createWishListForUser(user);
+        usersCartService.createCartForUser(user); // 使用實例來調用方法
+
+        // 發送驗證信
+        verificationEmailService.sendVerificationEmail(user.getEmail(), verifyingToken);
 
         return user; // 返回保存的使用者物件
     }
+
+
 
 
 

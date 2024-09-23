@@ -6,6 +6,7 @@ import com.EEIT85.bunnySugar.dto.users.UsersVerifyDto;
 import com.EEIT85.bunnySugar.entity.Users;
 import com.EEIT85.bunnySugar.service.user.UserService;
 import com.EEIT85.bunnySugar.utils.JwtUtil;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +28,7 @@ public class UserController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/registerVerify")
-    public Map<String, Object> registerVerify(@RequestBody Users user) {
+    public Map<String, Object> registerVerify(@RequestBody Users user) throws MessagingException {
         Map<String, Object> response = new HashMap<>();
 
         Users registeredUser = userService.registerUserAndAll(user);

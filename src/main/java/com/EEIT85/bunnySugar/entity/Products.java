@@ -40,11 +40,11 @@ public class Products {
     //產生欄位categories_id自動對應Categories的id
     @JoinColumn(name = "categories_id", nullable = false)
     //被管理的一方(避免無窮層遞)
-    @JsonBackReference
+    @JsonBackReference("Products_Categories")
     private Categories categories;
 
     //管理的一方(避免無窮層遞)
-    @JsonManagedReference
+    @JsonManagedReference("Products_ProductDetails")
     //因為products改變後details有要跟著變 所以cascadeAll
     //orphanRemoval 如果products被刪除details沒有對應關聯 就會自動被刪除
     @OneToOne(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval =
@@ -53,7 +53,7 @@ public class Products {
 
     @OneToMany(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval =
             true)
-    @JsonManagedReference
+    @JsonManagedReference("Products_CartItems")
     private List<CartItems> cartItems;
 
     public Products() {

@@ -17,10 +17,10 @@ public class CartItems {
 
     @ManyToOne
     @JoinColumn(name = "cart_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference("Cart_CartItems")
     private Cart cart;
 
-    @JsonBackReference
+    @JsonBackReference("Products_CartItems")
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Products products;
@@ -95,4 +95,15 @@ public class CartItems {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "CartItems{" +
+                "id=" + id +
+                ", cart=" + cart +
+                ", products=" + products +
+                ", quantity=" + quantity +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
 }

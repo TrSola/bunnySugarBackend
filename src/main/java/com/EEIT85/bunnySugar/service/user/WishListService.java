@@ -1,6 +1,5 @@
 package com.EEIT85.bunnySugar.service.user;
 
-import com.EEIT85.bunnySugar.entity.Cart;
 import com.EEIT85.bunnySugar.entity.Users;
 import com.EEIT85.bunnySugar.entity.WishList;
 import com.EEIT85.bunnySugar.repository.WishListRepository;

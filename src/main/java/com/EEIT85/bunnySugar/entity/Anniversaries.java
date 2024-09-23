@@ -29,7 +29,7 @@ public class Anniversaries {
 
     @ManyToOne
     //被管理的一方(避免無窮層遞)
-    @JsonBackReference
+    @JsonBackReference("Users_Anniversaries")
     @JoinColumn(name = "users_id", nullable = false)
     private Users users;
 
