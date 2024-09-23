@@ -25,7 +25,7 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private CartService cartService;
+    private UsersCartService usersCartService;
 
     @Autowired
     private WishListService wishListService;
@@ -62,7 +62,7 @@ public class UserService {
         user = userRepository.save(user);
 
         // 創建購物車
-        cartService.createCartForUser(user);
+        usersCartService.createCartForUser(user);
 
         // 創建願望清單
         wishListService.createWishListForUser(user);

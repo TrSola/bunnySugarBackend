@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @DynamicUpdate
 //@Entity標記此物件對應資料庫欄位
@@ -33,6 +34,7 @@ public class Products {
     @Column(name = "stocks", nullable = false)
     private Integer stocks;
 
+
     //ManyToOne預設為EAGER如果每次呼叫商品都會需要種類就使用預設值EAGER 否則LAZY
     @ManyToOne(fetch = FetchType.LAZY)
     //產生欄位categories_id自動對應Categories的id
@@ -48,6 +50,11 @@ public class Products {
     @OneToOne(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval =
             true)
     private ProductDetails productDetails;  // 新增 ProductDetails 映射
+
+    @OneToMany(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval =
+            true)
+    @JsonManagedReference
+    private List<CartItems> cartItems;
 
     public Products() {
     }
@@ -110,6 +117,14 @@ public class Products {
 
     public void setProductDetails(ProductDetails productDetails) {
         this.productDetails = productDetails;
+    }
+
+    public List<CartItems> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<CartItems> cartItems) {
+        this.cartItems = cartItems;
     }
 
     @Override

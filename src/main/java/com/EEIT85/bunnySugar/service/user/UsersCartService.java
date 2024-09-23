@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-public class CartService {
+public class UsersCartService {
 
     @Autowired
     private CartRepository cartRepository;  // 注入 CartRepository
@@ -18,9 +18,12 @@ public class CartService {
         Cart cart = new Cart();
         cart.setUsers(user);  // 設置 Cart 的 Users
         // 設置其他 Cart 的屬性
+        cart.setTotal(0);
         cart.setCreateTime(LocalDateTime.now());
         cart.setUpdateTime(LocalDateTime.now());
         cart = cartRepository.save(cart);  // 使用注入的 cartRepository 來保存 Cart
         return cart;  // return Cart Object
     }
+
+
 }

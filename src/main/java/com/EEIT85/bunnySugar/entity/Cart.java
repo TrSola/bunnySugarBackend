@@ -1,10 +1,12 @@
 package com.EEIT85.bunnySugar.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @DynamicUpdate
 @Entity
@@ -20,18 +22,24 @@ public class Cart {
     @JsonBackReference
     private Users users;
 
-    @Column(nullable = false, name = "create_time")
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<CartItems> cartItems;
+
+    @Column(name = "total", nullable = false)
+    private Integer total;
+
+    @Column(name = "create_time", nullable = false)
     private LocalDateTime createTime;
 
-    @Column(nullable = false, name = "update_time")
+    @Column(name = "update_time", nullable = false)
     private LocalDateTime updateTime;
 
     public Cart() {
     }
 
-    public Cart(Long id, Users users, LocalDateTime createTime, LocalDateTime updateTime) {
-        this.id = id;
-        this.users = users;
+    public Cart(Integer total, LocalDateTime createTime, LocalDateTime updateTime) {
+        this.total = total;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
@@ -52,6 +60,22 @@ public class Cart {
         this.users = users;
     }
 
+    public List<CartItems> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<CartItems> cartItems) {
+        this.cartItems = cartItems;
+    }
+
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
+
     public LocalDateTime getCreateTime() {
         return createTime;
     }
@@ -66,5 +90,17 @@ public class Cart {
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "id=" + id +
+                ", users=" + users +
+                ", cartItems=" + cartItems +
+                ", total=" + total +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
     }
 }
