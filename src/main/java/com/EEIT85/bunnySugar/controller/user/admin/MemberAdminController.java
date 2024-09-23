@@ -24,7 +24,7 @@ public class MemberAdminController {
             @RequestParam(defaultValue = "1") int page,   // 當前的頁碼，預設為第1頁（索引從0開始）
             @RequestParam(defaultValue = "10") int size   // 每頁顯示的資料數量，默認為10條
     ) {
-        Pageable pageable = PageRequest.of(page - 1, size);
+        Pageable pageable = PageRequest.of(page - 1, size); // springboot索引起始為0，實際頁碼起始為1
         Page<MemberAdminSelectDto> membersPage = memberAdminService.getAllMembers(pageable);
         return ResponseEntity.ok(membersPage);
     }
