@@ -2,33 +2,24 @@ package com.EEIT85.bunnySugar.dto.cart;
 
 import java.time.LocalDateTime;
 
+
 public class CartInsertDto {
-    private Integer total;       // 總金額
-    private Integer quantity;    // 數量
-    private String productName;  // 產品名稱
-//    private String imageUrl;     // 圖片網址
+    private Long productId;
     private Long usersId;
+    private Integer quantity;    // 數量
+    private Integer price;
     private LocalDateTime createTime; // 創建時間
     private LocalDateTime updateTime; // 更新時間
 
     public CartInsertDto() {
     }
 
-    public CartInsertDto(Integer total, Integer quantity, String productName, LocalDateTime createTime, LocalDateTime updateTime) {
-        this.total = total;
+    public CartInsertDto(Long productId, Long usersId, Integer quantity,
+                         Integer price) {
         this.quantity = quantity;
-        this.productName = productName;
-//        this.imageUrl = imageUrl;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
-    }
-
-    public Integer getTotal() {
-        return total;
-    }
-
-    public void setTotal(Integer total) {
-        this.total = total;
+        this.productId = productId;
+        this.usersId = usersId;
+        this.price = price;
     }
 
     public Integer getQuantity() {
@@ -39,21 +30,21 @@ public class CartInsertDto {
         this.quantity = quantity;
     }
 
-    public String getProductName() {
-        return productName;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
-//    public String getImageUrl() {
-//        return imageUrl;
-//    }
-//
-//    public void setImageUrl(String imageUrl) {
-//        this.imageUrl = imageUrl;
-//    }
+    public Long getUsersId() {
+        return usersId;
+    }
+
+    public void setUsersId(Long usersId) {
+        this.usersId = usersId;
+    }
 
     public LocalDateTime getCreateTime() {
         return createTime;
@@ -71,11 +62,11 @@ public class CartInsertDto {
         this.updateTime = updateTime;
     }
 
-    public Long getUsersId() {
-        return usersId;
+    public Integer getPrice() {
+        return price;
     }
 
-    public void setUsersId(Long usersId) {
-        this.usersId = usersId;
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 }

@@ -39,10 +39,9 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(Long id, Users users, Integer total, LocalDateTime createTime,
-                LocalDateTime updateTime) {
-        this.id = id;
-        this.users =users;
+    public Cart(Users users, Set<CartItems> cartItems, Integer total, LocalDateTime createTime, LocalDateTime updateTime) {
+        this.users = users;
+        this.cartItems = cartItems;
         this.total = total;
         this.createTime = createTime;
         this.updateTime = updateTime;
@@ -100,8 +99,6 @@ public class Cart {
     public String toString() {
         return "Cart{" +
                 "id=" + id +
-                ", users=" + users +
-                ", cartItems=" + cartItems +
                 ", total=" + total +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +

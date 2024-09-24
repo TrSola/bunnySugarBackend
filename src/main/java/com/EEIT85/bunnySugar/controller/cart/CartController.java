@@ -17,16 +17,15 @@ public class CartController {
     @Autowired
     CartService cartService;
 
-    // 獲取用戶的購物車
-    @GetMapping
-    public List<CartSelectDto> getCartByUserId() {
-        return cartService.getCartByUserId();
-    }
+//    @GetMapping("/{userId}")
+//    public ResponseEntity<List<CartSelectDto>> getCartItems(@PathVariable Long userId) {
+//        List<CartSelectDto> cartItems = cartService.getCartItemsByUserId(userId);
+//        return ResponseEntity.ok(cartItems);
+//    }
 
     // 新增購物車
     @PostMapping
-    public ResponseEntity<String> insertCart(@RequestBody CartInsertDto cartInsertDto) {
-        cartInsertDto.setUsersId(1L);
+    public ResponseEntity<String> addToCart(@RequestBody CartInsertDto cartInsertDto) {
         cartService.insertCart(cartInsertDto);
         return ResponseEntity.ok("成功新增購物車");
     }
@@ -39,11 +38,11 @@ public class CartController {
 //        return ResponseEntity.ok("成功刪除單個購物車品項");
 //    }
 
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<String> deleteAllCartItems(@PathVariable Long userId) {
-        cartService.deleteAllCartItems(userId);
-        return ResponseEntity.ok("成功清空購物車");
-    }
+//    @DeleteMapping("/{userId}")
+//    public ResponseEntity<String> deleteAllCartItems(@PathVariable Long userId) {
+//        cartService.deleteAllCartItems(userId);
+//        return ResponseEntity.ok("成功清空購物車");
+//    }
 }
 
 

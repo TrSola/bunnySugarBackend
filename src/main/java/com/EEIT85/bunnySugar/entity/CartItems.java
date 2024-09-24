@@ -34,17 +34,42 @@ public class CartItems {
     @Column(name = "update_time", nullable = false)
     private LocalDateTime updateTime;
 
+    @Column(name = "price", nullable = false)
+    private Integer price;
+
     public CartItems() {
     }
 
-    public CartItems(Cart cart, Products products, Integer quantity,
-                     LocalDateTime createTime
-            , LocalDateTime updateTime) {
-        this.products = products;
+//    public CartItems(Long id, Products products, Cart cart,
+//                      Integer price, Integer quantity, LocalDateTime updateTime,
+//                     LocalDateTime createTime) {
+//        this.price = price;
+//        this.updateTime = updateTime;
+//        this.createTime = createTime;
+//        this.quantity = quantity;
+//        this.products = products;
+//        this.cart = cart;
+//        this.id = id;
+//    }
+
+
+
+    public CartItems(Cart cart, Products products, Integer quantity, Integer price
+            , LocalDateTime createTime, LocalDateTime updateTime) {
         this.cart = cart;
+        this.products = products;
         this.quantity = quantity;
+        this.price = price;
         this.createTime = createTime;
         this.updateTime = updateTime;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 
     public LocalDateTime getUpdateTime() {
@@ -99,8 +124,6 @@ public class CartItems {
     public String toString() {
         return "CartItems{" +
                 "id=" + id +
-                ", cart=" + cart +
-                ", products=" + products +
                 ", quantity=" + quantity +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +

@@ -1,8 +1,12 @@
 package com.EEIT85.bunnySugar.dto.cart;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class CartSelectDto extends CartBaseDto {
 
-    private Integer total;
+    private  Long id;
+    private Integer price;
     private Integer quantity;
     private String productName;
     private String imageUrl;
@@ -10,19 +14,21 @@ public class CartSelectDto extends CartBaseDto {
     public CartSelectDto() {
     }
 
-    public CartSelectDto(Integer total, Integer quantity, String productName, String imageUrl) {
-        this.total = total;
+    public CartSelectDto(Long id, Integer price, Integer quantity, String productName
+            , String imageUrl) {
+        this.id = id;
+        this.price = price;
         this.quantity = quantity;
         this.productName = productName;
         this.imageUrl = imageUrl;
     }
 
     public Integer getTotal() {
-        return total;
+        return price;
     }
 
     public void setTotal(Integer total) {
-        this.total = total;
+        this.price = total;
     }
 
     public Integer getQuantity() {
@@ -47,5 +53,21 @@ public class CartSelectDto extends CartBaseDto {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 }
