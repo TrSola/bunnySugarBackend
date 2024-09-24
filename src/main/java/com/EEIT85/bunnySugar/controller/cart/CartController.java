@@ -1,6 +1,7 @@
 package com.EEIT85.bunnySugar.controller.cart;
 
 import com.EEIT85.bunnySugar.dto.cart.CartInsertDto;
+import com.EEIT85.bunnySugar.dto.cart.CartSelectDto;
 import com.EEIT85.bunnySugar.service.cart.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +17,11 @@ public class CartController {
     @Autowired
     CartService cartService;
 
-//    @GetMapping("/{userId}")
-//    public ResponseEntity<List<CartSelectDto>> getCartItems(@PathVariable Long userId) {
-//        List<CartSelectDto> cartItems = cartService.getCartItemsByUserId(userId);
-//        return ResponseEntity.ok(cartItems);
-//    }
+    @GetMapping("/{usersId}") //
+    public ResponseEntity<List<CartSelectDto>> getCartItems(@PathVariable Long usersId) {
+        List<CartSelectDto> cartItems = cartService.getCartItemsByUsersId(usersId);
+        return ResponseEntity.ok(cartItems);
+    }
 
     // 新增購物車
     @PostMapping

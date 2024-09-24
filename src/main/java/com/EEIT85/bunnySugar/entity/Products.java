@@ -59,8 +59,8 @@ public class Products {
     public Products() {
     }
 
-    public Products(String name, LocalDateTime createTime, LocalDateTime updateTime, Integer stocks) {
-        this.productName = name;
+    public Products(String productName, LocalDateTime createTime, LocalDateTime updateTime, Integer stocks) {
+        this.productName = productName;
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.stocks = stocks;

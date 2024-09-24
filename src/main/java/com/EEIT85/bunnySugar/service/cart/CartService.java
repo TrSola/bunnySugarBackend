@@ -1,6 +1,7 @@
 package com.EEIT85.bunnySugar.service.cart;
 
 import com.EEIT85.bunnySugar.dto.cart.CartInsertDto;
+import com.EEIT85.bunnySugar.dto.cart.CartSelectDto;
 import com.EEIT85.bunnySugar.entity.Cart;
 import com.EEIT85.bunnySugar.entity.CartItems;
 import com.EEIT85.bunnySugar.entity.Products;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,12 +31,15 @@ public class CartService {
     @Autowired
     ProductsRepository productsRepository;
 
-//    public List<CartSelectDto> getCartItemsByUserId(Long userId) {
-//        System.out.println(1);
-//        List<CartSelectDto> a = cartRepository.findCartItemsByUserId(userId);
-//        System.out.println(a);
+//    public List<CartSelectDto> getCartItemsByUsersId(Long usersId) {
+//        List<CartSelectDto> a = cartItemsRepository.findCartItemsByUsersId(usersId);
 //        return a;
 //    }
+
+    public List<CartSelectDto> getCartItemsByUsersId(Long usersId) {
+        return cartItemsRepository.findCartItemsByUsersId(usersId);
+    }
+
     @Transactional
     public void insertCart(CartInsertDto cartInsertDto) {
 

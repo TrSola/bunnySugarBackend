@@ -3,9 +3,9 @@ package com.EEIT85.bunnySugar.dto.cart;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CartSelectDto extends CartBaseDto {
+public class CartSelectDto {
 
-    private  Long id;
+    private Long id;
     private Integer price;
     private Integer quantity;
     private String productName;
