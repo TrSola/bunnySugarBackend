@@ -1,11 +1,9 @@
-package com.EEIT85.bunnySugar.service;
+package com.EEIT85.bunnySugar.service.anniversaries;
 
 import com.EEIT85.bunnySugar.dto.anniversaries.AnniversariesInsertDto;
 import com.EEIT85.bunnySugar.dto.anniversaries.AnniversariesSelectDto;
 import com.EEIT85.bunnySugar.dto.anniversaries.AnniversariesUpdateDto;
-import com.EEIT85.bunnySugar.dto.products.ProductsSelectDto;
 import com.EEIT85.bunnySugar.entity.Anniversaries;
-import com.EEIT85.bunnySugar.entity.Products;
 import com.EEIT85.bunnySugar.repository.AnniversariesRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

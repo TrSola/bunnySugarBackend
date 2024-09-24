@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @DynamicUpdate
 @Entity
@@ -24,7 +25,7 @@ public class Cart {
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("Cart_CartItems")
-    private List<CartItems> cartItems;
+    private Set<CartItems> cartItems;
 
     @Column(name = "total", nullable = false)
     private Integer total;
@@ -63,11 +64,11 @@ public class Cart {
         this.users = users;
     }
 
-    public List<CartItems> getCartItems() {
+    public Set<CartItems> getCartItems() {
         return cartItems;
     }
 
-    public void setCartItems(List<CartItems> cartItems) {
+    public void setCartItems(Set<CartItems> cartItems) {
         this.cartItems = cartItems;
     }
 

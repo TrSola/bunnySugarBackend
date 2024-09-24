@@ -1,6 +1,6 @@
 package com.EEIT85.bunnySugar;
 
-import com.EEIT85.bunnySugar.service.AnniversariesService;
+import com.EEIT85.bunnySugar.service.anniversaries.AnniversariesService;
 import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

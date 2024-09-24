@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/cart")
 @RestController
 public class CartController {
-    Long usersId = 1L; // 假設用戶 ID 固定為 1，實際情況應根據需求調整
+    Long userId = 1L; // 假設用戶 ID 固定為 1，實際情況應根據需求調整
 
     @Autowired
     CartService cartService;
@@ -31,12 +31,22 @@ public class CartController {
         return ResponseEntity.ok("成功新增購物車");
     }
 
-//    // 刪除購物車
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<String> deleteCart(@PathVariable Long id) {
-//        cartService.deleteCart(id);
-//        return ResponseEntity.ok("成功刪除購物車");
+    // 刪除購物車
+//    @DeleteMapping("/{usersId}/{id}")
+//    public ResponseEntity<String> deleteCart(@PathVariable Long userId ,
+//                                             @PathVariable Long id) {
+//        cartService.deleteCartItem(id, userId);
+//        return ResponseEntity.ok("成功刪除單個購物車品項");
 //    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<String> deleteAllCartItems(@PathVariable Long userId) {
+        cartService.deleteAllCartItems(userId);
+        return ResponseEntity.ok("成功清空購物車");
+    }
+}
+
+
 //
 //    // 更新購物車
 //    @PutMapping("/{id}")
@@ -44,4 +54,4 @@ public class CartController {
 //        cartService.updateCart(id, cartUpdateDto);
 //        return ResponseEntity.ok("成功更新購物車");
 //    }
-}
+
