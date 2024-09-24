@@ -12,6 +12,9 @@ import com.EEIT85.bunnySugar.service.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,13 +34,14 @@ public class CartService {
     @Autowired
     ProductsRepository productsRepository;
 
+
 //    public List<CartSelectDto> getCartItemsByUsersId(Long usersId) {
-//        List<CartSelectDto> a = cartItemsRepository.findCartItemsByUsersId(usersId);
-//        return a;
+//        return cartItemsRepository.findCartItemsByUsersId(usersId);
 //    }
 
-    public List<CartSelectDto> getCartItemsByUsersId(Long usersId) {
-        return cartItemsRepository.findCartItemsByUsersId(usersId);
+    public Page<CartSelectDto> getCartItemsByUserId(Long userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return cartItemsRepository.findCartItemsByUserId(userId, pageable);
     }
 
     @Transactional

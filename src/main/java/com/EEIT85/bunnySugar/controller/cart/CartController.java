@@ -4,6 +4,7 @@ import com.EEIT85.bunnySugar.dto.cart.CartInsertDto;
 import com.EEIT85.bunnySugar.dto.cart.CartSelectDto;
 import com.EEIT85.bunnySugar.service.cart.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,9 +18,18 @@ public class CartController {
     @Autowired
     CartService cartService;
 
-    @GetMapping("/{usersId}") //
-    public ResponseEntity<List<CartSelectDto>> getCartItems(@PathVariable Long usersId) {
-        List<CartSelectDto> cartItems = cartService.getCartItemsByUsersId(usersId);
+//    @GetMapping("/{usersId}") //
+//    public ResponseEntity<List<CartSelectDto>> getCartItems(@PathVariable Long usersId) {
+//        List<CartSelectDto> cartItems = cartService.getCartItemsByUsersId(usersId);
+//        return ResponseEntity.ok(cartItems);
+//    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<Page<CartSelectDto>> getCartItems(
+            @PathVariable Long userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<CartSelectDto> cartItems = cartService.getCartItemsByUserId(userId, page, size);
         return ResponseEntity.ok(cartItems);
     }
 
