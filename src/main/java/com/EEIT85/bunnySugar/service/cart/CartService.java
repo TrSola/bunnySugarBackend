@@ -2,6 +2,7 @@ package com.EEIT85.bunnySugar.service.cart;
 
 import com.EEIT85.bunnySugar.dto.cart.CartInsertDto;
 import com.EEIT85.bunnySugar.dto.cart.CartSelectDto;
+import com.EEIT85.bunnySugar.dto.cart.CartUpdateDto;
 import com.EEIT85.bunnySugar.entity.Cart;
 import com.EEIT85.bunnySugar.entity.CartItems;
 import com.EEIT85.bunnySugar.entity.Products;
@@ -18,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,9 +35,6 @@ public class CartService {
     ProductsRepository productsRepository;
 
 
-//    public List<CartSelectDto> getCartItemsByUsersId(Long usersId) {
-//        return cartItemsRepository.findCartItemsByUsersId(usersId);
-//    }
 
     public Page<CartSelectDto> getCartItemsByUserId(Long userId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -112,5 +109,22 @@ public class CartService {
         cart.setTotalQuantity(0);
         cartRepository.save(cart);
     }
+
+    @Transactional
+    public void updateCartItem(Long cartItemId, CartUpdateDto cartUpdateDto) {
+        CartItems cartItem = cartItemsRepository.findById(cartItemId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cart item not found"));
+
+        cartItem.setQuantity(cartUpdateDto.getQuantity());
+        cartItem.setUpdateTime(LocalDateTime.now());
+        cartItemsRepository.save(cartItem);
+
+        // Update the cart's total price
+        Cart cart = cartItem.getCart();
+        cart.setTotal(cartRepository.calculateTotalPrice(cart.getId()));
+        cart.setUpdateTime(LocalDateTime.now());
+        cartRepository.save(cart);
+    }
+
 
 }

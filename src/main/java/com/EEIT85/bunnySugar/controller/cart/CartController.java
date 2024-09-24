@@ -2,6 +2,7 @@ package com.EEIT85.bunnySugar.controller.cart;
 
 import com.EEIT85.bunnySugar.dto.cart.CartInsertDto;
 import com.EEIT85.bunnySugar.dto.cart.CartSelectDto;
+import com.EEIT85.bunnySugar.dto.cart.CartUpdateDto;
 import com.EEIT85.bunnySugar.service.cart.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -52,14 +53,19 @@ public class CartController {
         cartService.deleteAllCartItems(usersId);
         return ResponseEntity.ok("成功清空購物車");
     }
+
+
+    @PutMapping("/{cartItemId}")
+    public ResponseEntity<String> updateCartItem(
+            @PathVariable Long cartItemId,
+            @RequestBody CartUpdateDto cartUpdateDto) {
+        cartService.updateCartItem(cartItemId, cartUpdateDto);
+        return ResponseEntity.ok("Cart item updated successfully");
+    }
+
 }
 
 
 
-    // 更新購物車
-//    @PutMapping("/{id}")
-//    public ResponseEntity<String> updateCart(@PathVariable Long id, @RequestBody CartUpdateDto cartUpdateDto) {
-//        cartService.updateCart(id, cartUpdateDto);
-//        return ResponseEntity.ok("成功更新購物車");
-//    }
+
 
