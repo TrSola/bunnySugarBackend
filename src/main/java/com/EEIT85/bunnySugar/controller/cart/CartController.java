@@ -1,7 +1,6 @@
 package com.EEIT85.bunnySugar.controller.cart;
 
 import com.EEIT85.bunnySugar.dto.cart.CartInsertDto;
-import com.EEIT85.bunnySugar.dto.cart.CartSelectDto;
 import com.EEIT85.bunnySugar.service.cart.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,12 +29,12 @@ public class CartController {
         return ResponseEntity.ok("成功新增購物車");
     }
 
-//    @DeleteMapping("/{usersId}/{id}")
-//    public ResponseEntity<String> deleteCart(@PathVariable Long userId ,
-//                                             @PathVariable Long id) {
-//        cartService.deleteCartItem(id, userId);
-//        return ResponseEntity.ok("成功刪除單個購物車品項");
-//    }
+    @DeleteMapping("/{userId}/{itemId}")
+    public ResponseEntity<String> deleteCartItem(@PathVariable Long userId,
+                                            @PathVariable Long itemId) {
+        cartService.deleteCartItem(userId, itemId);
+        return ResponseEntity.ok("成功刪除單一購物車品項");
+    }
 
     @DeleteMapping("/{usersId}")
     public ResponseEntity<String> deleteAllCartItems(@PathVariable Long usersId) {

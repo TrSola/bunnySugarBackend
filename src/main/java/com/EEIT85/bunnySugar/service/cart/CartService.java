@@ -7,8 +7,7 @@ import com.EEIT85.bunnySugar.entity.Products;
 import com.EEIT85.bunnySugar.repository.CartItemsRepository;
 import com.EEIT85.bunnySugar.repository.CartRepository;
 import com.EEIT85.bunnySugar.repository.ProductsRepository;
-import com.EEIT85.bunnySugar.repository.UserRepository;
-import jakarta.persistence.EntityManager;
+import com.EEIT85.bunnySugar.service.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +19,9 @@ import java.util.Optional;
 @Service
 public class CartService {
 
-    @Autowired
-    private EntityManager entityManager;
 
     @Autowired
     CartItemsRepository cartItemsRepository;
-
-    @Autowired
-    UserRepository userRepository;
 
     @Autowired
     CartRepository cartRepository;
@@ -84,14 +78,13 @@ public class CartService {
         cartRepository.save(cart);
     }
 
-//    public void deleteCartItem(Long userId, Long itemId) {
-//        // 這裡可以加上檢查，確保 itemId 屬於這個用戶
-//        if (cartItemsRepository.existsByIdAndUserId(userId, itemId)) {
-//            cartItemsRepository.deleteCartItemByUserId(userId, itemId);
-//        } else {
-//            throw new EntityNotFoundException("Item not found in cart for user id: " + userId);
-//        }
-//    }
+    @Transactional
+    public void deleteCartItem(Long userId, Long itemId) {
+        CartItems cartItem = cartItemsRepository.findByIdAndCart_Users_Id(itemId, userId)
+                .orElseThrow(() -> new ResourceNotFoundException("購物車品項不存在或不屬於該用戶"));
+
+        cartItemsRepository.delete(cartItem);
+    }
 
     @Transactional
     public void deleteAllCartItems(Long usersId) {
