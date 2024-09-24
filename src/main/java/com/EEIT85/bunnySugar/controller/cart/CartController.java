@@ -30,7 +30,6 @@ public class CartController {
         return ResponseEntity.ok("成功新增購物車");
     }
 
-    // 刪除購物車
 //    @DeleteMapping("/{usersId}/{id}")
 //    public ResponseEntity<String> deleteCart(@PathVariable Long userId ,
 //                                             @PathVariable Long id) {
@@ -38,11 +37,11 @@ public class CartController {
 //        return ResponseEntity.ok("成功刪除單個購物車品項");
 //    }
 
-//    @DeleteMapping("/{userId}")
-//    public ResponseEntity<String> deleteAllCartItems(@PathVariable Long userId) {
-//        cartService.deleteAllCartItems(userId);
-//        return ResponseEntity.ok("成功清空購物車");
-//    }
+    @DeleteMapping("/{usersId}")
+    public ResponseEntity<String> deleteAllCartItems(@PathVariable Long usersId) {
+        cartService.deleteAllCartItems(usersId);
+        return ResponseEntity.ok("成功清空購物車");
+    }
 }
 
 

@@ -93,9 +93,14 @@ public class CartService {
 //        }
 //    }
 
-//    @Transactional
-//    public void deleteAllCartItems(Long userId) {
-//        cartItemsRepository.deleteByUserId(userId);
-//    }
+    @Transactional
+    public void deleteAllCartItems(Long usersId) {
+        Cart cart = cartRepository.findByUsersId(usersId);
+        cartItemsRepository.deleteByCartId(cart.getId());
+        //清空購物車後把cart的total歸零
+        cart.setUpdateTime(LocalDateTime.now());
+        cart.setTotal(0);
+        cartRepository.save(cart);
+    }
 
 }
