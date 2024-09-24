@@ -91,8 +91,15 @@ public class CartService {
     public void deleteCartItem(Long userId, Long itemId) {
         CartItems cartItem = cartItemsRepository.findByIdAndCart_Users_Id(itemId, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("購物車品項不存在或不屬於該用戶"));
-
         cartItemsRepository.delete(cartItem);
+        //取得cartId
+        Long cartId = cartItem.getCart().getId();
+        //用cart中的關聯users_id找到cart
+        Cart cart = cartRepository.findByUsersId(userId);
+        //刪除後要重新計算
+        Integer newTotal = cartRepository.calculateTotalPrice(cartId);
+        cart.setTotal(newTotal);
+        cartRepository.save(cart);
     }
 
     @Transactional
@@ -102,6 +109,7 @@ public class CartService {
         //清空購物車後把cart的total歸零
         cart.setUpdateTime(LocalDateTime.now());
         cart.setTotal(0);
+        cart.setTotalQuantity(0);
         cartRepository.save(cart);
     }
 

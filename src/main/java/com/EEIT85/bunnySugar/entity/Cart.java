@@ -30,6 +30,9 @@ public class Cart {
     @Column(name = "total", nullable = false)
     private Integer total;
 
+    @Column(name = "total_quantity", nullable = false)
+    private Integer totalQuantity;
+
     @Column(name = "create_time", nullable = false)
     private LocalDateTime createTime;
 
@@ -39,10 +42,11 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(Users users, Set<CartItems> cartItems, Integer total, LocalDateTime createTime, LocalDateTime updateTime) {
+    public Cart(Users users, Set<CartItems> cartItems, Integer total, Integer totalQuantity, LocalDateTime createTime, LocalDateTime updateTime) {
         this.users = users;
         this.cartItems = cartItems;
         this.total = total;
+        this.totalQuantity = totalQuantity;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
@@ -95,11 +99,20 @@ public class Cart {
         this.updateTime = updateTime;
     }
 
+    public Integer getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(Integer totalQuantity) {
+        this.totalQuantity = totalQuantity;
+    }
+
     @Override
     public String toString() {
         return "Cart{" +
                 "id=" + id +
                 ", total=" + total +
+                ", totalQuantity=" + totalQuantity +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 '}';
