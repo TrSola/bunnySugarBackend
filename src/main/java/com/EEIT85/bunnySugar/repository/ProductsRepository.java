@@ -20,7 +20,10 @@ public interface ProductsRepository extends JpaRepository<Products,
     Products findByProductName(String productName);
 
     @Query("SELECT p FROM Products p JOIN p.categories c WHERE c.categoryName = :categoryName")
-    List<Products> findByCategoryName(@Param("categoryName") String categoryName);
+    List<Products> findProductsByCategoryName(@Param("categoryName") String categoryName);
+
+    @Query("SELECT p FROM Products p JOIN p.categories c WHERE c.flavor = :flavor")
+    List<Products> findProductsByFlavor(@Param("flavor") String flavor);
 
 
 }
