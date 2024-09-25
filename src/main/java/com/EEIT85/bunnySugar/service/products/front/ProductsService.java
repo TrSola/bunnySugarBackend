@@ -51,6 +51,14 @@ public class ProductsService {
         return convertToDto(product);  // 使用封裝的方法進行轉換
     }
 
+    // 根據種類名稱查詢
+    public List<ProductsSelectDto> getProductsByCategoryName(String categoryName) {
+        List<Products> productsListByCategory = productsRepository.findByCategoryName(categoryName);
+        return productsListByCategory.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
     // 透過產品名稱模糊查詢
     public List<ProductsSelectDto> searchProductsByNameLike(String keyword) {
         List<Products> productsList = productsRepository.findByProductNameContaining(keyword);
