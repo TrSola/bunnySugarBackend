@@ -26,6 +26,16 @@ public class ProductsController {
         return productsService.getById(id);
     }
 
+    @GetMapping("/category/{categoryName}")
+    public List<ProductsSelectDto> getByCategoryName(@PathVariable String categoryName) {
+        return productsService.getProductsByCategoryName(categoryName);
+    }
+
+    @GetMapping("/flavor/{flavor}")
+    public List<ProductsSelectDto> getByFlavorName(@PathVariable String flavor) {
+        return productsService.getProductsByFlavor(flavor);
+    }
+
     @GetMapping("/search")
     public ResponseEntity<List<ProductsSelectDto>> searchProducts(@RequestParam String keyword) {
         List<ProductsSelectDto> result = productsService.searchProductsByNameLike(keyword);
