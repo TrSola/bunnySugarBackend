@@ -19,12 +19,6 @@ public class CartController {
     @Autowired
     CartService cartService;
 
-//    @GetMapping("/{usersId}") //
-//    public ResponseEntity<List<CartSelectDto>> getCartItems(@PathVariable Long usersId) {
-//        List<CartSelectDto> cartItems = cartService.getCartItemsByUsersId(usersId);
-//        return ResponseEntity.ok(cartItems);
-//    }
-
     @GetMapping("/{userId}")
     public ResponseEntity<Page<CartSelectDto>> getCartItems(
             @PathVariable Long userId,
@@ -34,7 +28,6 @@ public class CartController {
         return ResponseEntity.ok(cartItems);
     }
 
-    // 新增購物車
     @PostMapping
     public ResponseEntity<String> addToCart(@RequestBody CartInsertDto cartInsertDto) {
         cartService.insertCart(cartInsertDto);
