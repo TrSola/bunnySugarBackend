@@ -36,7 +36,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         try {
             //驗證token
-            Map<String, Object> claims = jwtUtil.parseToken(token);
+            Map<String, Object> claims = jwtUtil.parseJwtToken(token);
             //根據需要做額外的驗證
             return true;
         } catch (Exception e) {

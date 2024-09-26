@@ -56,7 +56,7 @@ public class JwtUtil {
      * @return Claims extracted from the token.
      * @throws IllegalArgumentException If the token is invalid or expired.
      */
-    public Map<String, Object> parseToken(String token) {
+    public Map<String, Object> parseJwtToken(String token) {
         DecodedJWT decodedJWT = verifier.verify(token);
         Map<String, Claim> claims = decodedJWT.getClaims();
         Map<String, Object> transformedClaims = new HashMap<>();
