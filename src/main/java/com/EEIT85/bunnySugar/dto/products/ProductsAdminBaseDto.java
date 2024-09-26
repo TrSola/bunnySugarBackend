@@ -7,6 +7,7 @@ public abstract class ProductsAdminBaseDto {
     private String description;
     private Integer price;
     private String imageUrl;
+    private byte[] img1;
     private String materialDescription;
     private String categoryDescription;
     private Boolean enable;
@@ -16,12 +17,13 @@ public abstract class ProductsAdminBaseDto {
     public ProductsAdminBaseDto() {
     }
 
-    public ProductsAdminBaseDto(String productName, Integer stocks, String description, Integer price, String imageUrl, String materialDescription, String categoryDescription, Boolean enable, String categoryName, String flavor) {
+    public ProductsAdminBaseDto(String productName, Integer stocks, String description, Integer price, String imageUrl, byte[] img1, String materialDescription, String categoryDescription, Boolean enable, String categoryName, String flavor) {
         this.productName = productName;
         this.stocks = stocks;
         this.description = description;
         this.price = price;
         this.imageUrl = imageUrl;
+        this.img1 = img1;
         this.materialDescription = materialDescription;
         this.categoryDescription = categoryDescription;
         this.enable = enable;
@@ -99,6 +101,14 @@ public abstract class ProductsAdminBaseDto {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public byte[] getImg1() {
+        return img1;
+    }
+
+    public void setImg1(byte[] img1) {
+        this.img1 = img1;
     }
 
     public String getFlavor() {
