@@ -1,6 +1,7 @@
 package com.EEIT85.bunnySugar.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -55,6 +56,10 @@ public class Products {
             true)
     @JsonManagedReference("Products_CartItems")
     private List<CartItems> cartItems;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval =
+            true)
+    private List<OrderDetails> orderDetails;
 
     public Products() {
     }

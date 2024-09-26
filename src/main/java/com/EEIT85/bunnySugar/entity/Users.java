@@ -92,6 +92,9 @@ public class Users {
     @JsonManagedReference("Users_WishList")
     private WishList wishList;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Orders> orders;
+
     // Constructors, Getters, Setters...
     public Users() {}
 

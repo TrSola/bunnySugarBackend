@@ -17,14 +17,9 @@ public class OpenAPIDocConfig {
         Components components = new Components();
         Info info = new Info();
         info.title("BunnySugar API 文件").version("V.2024092401").description("test");
-
-
         openApi
                 .info(info)
                 .components(components);
-
-
-
         return openApi;
     }
 }
