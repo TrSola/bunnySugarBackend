@@ -9,10 +9,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface CartItemsRepository extends JpaRepository<CartItems, Long> {
 
 
@@ -27,15 +29,6 @@ public interface CartItemsRepository extends JpaRepository<CartItems, Long> {
 
     Optional<CartItems> findByIdAndCart_Users_Id(Long itemId, Long userId);
 
-
-//    @Query("SELECT new com.EEIT85.bunnySugar.dto.cart.CartSelectDto(ci.id, pd" +
-//            ".price, ci.quantity, p.productName, pd.imageUrl) " +
-//            "FROM CartItems ci " +
-//            "JOIN ci.cart c " +
-//            "JOIN ci.products p " +
-//            "JOIN p.productDetails pd " +
-//            "WHERE c.users.id = :usersId")
-//    List<CartSelectDto> findCartItemsByUsersId(@Param("usersId") Long usersId);
 @Query("SELECT new com.EEIT85.bunnySugar.dto.cart.CartSelectDto(ci.id, pd.price, ci.quantity, p.productName, pd.imageUrl) " +
         "FROM CartItems ci " +
         "JOIN ci.cart c " +

@@ -19,6 +19,7 @@ public class UsersCartService {
         cart.setUsers(user);  // 設置 Cart 的 Users
         // 設置其他 Cart 的屬性
         cart.setTotal(0);
+        cart.setTotalQuantity(0);
         cart.setCreateTime(LocalDateTime.now());
         cart.setUpdateTime(LocalDateTime.now());
         cart = cartRepository.save(cart);  // 使用注入的 cartRepository 來保存 Cart
