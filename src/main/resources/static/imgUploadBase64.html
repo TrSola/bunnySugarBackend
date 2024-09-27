@@ -25,7 +25,7 @@
     setup() {
       const selectedFile = ref(null);
       const imageUrl = ref('');
-
+//把前端傳進來的圖片存進file
       const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -38,7 +38,7 @@
           alert("Please select an image.");
         }
       };
-
+//file轉成base 64格式 上傳圖片
       const uploadImage = () => {
         if (selectedFile.value) {
           const reader = new FileReader();
@@ -52,7 +52,7 @@
           alert("Please select an image.");
         }
       };
-
+//上傳伺服器
       const sendToServer = (base64Image) => {
         fetch('/upload', {
           method: 'POST',
@@ -75,8 +75,9 @@
         });
       };
 
+//抓取圖片 轉換格式為base64 顯示在畫面上
       const fetchImage = () => {
-        fetch('/upload/5') // 假设获取 ID 为 1 的图像
+        fetch('/upload/5') // 假设获取 ID 为 1 的图像ㄍ
           .then(response => {
             if (response.ok) {
               return response.text(); // 获取 Base64 字符串

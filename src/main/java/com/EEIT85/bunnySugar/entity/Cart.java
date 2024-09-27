@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public class Cart {
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("Cart_CartItems")
-    private Set<CartItems> cartItems;
+    private Set<CartItems> cartItems = new HashSet<>();
 
     @Column(name = "total", nullable = false)
     private Integer total;
