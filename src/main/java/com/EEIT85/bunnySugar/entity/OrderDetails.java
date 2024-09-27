@@ -16,22 +16,10 @@ public class OrderDetails {
     @Column(name = "id", nullable = false, columnDefinition = "bigint")
     private Long id;
 
-    @Column(name = "order_number", nullable = false)
-    private String orderNumber;
-
-    @Column(name = "quantity", nullable = false)
+    @Column(name = "quantity", nullable = false) // 單一商品數量
     private Integer quantity;
 
-    @Column(name = "total", nullable = false)
-    private Integer total;
-
-    @Column(name = "coupon_name")
-    private String couponName;
-
-    @Column(name = "used_bunny_coins")
-    private Integer usedBunnyCoins;
-
-    @Column(name = "price", nullable = false)
+    @Column(name = "price", nullable = false) // 商品單價
     private Integer price;
 
     @Column(name = "create_time", nullable = false)
@@ -54,4 +42,67 @@ public class OrderDetails {
     @JsonIgnore // 議使用這個來避免循環依賴
     private Products product;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public LocalDateTime getPickupTime() {
+        return pickupTime;
+    }
+
+    public void setPickupTime(LocalDateTime pickupTime) {
+        this.pickupTime = pickupTime;
+    }
+
+    public Orders getOrder() {
+        return order;
+    }
+
+    public void setOrder(Orders order) {
+        this.order = order;
+    }
+
+    public Products getProduct() {
+        return product;
+    }
+
+    public void setProduct(Products product) {
+        this.product = product;
+    }
 }

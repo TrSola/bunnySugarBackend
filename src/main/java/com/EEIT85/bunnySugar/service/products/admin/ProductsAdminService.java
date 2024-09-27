@@ -1,7 +1,6 @@
 package com.EEIT85.bunnySugar.service.products.admin;
 
 import com.EEIT85.bunnySugar.dto.products.ProductsInsertDto;
-import com.EEIT85.bunnySugar.dto.products.ProductsSelectDto;
 import com.EEIT85.bunnySugar.dto.products.ProductsUpdateDto;
 import com.EEIT85.bunnySugar.entity.Categories;
 import com.EEIT85.bunnySugar.entity.ProductDetails;
@@ -9,15 +8,12 @@ import com.EEIT85.bunnySugar.entity.Products;
 import com.EEIT85.bunnySugar.repository.CategoriesRepository;
 import com.EEIT85.bunnySugar.repository.ProductDetailsRepository;
 import com.EEIT85.bunnySugar.repository.ProductsRepository;
-import com.EEIT85.bunnySugar.service.ResourceNotFoundException;
+import com.EEIT85.bunnySugar.exception.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductsAdminService {

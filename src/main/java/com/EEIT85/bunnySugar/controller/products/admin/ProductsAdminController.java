@@ -3,7 +3,7 @@ package com.EEIT85.bunnySugar.controller.products.admin;
 
 import com.EEIT85.bunnySugar.dto.products.ProductsInsertDto;
 import com.EEIT85.bunnySugar.dto.products.ProductsUpdateDto;
-import com.EEIT85.bunnySugar.service.ResourceNotFoundException;
+import com.EEIT85.bunnySugar.exception.ResourceNotFoundException;
 import com.EEIT85.bunnySugar.service.products.admin.ProductsAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

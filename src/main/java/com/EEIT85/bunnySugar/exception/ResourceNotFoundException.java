@@ -1,4 +1,4 @@
-package com.EEIT85.bunnySugar.service;
+package com.EEIT85.bunnySugar.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String s) {

@@ -321,4 +321,5 @@ public class Users {
     public void setWishList(WishList wishList) {
         this.wishList = wishList;
     }
+
 }

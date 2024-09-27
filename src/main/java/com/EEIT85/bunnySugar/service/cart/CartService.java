@@ -9,7 +9,7 @@ import com.EEIT85.bunnySugar.entity.Products;
 import com.EEIT85.bunnySugar.repository.CartItemsRepository;
 import com.EEIT85.bunnySugar.repository.CartRepository;
 import com.EEIT85.bunnySugar.repository.ProductsRepository;
-import com.EEIT85.bunnySugar.service.ResourceNotFoundException;
+import com.EEIT85.bunnySugar.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

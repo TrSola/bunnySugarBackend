@@ -1,6 +1,5 @@
-package com.EEIT85.bunnySugar;
+package com.EEIT85.bunnySugar.exception;
 
-import com.EEIT85.bunnySugar.service.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,7 +19,19 @@ public class GlobalExceptionHandler {
         responseBody.put("status", HttpStatus.NOT_FOUND.value());
         responseBody.put("error", "Not Found");
         responseBody.put("message", ex.getMessage());
-        responseBody.put("path", "/products"); // 根據實際情況調整路徑
+        responseBody.put("path", "/products"); // 產品相關的路徑
+
+        return new ResponseEntity<>(responseBody, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleOrderNotFoundException(OrderNotFoundException ex) {
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("timestamp", new Date());
+        responseBody.put("status", HttpStatus.NOT_FOUND.value());
+        responseBody.put("error", "Order Not Found");
+        responseBody.put("message", ex.getMessage());
+        responseBody.put("path", "/orders"); // 訂單相關的路徑
 
         return new ResponseEntity<>(responseBody, HttpStatus.NOT_FOUND);
     }
