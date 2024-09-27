@@ -1,5 +1,6 @@
 package com.EEIT85.bunnySugar.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -15,6 +16,10 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, columnDefinition = "bigint")
     private Long id;
+
+    @OneToOne
+    @JsonManagedReference("Orders_PaymentDetails")
+    private PaymentDetails paymentDetails;
 
     @Column(name = "order_number", nullable = false)
     private String orderNumber;
@@ -50,12 +55,37 @@ public class Orders {
     @JsonManagedReference
     private List<OrderDetails> orderDetails;
 
+    public Orders() {
+    }
+
+    public Orders(PaymentDetails paymentDetails, String orderNumber, Integer total, String couponName, Integer usedBunnyCoins, Integer paymentPrice, String pickupStatus, LocalDateTime createTime, LocalDateTime updateTime, Users user, List<OrderDetails> orderDetails) {
+        this.paymentDetails = paymentDetails;
+        this.orderNumber = orderNumber;
+        this.total = total;
+        this.couponName = couponName;
+        this.usedBunnyCoins = usedBunnyCoins;
+        this.paymentPrice = paymentPrice;
+        this.pickupStatus = pickupStatus;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.user = user;
+        this.orderDetails = orderDetails;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public PaymentDetails getPaymentDetails() {
+        return paymentDetails;
+    }
+
+    public void setPaymentDetails(PaymentDetails paymentDetails) {
+        this.paymentDetails = paymentDetails;
     }
 
     public String getOrderNumber() {
@@ -86,7 +116,7 @@ public class Orders {
         return usedBunnyCoins;
     }
 
-    public void setUsedBunnyCoin(Integer usedBunnyCoins) {
+    public void setUsedBunnyCoins(Integer usedBunnyCoins) {
         this.usedBunnyCoins = usedBunnyCoins;
     }
 

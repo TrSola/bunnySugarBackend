@@ -13,9 +13,9 @@ public class PaymentDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @OneToOne
-//    @JsonBackReference("Orders_PaymentDetails")
-//    private Orders orders;
+    @OneToOne
+    @JsonBackReference("Orders_PaymentDetails")
+    private Orders orders;
 
     @Column(name =  "payment_method", nullable = false)
     private String paymentMethod;
