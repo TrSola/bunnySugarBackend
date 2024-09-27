@@ -9,56 +9,59 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RequestMapping("/cart")
 @RestController
 public class CartController {
-    Long userId = 1L; // 假設用戶 ID 固定為 1，實際情況應根據需求調整
 
     @Autowired
     CartService cartService;
 
-    @GetMapping("/{userId}")
+    @GetMapping
     public ResponseEntity<Page<CartSelectDto>> getCartItems(
-            @PathVariable Long userId,
+            HttpServletRequest request,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
+        // 將 userId 轉換為 Long
+        String userIdStr = (String) request.getAttribute("userId");
+        Long userId = userIdStr != null ? Long.parseLong(userIdStr) : null; // 處理可能為 null 的情況
         Page<CartSelectDto> cartItems = cartService.getCartItemsByUserId(userId, page, size);
         return ResponseEntity.ok(cartItems);
     }
 
     @PostMapping
-    public ResponseEntity<String> addToCart(@RequestBody CartInsertDto cartInsertDto) {
+    public ResponseEntity<String> addToCart(HttpServletRequest request, @RequestBody CartInsertDto cartInsertDto) {
+        String userIdStr = (String) request.getAttribute("userId");
+        Long userId = userIdStr != null ? Long.parseLong(userIdStr) : null;
+        cartInsertDto.setUsersId(userId);
         cartService.insertCart(cartInsertDto);
         return ResponseEntity.ok("成功新增購物車");
     }
 
-    @DeleteMapping("/{userId}/{itemId}")
-    public ResponseEntity<String> deleteCartItem(@PathVariable Long userId,
-                                            @PathVariable Long itemId) {
+    @DeleteMapping("/{itemId}")
+    public ResponseEntity<String> deleteCartItem(HttpServletRequest request, @PathVariable Long itemId) {
+        String userIdStr = (String) request.getAttribute("userId");
+        Long userId = userIdStr != null ? Long.parseLong(userIdStr) : null;
         cartService.deleteCartItem(userId, itemId);
         return ResponseEntity.ok("成功刪除單一購物車品項");
     }
 
-    @DeleteMapping("/{usersId}")
-    public ResponseEntity<String> deleteAllCartItems(@PathVariable Long usersId) {
-        cartService.deleteAllCartItems(usersId);
+    @DeleteMapping
+    public ResponseEntity<String> deleteAllCartItems(HttpServletRequest request) {
+        String userIdStr = (String) request.getAttribute("userId");
+        Long userId = userIdStr != null ? Long.parseLong(userIdStr) : null;
+        cartService.deleteAllCartItems(userId);
         return ResponseEntity.ok("成功清空購物車");
     }
 
-
     @PutMapping("/{cartItemId}")
-    public ResponseEntity<String> updateCartItem(
-            @PathVariable Long cartItemId,
-            @RequestBody CartUpdateDto cartUpdateDto) {
+    public ResponseEntity<String> updateCartItem(HttpServletRequest request,
+                                                 @PathVariable Long cartItemId,
+                                                 @RequestBody CartUpdateDto cartUpdateDto) {
+        String userIdStr = (String) request.getAttribute("userId");
+        Long userId = userIdStr != null ? Long.parseLong(userIdStr) : null;
         cartService.updateCartItem(cartItemId, cartUpdateDto);
         return ResponseEntity.ok("Cart item updated successfully");
     }
-
 }
-
-
-
-
-

@@ -30,14 +30,9 @@ public class JwtUtil {
         this.verifier = JWT.require(algorithm).build();
     }
 
-    /**
-     * Generate a JWT token.
-     *
-     * @param claims Claims to include in the token.
-     * @param expirationTime Token expiration time.
-     * @return Generated JWT token.
-     */
-    public String generateToken(Map<String, Object> claims, Date expirationTime) {
+    public String generateToken(Map<String, Object> claims) {
+        Date expirationTime = new Date(System.currentTimeMillis() + 30L * 24 * 3600 * 1000);
+
         Map<String, Object> transformedClaims = new HashMap<>();
         for (Map.Entry<String, Object> entry : claims.entrySet()) {
             transformedClaims.put(entry.getKey(), entry.getValue());
@@ -49,13 +44,6 @@ public class JwtUtil {
                 .sign(algorithm);
     }
 
-    /**
-     * Parse the JWT token and extract claims.
-     *
-     * @param token JWT token to parse.
-     * @return Claims extracted from the token.
-     * @throws IllegalArgumentException If the token is invalid or expired.
-     */
     public Map<String, Object> parseJwtToken(String token) {
         DecodedJWT decodedJWT = verifier.verify(token);
         Map<String, Claim> claims = decodedJWT.getClaims();
@@ -66,5 +54,14 @@ public class JwtUtil {
         }
 
         return transformedClaims;
+    }
+
+    public boolean isTokenValid(String token) {
+        try {
+            DecodedJWT decodedJWT = verifier.verify(token);
+            return !decodedJWT.getExpiresAt().before(new Date());
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
