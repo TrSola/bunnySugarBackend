@@ -14,9 +14,9 @@ import java.util.List;
 @Repository
 public interface OrdersRepository extends JpaRepository<Orders, Long> {
 
-    @Query("SELECT NEW com.EEIT85.bunnySugar.dto.users.admin.MemberAdminSelectDto(" +
-            "u.id, u.account, u.email, u.name, u.gender, u.phone, u.birthday, u.bunnyCoin, " +
-            "u.active, u.createTime, u.updateTime, u.lastLoginTime) FROM Users u")
-    Page<OrdersAdminSelectDto> findAllOrdersAdminSelectDto(Pageable pageable);
+//    @Query("SELECT NEW com.EEIT85.bunnySugar.dto.users.admin.MemberAdminSelectDto(" +
+//            "u.id, u.account, u.email, u.name, u.gender, u.phone, u.birthday, u.bunnyCoin, " +
+//            "u.active, u.createTime, u.updateTime, u.lastLoginTime) FROM Users u")
+//    Page<OrdersAdminSelectDto> findAllOrdersAdminSelectDto(Pageable pageable);
 
 }
