@@ -17,9 +17,19 @@ public class Orders {
     @Column(name = "id", nullable = false, columnDefinition = "bigint")
     private Long id;
 
-    @OneToOne
+    @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
     @JsonManagedReference("Orders_PaymentDetails")
     private PaymentDetails paymentDetails;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "users_id", nullable = false)
+    private Users user;
+
+    //orphanRemoval=true，如果orders被刪除details沒有對應關聯就會自動被刪除
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("orders_orderDetails")
+    private List<OrderDetails> orderDetails;
+
 
     @Column(name = "order_number", nullable = false)
     private String orderNumber;
@@ -39,26 +49,19 @@ public class Orders {
     @Column(name = "pickup_status", nullable = false)
     private String pickupStatus;
 
+    @Column(name = "pickup_time")
+    private LocalDateTime pickupTime;
+
     @Column(name = "create_time", nullable = false)
     private LocalDateTime createTime;
 
     @Column(name = "uptade_time", nullable = false)
     private LocalDateTime updateTime;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id", nullable = false)
-    private Users user;
-
-    //orphanRemoval=true，如果orders被刪除details沒有對應關聯就會自動被刪除
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<OrderDetails> orderDetails;
-
     public Orders() {
     }
 
-    public Orders(PaymentDetails paymentDetails, String orderNumber, Integer total, String couponName, Integer usedBunnyCoins, Integer paymentPrice, String pickupStatus, LocalDateTime createTime, LocalDateTime updateTime, Users user, List<OrderDetails> orderDetails) {
+    public Orders(PaymentDetails paymentDetails, String orderNumber, Integer total, String couponName, Integer usedBunnyCoins, Integer paymentPrice, String pickupStatus, LocalDateTime pickupTime, LocalDateTime createTime, LocalDateTime updateTime, Users user, List<OrderDetails> orderDetails) {
         this.paymentDetails = paymentDetails;
         this.orderNumber = orderNumber;
         this.total = total;
@@ -66,6 +69,7 @@ public class Orders {
         this.usedBunnyCoins = usedBunnyCoins;
         this.paymentPrice = paymentPrice;
         this.pickupStatus = pickupStatus;
+        this.pickupTime = pickupTime;
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.user = user;
@@ -136,6 +140,14 @@ public class Orders {
         this.pickupStatus = pickupStatus;
     }
 
+    public LocalDateTime getPickupTime() {
+        return pickupTime;
+    }
+
+    public void setPickupTime(LocalDateTime pickupTime) {
+        this.pickupTime = pickupTime;
+    }
+
     public LocalDateTime getCreateTime() {
         return createTime;
     }
@@ -166,5 +178,24 @@ public class Orders {
 
     public void setOrderDetails(List<OrderDetails> orderDetails) {
         this.orderDetails = orderDetails;
+    }
+
+    @Override
+    public String toString() {
+        return "Orders{" +
+                "id=" + id +
+                ", paymentDetails=" + paymentDetails +
+                ", orderNumber='" + orderNumber + '\'' +
+                ", total=" + total +
+                ", couponName='" + couponName + '\'' +
+                ", usedBunnyCoins=" + usedBunnyCoins +
+                ", paymentPrice=" + paymentPrice +
+                ", pickupStatus='" + pickupStatus + '\'' +
+                ", pickupTime=" + pickupTime +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", user=" + user +
+                ", orderDetails=" + orderDetails +
+                '}';
     }
 }

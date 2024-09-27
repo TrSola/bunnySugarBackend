@@ -1,6 +1,111 @@
 package com.EEIT85.bunnySugar.service.orders.front;
 
+import com.EEIT85.bunnySugar.dto.orders.front.OrdersInsertDto;
+import com.EEIT85.bunnySugar.entity.*;
+import com.EEIT85.bunnySugar.repository.CartRepository;
+import com.EEIT85.bunnySugar.repository.OrdersRepository;
+import com.EEIT85.bunnySugar.repository.PaymentDetailsRepository;
+import com.EEIT85.bunnySugar.repository.UserRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+@Service
 public class OrdersService {
 
-    // 查詢訂單
+    @Autowired
+    OrdersRepository ordersRepository;
+    @Autowired
+    CartRepository cartRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+
+    @Transactional
+    public void insertOrder(OrdersInsertDto ordersInsertDto, Long userId) {
+
+
+
+        Orders orders = new Orders();
+        //產生訂單編號
+        String random = UUID.randomUUID().toString().replaceAll("-", "").substring(0,
+                20);
+        orders.setOrderNumber(random);
+        //找出目前的使用者並將使用者資訊存入訂單
+        Users user = userRepository.getReferenceById(userId);
+        orders.setUser(user);
+
+        //初始化為List物件
+        List<OrderDetails> orderDetails = new ArrayList<>();
+        Cart cart = cartRepository.findByUsersId(userId);
+        Set<CartItems> cartItems = cart.getCartItems();
+//        cartItems.stream().map(cartItem -> {
+//               orderDetails.stream().map(orderDetail -> {
+//               orderDetail.setQuantity(cartItem.getQuantity());
+//               orderDetail.setPrice(cartItem.getPrice());
+//               orderDetail.setCreateTime(LocalDateTime.now());
+//               orderDetail.setUpdateTime(LocalDateTime.now());
+//               orderDetail.setProduct(cartItem.getProducts());
+//               return orderDetails;
+//            });
+//            System.out.println(orderDetails);
+//            return orderDetails;
+//        });
+// 遍历 cartItems 并生成对应的 orderDetails
+        //cartItems有資料
+        cartItems.forEach(i -> {
+            //把detail分別創建為物件新增後再一起加入orderDetails
+            OrderDetails detail = new OrderDetails();
+            detail.setQuantity(i.getQuantity());
+            detail.setPrice(i.getPrice());
+            detail.setCreateTime(LocalDateTime.now());
+            detail.setUpdateTime(LocalDateTime.now());
+            detail.setProducts(i.getProducts());
+            detail.setOrders(orders);
+            orderDetails.add(detail);
+        });
+        orders.setOrderDetails(orderDetails);
+        //payment部份
+        PaymentDetails paymentDetails = new PaymentDetails();
+        paymentDetails.setMerchantNo(random);
+        paymentDetails.setCreateTime(LocalDateTime.now());
+        paymentDetails.setUpdateTime(LocalDateTime.now());
+        paymentDetails.setPaidPrice(ordersInsertDto.getTotal());
+        paymentDetails.setPaymentMethod(ordersInsertDto.getPaymentMethod());
+        paymentDetails.setPaymentDate(LocalDateTime.now());
+        paymentDetails.setPaymentStatus(ordersInsertDto.getPaymentStatus());
+
+        paymentDetails.setOrders(orders);
+        orders.setPaymentDetails(paymentDetails);
+        //orders部份
+        orders.setCreateTime(LocalDateTime.now());
+        orders.setUpdateTime(LocalDateTime.now());
+        orders.setPaymentDetails(paymentDetails);
+        orders.setTotal(65); // 模擬 要從cartItem撈出來算
+        orders.setPaymentPrice(ordersInsertDto.getTotal());
+        orders.setPickupTime(ordersInsertDto.getPickupTime());
+        orders.setCouponName(ordersInsertDto.getCouponName());
+        orders.setUsedBunnyCoins(ordersInsertDto.getUsedBunnyCoins());
+        orders.setPickupStatus(ordersInsertDto.getPickupStatus());
+
+
+
+
+        ordersRepository.save(orders);
+// 最终打印 orderDetails 列表
+//        System.out.println(orderDetails);
+
+        //每一筆CartItems 存進OrdersDetails 然後附上ordersId
+
+        //做好paymentDetails後set入orders
+
+    }
 }

@@ -322,4 +322,30 @@ public class Users {
         this.wishList = wishList;
     }
 
+    @Override
+    public String toString() {
+        return "Users{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", verifyingToken='" + verifyingToken + '\'' +
+                ", account='" + account + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", gender='" + gender + '\'' +
+                ", birthday=" + birthday +
+                ", bunnyCoin=" + bunnyCoin +
+                ", active=" + active +
+                ", forgetToken='" + forgetToken + '\'' +
+                ", loginMethod='" + loginMethod + '\'' +
+                ", googleToken='" + googleToken + '\'' +
+                ", facebookToken='" + facebookToken + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", lastLoginTime=" + lastLoginTime +
+                ", gameTimes=" + gameTimes +
+                ", tokenExpirationTime=" + tokenExpirationTime +
+                ", detailsCompleted=" + detailsCompleted +
+                '}';
+    }
 }

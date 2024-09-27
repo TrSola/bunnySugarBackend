@@ -22,18 +22,7 @@ public class Products {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, columnDefinition = "bigint")
     private Long id;
-    //長度、不允許null、資料庫欄位名稱(物件屬性與資料庫欄位一樣可不寫)
-    @Column(name = "product_name", length = 55, nullable = false)
-    private String productName;
 
-    @Column(name = "create_time", nullable = false)
-    private LocalDateTime createTime;
-
-    @Column(name = "update_time", nullable = false)
-    private LocalDateTime updateTime;
-
-    @Column(name = "stocks", nullable = false)
-    private Integer stocks;
 
 
     //ManyToOne預設為EAGER如果每次呼叫商品都會需要種類就使用預設值EAGER 否則LAZY
@@ -57,11 +46,37 @@ public class Products {
     @JsonManagedReference("Products_CartItems")
     private List<CartItems> cartItems;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval =
+    @OneToMany(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval =
             true)
+    @JsonManagedReference("products_orderDetails")
     private List<OrderDetails> orderDetails;
 
+    //長度、不允許null、資料庫欄位名稱(物件屬性與資料庫欄位一樣可不寫)
+    @Column(name = "product_name", length = 55, nullable = false)
+    private String productName;
+
+    @Column(name = "create_time", nullable = false)
+    private LocalDateTime createTime;
+
+    @Column(name = "update_time", nullable = false)
+    private LocalDateTime updateTime;
+
+    @Column(name = "stocks", nullable = false)
+    private Integer stocks;
+
+
     public Products() {
+    }
+
+    public Products(String productName, LocalDateTime createTime, LocalDateTime updateTime, Integer stocks, Categories categories, ProductDetails productDetails, List<CartItems> cartItems, List<OrderDetails> orderDetails) {
+        this.productName = productName;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.stocks = stocks;
+        this.categories = categories;
+        this.productDetails = productDetails;
+        this.cartItems = cartItems;
+        this.orderDetails = orderDetails;
     }
 
     public Products(String productName, LocalDateTime createTime, LocalDateTime updateTime, Integer stocks) {
@@ -130,6 +145,14 @@ public class Products {
 
     public void setCartItems(List<CartItems> cartItems) {
         this.cartItems = cartItems;
+    }
+
+    public List<OrderDetails> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetails> orderDetails) {
+        this.orderDetails = orderDetails;
     }
 
     @Override

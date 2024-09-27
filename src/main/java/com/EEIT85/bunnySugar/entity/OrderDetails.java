@@ -16,6 +16,16 @@ public class OrderDetails {
     @Column(name = "id", nullable = false, columnDefinition = "bigint")
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false)
+    @JsonBackReference("orders_orderDetails")
+    private Orders orders;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
+    @JsonBackReference("products_orderDetails")
+    private Products products;
+
     @Column(name = "quantity", nullable = false) // 單一商品數量
     private Integer quantity;
 
@@ -28,19 +38,17 @@ public class OrderDetails {
     @Column(name = "update_time")
     private LocalDateTime updateTime;
 
-    @Column(name = "pickup_time")
-    private LocalDateTime pickupTime;
+    public OrderDetails() {
+    }
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false)
-    @JsonBackReference
-    private Orders order;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
-    @JsonIgnore // 議使用這個來避免循環依賴
-    private Products product;
+    public OrderDetails(Orders orders, Products products, Integer quantity, Integer price, LocalDateTime createTime, LocalDateTime updateTime) {
+        this.orders = orders;
+        this.products = products;
+        this.quantity = quantity;
+        this.price = price;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+    }
 
     public Long getId() {
         return id;
@@ -48,6 +56,22 @@ public class OrderDetails {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Orders getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Orders orders) {
+        this.orders = orders;
+    }
+
+    public Products getProducts() {
+        return products;
+    }
+
+    public void setProducts(Products products) {
+        this.products = products;
     }
 
     public Integer getQuantity() {
@@ -82,27 +106,14 @@ public class OrderDetails {
         this.updateTime = updateTime;
     }
 
-    public LocalDateTime getPickupTime() {
-        return pickupTime;
-    }
-
-    public void setPickupTime(LocalDateTime pickupTime) {
-        this.pickupTime = pickupTime;
-    }
-
-    public Orders getOrder() {
-        return order;
-    }
-
-    public void setOrder(Orders order) {
-        this.order = order;
-    }
-
-    public Products getProduct() {
-        return product;
-    }
-
-    public void setProduct(Products product) {
-        this.product = product;
+    @Override
+    public String toString() {
+        return "OrderDetails{" +
+                "id=" + id +
+                ", quantity=" + quantity +
+                ", price=" + price +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
     }
 }

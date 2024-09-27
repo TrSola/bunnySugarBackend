@@ -14,8 +14,12 @@ public class PaymentDetails {
     private Long id;
 
     @OneToOne
+    @JoinColumn(name = "orders_id", nullable = false)
     @JsonBackReference("Orders_PaymentDetails")
     private Orders orders;
+
+    @Column(name = "merchant_no", nullable = false)
+    private String merchantNo;
 
     @Column(name =  "payment_method", nullable = false)
     private String paymentMethod;
@@ -23,8 +27,8 @@ public class PaymentDetails {
     @Column(name = "payment_status", nullable = false)
     private String paymentStatus;
 
-    @Column(name = "payment_price", nullable = false)
-    private String paymentPrice;
+    @Column(name = "paid_price", nullable = false)
+    private Integer paidPrice;
 
     @Column(name = "payment_date", nullable = false)
     private LocalDateTime paymentDate;
@@ -38,14 +42,23 @@ public class PaymentDetails {
     public PaymentDetails() {
     }
 
-    public PaymentDetails(String paymentMethod, String paymentStatus,
-                          String paymentPrice, LocalDateTime paymentDate, LocalDateTime createTime, LocalDateTime updateTime) {
+    public PaymentDetails(Orders orders, String merchantNo, String paymentMethod, String paymentStatus, Integer paidPrice, LocalDateTime paymentDate, LocalDateTime createTime, LocalDateTime updateTime) {
+        this.orders = orders;
+        this.merchantNo = merchantNo;
         this.paymentMethod = paymentMethod;
         this.paymentStatus = paymentStatus;
-        this.paymentPrice = paymentPrice;
+        this.paidPrice = paidPrice;
         this.paymentDate = paymentDate;
         this.createTime = createTime;
         this.updateTime = updateTime;
+    }
+
+    public String getMerchantNo() {
+        return merchantNo;
+    }
+
+    public void setMerchantNo(String merchantNo) {
+        this.merchantNo = merchantNo;
     }
 
     public Long getId() {
@@ -54,6 +67,14 @@ public class PaymentDetails {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Orders getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Orders orders) {
+        this.orders = orders;
     }
 
     public String getPaymentMethod() {
@@ -72,12 +93,12 @@ public class PaymentDetails {
         this.paymentStatus = paymentStatus;
     }
 
-    public String getPaymentPrice() {
-        return paymentPrice;
+    public Integer getPaidPrice() {
+        return paidPrice;
     }
 
-    public void setPaymentPrice(String paymentPrice) {
-        this.paymentPrice = paymentPrice;
+    public void setPaidPrice(Integer paidPrice) {
+        this.paidPrice = paidPrice;
     }
 
     public LocalDateTime getPaymentDate() {
