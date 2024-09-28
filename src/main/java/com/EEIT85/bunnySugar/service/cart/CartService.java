@@ -1,6 +1,7 @@
 package com.EEIT85.bunnySugar.service.cart;
 
 import com.EEIT85.bunnySugar.dto.cart.CartInsertDto;
+import com.EEIT85.bunnySugar.dto.cart.CartItemDto;
 import com.EEIT85.bunnySugar.dto.cart.CartSelectDto;
 import com.EEIT85.bunnySugar.dto.cart.CartUpdateDto;
 import com.EEIT85.bunnySugar.entity.Cart;
@@ -13,13 +14,12 @@ import com.EEIT85.bunnySugar.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CartService {
@@ -36,10 +36,10 @@ public class CartService {
 
 
 
-    public Page<CartSelectDto> getCartItemsByUserId(Long userId, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return cartItemsRepository.findCartItemsByUserId(userId, pageable);
+    public List<CartSelectDto> getCartItemsByUserId(Long userId) {
+        return cartItemsRepository.findCartItemsByUserId(userId);
     }
+
 
     @Transactional
     public void insertCart(CartInsertDto cartInsertDto) {
@@ -79,7 +79,6 @@ public class CartService {
         //修改購物車中的金額與更新時間
         cart.setUpdateTime(LocalDateTime.now());
         //更新cart中的total
-//        updateCartTotalAndTime(cart);
         cart.setTotal(cartRepository.calculateTotalPrice(cart.getId()));
         cartRepository.save(cart);
     }
