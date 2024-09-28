@@ -1,107 +1,152 @@
 package com.EEIT85.bunnySugar.service.orders.admin;
 
-import com.EEIT85.bunnySugar.dto.orders.Admin.OrderDetailsAdminSelectDto;
-import com.EEIT85.bunnySugar.dto.orders.Admin.OrderDetailsAdminUpdateDto;
-import com.EEIT85.bunnySugar.dto.orders.Admin.OrdersAdminSelectDto;
-import com.EEIT85.bunnySugar.dto.orders.Admin.OrdersAdminUpdateDto;
-import com.EEIT85.bunnySugar.dto.users.admin.MemberAdminSelectDto;
-import com.EEIT85.bunnySugar.entity.OrderDetails;
-import com.EEIT85.bunnySugar.entity.Orders;
-import com.EEIT85.bunnySugar.entity.Users;
-import com.EEIT85.bunnySugar.exception.OrderNotFoundException;
-import com.EEIT85.bunnySugar.exception.ResourceNotFoundException;
+import com.EEIT85.bunnySugar.dto.orders.Admin.OrderDetailsAdminDto;
+import com.EEIT85.bunnySugar.dto.orders.Admin.OrdersFullInfoAdminDto;
+import com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto;
 import com.EEIT85.bunnySugar.repository.OrderDetailsRepository;
 import com.EEIT85.bunnySugar.repository.OrdersRepository;
 import com.EEIT85.bunnySugar.repository.ProductsRepository;
 import com.EEIT85.bunnySugar.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class OrdersAdminService {
     @Autowired
     private OrdersRepository ordersRepository;
 
-    @Autowired
-    private OrderDetailsRepository orderDetailsRepository;
+    // 查詢所有訂單，並返回分頁的訂單資訊
+    public Page<OrdersInfoAdminDto> getAllOrders(Pageable pageable) {
+        System.out.println("Executing getAllOrders with pageable: " + pageable);
+        // 使用Spring Data JPA分頁查詢
+        Page<Object[]> rawData = ordersRepository.findAllOrdersInfo(pageable);
+        System.out.println("Raw data size: " + rawData.getContent().size());
+        System.out.println("Total elements: " + rawData.getTotalElements());
 
-    @Autowired
-    private UserRepository userRepository;
+        // 檢查是否有資料，避免空指標異常
+        if (rawData.isEmpty()) {
+            // 如果沒有資料，返回空的分頁結果
+            return Page.empty(pageable);
+        }
 
-    @Autowired
-    private ProductsRepository productsRepository;
+        List<OrdersInfoAdminDto> dtoList = new ArrayList<>();
 
-//    // 查詢所有訂單並返回分頁
-//    public List<OrdersAdminSelectDto> getAllOrders(Pageable pageable) {
-//        return ordersRepository.findAllOrdersAdminSelectDto(pageable);
-//    }
-//    public Page<MemberAdminSelectDto> getAllMembers(Pageable pageable) {
-//        return userRepository.findAllMemberAdminSelectDto(pageable);
-//    }
-//
-//
-//    public OrdersAdminSelectDto getOrderById(Long id) {
-//        Orders order = ordersRepository.findById(id)
-//                .orElseThrow(() -> new OrderNotFoundException("Order not found"));
-//        return convertToSelectDto(order);
-//    }
-//
-//    @Transactional
-//    public OrdersAdminSelectDto updateOrder(OrdersAdminUpdateDto updateDto) {
-//        Orders order = ordersRepository.findById(updateDto.getId())
-//                .orElseThrow(() -> new OrderNotFoundException("Order not found"));
-//
-//        order.setPickupStatus(updateDto.getPickupStatus());
-//
-//        for (OrderDetailsAdminUpdateDto detailDto : updateDto.getOrderDetails()) {
-//            OrderDetails detail = orderDetailsRepository.findById(detailDto.getId())
-//                    .orElseThrow(() -> new OrderNotFoundException("Order detail not found"));
-//            detail.setPickupTime(detailDto.getPickupTime());
-//            orderDetailsRepository.save(detail);
-//        }
-//
-//        order.setUpdateTime(LocalDateTime.now());
-//        Orders updatedOrder = ordersRepository.save(order);
-//        return convertToSelectDto(updatedOrder);
-//    }
-//
-//    private OrdersAdminSelectDto convertToSelectDto(Orders order) {
-//        OrdersAdminSelectDto dto = new OrdersAdminSelectDto();
-//        dto.setId(order.getId());
-//        dto.setOrderNumber(order.getOrderNumber());
-//        dto.setPickupStatus(order.getPickupStatus());
-//        dto.setTotal(order.getTotal());
-//        dto.setCouponName(order.getCouponName());
-//        dto.setUsedBunnyCoins(order.getUsedBunnyCoins());
-//        dto.setPaymentPrice(order.getPaymentPrice());
-//        dto.setCreateTime(order.getCreateTime());
-//        dto.setUpdateTime(order.getUpdateTime());
-//
-//        List<OrderDetailsAdminSelectDto> detailDtos = order.getOrderDetails().stream()
-//                .map(this::convertToDetailSelectDto)
-//                .collect(Collectors.toList());
-//        dto.setOrderDetails(detailDtos);
-//
-//        return dto;
-//    }
-//
-//    private OrderDetailsAdminSelectDto convertToDetailSelectDto(OrderDetails detail) {
-//        OrderDetailsAdminSelectDto dto = new OrderDetailsAdminSelectDto();
-//        dto.setId(detail.getId());
-//        dto.setProductId(detail.getProduct().getId());
-//        dto.setProductName(detail.getProduct().getProductName());
-//        dto.setQuantity(detail.getQuantity());
-//        dto.setPrice(detail.getPrice());
-//        dto.setCreateTime(detail.getCreateTime());
-//        dto.setUpdateTime(detail.getUpdateTime());
-//        dto.setPickupTime(detail.getPickupTime());
-//        return dto;
-//    }
+        // 將查詢出的原始資料封裝為DTO
+        for (Object[] row : rawData) {
+            // 檢查 row 的長度和內容是否正確，避免轉換錯誤
+            if (row != null && row.length >= 8) {
+                OrdersInfoAdminDto ordersInfoAdminDto = new OrdersInfoAdminDto();
+                ordersInfoAdminDto.setOrderNumber((String) row[0]);
+                ordersInfoAdminDto.setUserName((String) row[1]);
+                ordersInfoAdminDto.setUserPhone((String) row[2]);
+                ordersInfoAdminDto.setUserEmail((String) row[3]);
+                ordersInfoAdminDto.setPaymentPrice((Integer) row[4]);
+                ordersInfoAdminDto.setPaymentStatus((String) row[5]);
+
+                // 處理 orderDetails
+                OrderDetailsAdminDto orderDetailsDto = new OrderDetailsAdminDto();
+                orderDetailsDto.setProductName((String) row[6]);
+                orderDetailsDto.setQuantity((Integer) row[7]);
+
+                // 添加到 details 列表
+                List<OrderDetailsAdminDto> detailsList = new ArrayList<>();
+                detailsList.add(orderDetailsDto);
+
+                ordersInfoAdminDto.setOrderDetails(detailsList);
+
+                // 添加到 DTO 列表
+                dtoList.add(ordersInfoAdminDto);
+            } else {
+                System.out.println("Invalid row data: " + Arrays.toString(row));
+            }
+        }
+
+        // 返回分頁結果
+        return new PageImpl<>(dtoList, pageable, rawData.getTotalElements());
+    }
+
+    // 根據會員電話查詢訂單，並返回分頁的訂單資訊
+    public Page<OrdersInfoAdminDto> getOrdersByUserPhone(String phone, Pageable pageable) {
+        // 使用Spring Data JPA分頁查詢
+        Page<Object[]> rawData = ordersRepository.findOrdersByUserPhone(phone, pageable);
+
+        List<OrdersInfoAdminDto> dtoList = new ArrayList<>();
+
+        // 將查詢出的原始資料封裝為DTO
+        for (Object[] row : rawData) {
+            OrdersInfoAdminDto ordersInfoAdminDto = new OrdersInfoAdminDto();
+            ordersInfoAdminDto.setOrderNumber((String) row[0]);
+            ordersInfoAdminDto.setUserName((String) row[1]);
+            ordersInfoAdminDto.setUserPhone((String) row[2]);
+            ordersInfoAdminDto.setUserEmail((String) row[3]);
+            ordersInfoAdminDto.setPaymentPrice((Integer) row[4]);
+            ordersInfoAdminDto.setPaymentStatus((String) row[5]);
+
+            OrderDetailsAdminDto orderDetailsDto = new OrderDetailsAdminDto();
+            orderDetailsDto.setProductName((String) row[6]);
+            orderDetailsDto.setQuantity((Integer) row[7]);
+
+            List<OrderDetailsAdminDto> detailsList = new ArrayList<>();
+            detailsList.add(orderDetailsDto);
+
+            ordersInfoAdminDto.setOrderDetails(detailsList);
+
+            dtoList.add(ordersInfoAdminDto);
+        }
+
+        // 返回分頁結果
+        return new PageImpl<>(dtoList, pageable, rawData.getTotalElements());
+    }
+
+    // 根據訂單ID查詢訂單的詳細信息，並進行分頁
+    public OrdersFullInfoAdminDto getOrderFullInfoByOrderId(Long orderId, Pageable pageable) {
+        // 使用Spring Data JPA分頁查詢
+        Page<Object[]> rawData = ordersRepository.findOrderFullInfoByOrderId(orderId, pageable);
+
+        if (rawData.isEmpty()) {
+            return null; // 或者拋出自定義異常
+        }
+
+        // 將查詢結果封裝為 OrdersFullInfoAdminDto
+        OrdersFullInfoAdminDto ordersFullInfoAdminDto = new OrdersFullInfoAdminDto();
+
+        // 假設第一筆資料包含訂單的基本信息
+        Object[] firstRow = rawData.getContent().get(0);
+        ordersFullInfoAdminDto.setOrderNumber((String) firstRow[0]);
+        ordersFullInfoAdminDto.setUserName((String) firstRow[1]);
+        ordersFullInfoAdminDto.setUserPhone((String) firstRow[2]);
+        ordersFullInfoAdminDto.setUserEmail((String) firstRow[3]);
+        ordersFullInfoAdminDto.setCreateTime((LocalDateTime) firstRow[4]);
+        ordersFullInfoAdminDto.setPaymentStatus((String) firstRow[5]);
+        ordersFullInfoAdminDto.setPickupStatus((String) firstRow[6]);
+        ordersFullInfoAdminDto.setPaymentPrice((Integer) firstRow[7]);
+        ordersFullInfoAdminDto.setPaymentMethod((String) firstRow[8]);
+        ordersFullInfoAdminDto.setPaymentDate((LocalDateTime) firstRow[9]);
+        ordersFullInfoAdminDto.setTotal((Integer) firstRow[10]);
+        ordersFullInfoAdminDto.setCouponName((String) firstRow[11]);
+        ordersFullInfoAdminDto.setUsedBunnyCoins((Integer) firstRow[12]);
+        ordersFullInfoAdminDto.setPickupTime((LocalDateTime) firstRow[13]);
+
+        // 封裝訂單詳細信息
+        List<OrderDetailsAdminDto> orderDetailsList = new ArrayList<>();
+        for (Object[] row : rawData.getContent()) {
+            OrderDetailsAdminDto orderDetailsDto = new OrderDetailsAdminDto();
+            orderDetailsDto.setProductName((String) row[14]);
+            orderDetailsDto.setQuantity((Integer) row[15]);
+            orderDetailsDto.setPrice((Integer) row[16]);
+            orderDetailsList.add(orderDetailsDto);
+        }
+
+        ordersFullInfoAdminDto.setOrderDetails(orderDetailsList);
+        return ordersFullInfoAdminDto;
+    }
+
 }
