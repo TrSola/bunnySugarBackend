@@ -42,7 +42,7 @@ public class OrdersService {
         //計算本次累積消費
         user.setAccumulateSpent(user.getAccumulateSpent() + ordersInsertDto.getTotal());
         Integer totalSpent = user.getAccumulateSpent();
-        if(totalSpent >= 10000) {
+        if(totalSpent >= 9000) {
             user.setUserVip("鑽石兔");
         }else if(totalSpent >= 6000) {
             user.setUserVip("白金兔");

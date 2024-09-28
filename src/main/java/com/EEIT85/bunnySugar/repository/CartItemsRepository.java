@@ -30,7 +30,8 @@ public interface CartItemsRepository extends JpaRepository<CartItems, Long> {
     Optional<CartItems> findByIdAndCart_Users_Id(Long itemId, Long userId);
 
     @Query("SELECT new com.EEIT85.bunnySugar.dto.cart.CartSelectDto(ci.id, pd.price, " +
-            "ci.quantity, p.productName, pd.imageUrl, p.stocks, u.bunnyCoin, u.userVip) " +
+            "ci.quantity, p.productName, pd.imageUrl, p.stocks, u.bunnyCoin, u" +
+            ".userVip, u.accumulateSpent) " +
             "FROM CartItems ci " +
             "JOIN ci.cart c " +
             "JOIN ci.products p " +
