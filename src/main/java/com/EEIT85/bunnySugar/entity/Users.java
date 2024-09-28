@@ -98,6 +98,41 @@ public class Users {
     // Constructors, Getters, Setters...
     public Users() {}
 
+    public List<Orders> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Orders> orders) {
+        this.orders = orders;
+    }
+
+    public Users(List<Orders> orders, WishList wishList, Cart cart, List<Anniversaries> anniversaries, Integer detailsCompleted, LocalDateTime tokenExpirationTime, Integer gameTimes, LocalDateTime lastLoginTime, LocalDateTime updateTime, LocalDateTime createTime, String facebookToken, String googleToken, String loginMethod, String forgetToken, Integer active, Integer bunnyCoin, LocalDate birthday, String gender, String name, String password, String account, String verifyingToken, String phone, String email) {
+        this.orders = orders;
+        this.wishList = wishList;
+        this.cart = cart;
+        this.anniversaries = anniversaries;
+        this.detailsCompleted = detailsCompleted;
+        this.tokenExpirationTime = tokenExpirationTime;
+        this.gameTimes = gameTimes;
+        this.lastLoginTime = lastLoginTime;
+        this.updateTime = updateTime;
+        this.createTime = createTime;
+        this.facebookToken = facebookToken;
+        this.googleToken = googleToken;
+        this.loginMethod = loginMethod;
+        this.forgetToken = forgetToken;
+        this.active = active;
+        this.bunnyCoin = bunnyCoin;
+        this.birthday = birthday;
+        this.gender = gender;
+        this.name = name;
+        this.password = password;
+        this.account = account;
+        this.verifyingToken = verifyingToken;
+        this.phone = phone;
+        this.email = email;
+    }
+
     // 所有參數的構造函數
     public Users(String email, String phone, String verifyingToken, String account, String password, String name,
                  String gender, LocalDate birthday, Integer bunnyCoin, Integer active,
