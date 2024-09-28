@@ -36,6 +36,21 @@ public class OrdersService {
         orders.setOrderNumber(random);
         //找出目前的使用者並將使用者資訊存入訂單
         Users user = userRepository.getReferenceById(userId);
+        //計算本次消費獲得的coin
+        Integer addCoin = ordersInsertDto.getTotal() / 500;
+        user.setBunnyCoin(user.getBunnyCoin() + addCoin);
+        //計算本次累積消費
+        user.setAccumulateSpent(user.getAccumulateSpent() + ordersInsertDto.getTotal());
+        Integer totalSpent = user.getAccumulateSpent();
+        System.out.println(totalSpent);
+        if(totalSpent >= 10000) {
+            user.setUserVip("鑽石兔");
+        }else if(totalSpent >= 6000) {
+            user.setUserVip("白金兔");
+        }else if(totalSpent >= 3000) {
+            user.setUserVip("金兔");
+        }
+
         orders.setUser(user);
 
         //初始化為List物件
@@ -72,12 +87,13 @@ public class OrdersService {
         orders.setCreateTime(LocalDateTime.now());
         orders.setUpdateTime(LocalDateTime.now());
         orders.setPaymentDetails(paymentDetails);
-        orders.setTotal(ordersInsertDto.getTotal()); // 模擬 要從cartItem撈出來算
+        orders.setTotal(ordersInsertDto.getTotal()); //要從cartItem撈出來算
         orders.setPaymentPrice(ordersInsertDto.getTotal());
         orders.setPickupTime(ordersInsertDto.getPickupTime());
         orders.setCouponName(ordersInsertDto.getCouponName());
         orders.setUsedBunnyCoins(ordersInsertDto.getUsedBunnyCoins());
         orders.setPickupStatus(ordersInsertDto.getPickupStatus());
+
 
         ordersRepository.save(orders);
     }

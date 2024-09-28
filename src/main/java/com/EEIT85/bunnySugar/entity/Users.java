@@ -18,6 +18,12 @@ public class Users {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "user_vip" , nullable = false)
+    private String userVip;
+
+    @Column(name = "accumulate_spent", nullable = false)
+    private Integer accumulateSpent;
+
     @Column(length = 255, nullable = false, name = "email")  // 信箱
     private String email;
 
@@ -42,7 +48,7 @@ public class Users {
     @Column(name = "birthday", nullable = true)  // 生日，可為空
     private LocalDate birthday;
 
-    @Column(name = "bunny_coin", nullable = true)  // 小兔幣(紅利金)，可為空
+    @Column(name = "bunny_coin", nullable = false)  // 小兔幣(紅利金)，可為空
     private Integer bunnyCoin;
 
     @Column(nullable = false, name = "active")  // 是否驗證
@@ -106,63 +112,72 @@ public class Users {
         this.orders = orders;
     }
 
-    public Users(List<Orders> orders, WishList wishList, Cart cart, List<Anniversaries> anniversaries, Integer detailsCompleted, LocalDateTime tokenExpirationTime, Integer gameTimes, LocalDateTime lastLoginTime, LocalDateTime updateTime, LocalDateTime createTime, String facebookToken, String googleToken, String loginMethod, String forgetToken, Integer active, Integer bunnyCoin, LocalDate birthday, String gender, String name, String password, String account, String verifyingToken, String phone, String email) {
-        this.orders = orders;
-        this.wishList = wishList;
-        this.cart = cart;
-        this.anniversaries = anniversaries;
-        this.detailsCompleted = detailsCompleted;
-        this.tokenExpirationTime = tokenExpirationTime;
-        this.gameTimes = gameTimes;
-        this.lastLoginTime = lastLoginTime;
-        this.updateTime = updateTime;
-        this.createTime = createTime;
-        this.facebookToken = facebookToken;
-        this.googleToken = googleToken;
-        this.loginMethod = loginMethod;
-        this.forgetToken = forgetToken;
-        this.active = active;
-        this.bunnyCoin = bunnyCoin;
-        this.birthday = birthday;
-        this.gender = gender;
-        this.name = name;
-        this.password = password;
-        this.account = account;
-        this.verifyingToken = verifyingToken;
-        this.phone = phone;
+    public Users(String userVip, Integer accumulateSpent, String email, String phone, String verifyingToken, String account, String password, String name, String gender, LocalDate birthday, Integer bunnyCoin, Integer active, String forgetToken, String loginMethod, String googleToken, String facebookToken, LocalDateTime createTime, LocalDateTime updateTime, LocalDateTime lastLoginTime, Integer gameTimes, LocalDateTime tokenExpirationTime, Integer detailsCompleted, List<Anniversaries> anniversaries, Cart cart, WishList wishList, List<Orders> orders) {
+        this.userVip = userVip;
+        this.accumulateSpent = accumulateSpent;
         this.email = email;
+        this.phone = phone;
+        this.verifyingToken = verifyingToken;
+        this.account = account;
+        this.password = password;
+        this.name = name;
+        this.gender = gender;
+        this.birthday = birthday;
+        this.bunnyCoin = bunnyCoin;
+        this.active = active;
+        this.forgetToken = forgetToken;
+        this.loginMethod = loginMethod;
+        this.googleToken = googleToken;
+        this.facebookToken = facebookToken;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.lastLoginTime = lastLoginTime;
+        this.gameTimes = gameTimes;
+        this.tokenExpirationTime = tokenExpirationTime;
+        this.detailsCompleted = detailsCompleted;
+        this.anniversaries = anniversaries;
+        this.cart = cart;
+        this.wishList = wishList;
+        this.orders = orders;
+    }
+//    // 所有參數的構造函數
+//    public Users(String email, String phone, String verifyingToken, String account, String password, String name,
+//                 String gender, LocalDate birthday, Integer bunnyCoin, Integer active,
+//                 String forgetToken, String loginMethod, String googleToken, String facebookToken,
+//                 LocalDateTime createTime, LocalDateTime updateTime, LocalDateTime lastLoginTime,
+//                 Integer gameTimes, LocalDateTime tokenExpirationTime, Integer detailsCompleted, List<Anniversaries> anniversaries,
+//                 Cart cart, WishList wishList) {
+//        this.email = email;
+//        this.phone = phone;
+//        this.verifyingToken = verifyingToken;
+//        this.account = account;
+//        this.password = password;
+//        this.name = name;
+//        this.gender = gender;
+//        this.birthday = birthday;
+//        this.bunnyCoin = bunnyCoin;
+//        this.active = active;
+//        this.forgetToken = forgetToken;
+//        this.loginMethod = loginMethod;
+//        this.googleToken = googleToken;
+//        this.facebookToken = facebookToken;
+//        this.createTime = createTime;
+//        this.updateTime = updateTime;
+//        this.lastLoginTime = lastLoginTime;
+//        this.gameTimes = gameTimes;
+//        this.tokenExpirationTime = tokenExpirationTime;
+//        this.detailsCompleted = detailsCompleted;
+//        this.anniversaries = anniversaries;
+//        this.cart = cart;
+//        this.wishList = wishList;
+//    }
+
+    public String getUserVip() {
+        return userVip;
     }
 
-    // 所有參數的構造函數
-    public Users(String email, String phone, String verifyingToken, String account, String password, String name,
-                 String gender, LocalDate birthday, Integer bunnyCoin, Integer active,
-                 String forgetToken, String loginMethod, String googleToken, String facebookToken,
-                 LocalDateTime createTime, LocalDateTime updateTime, LocalDateTime lastLoginTime,
-                 Integer gameTimes, LocalDateTime tokenExpirationTime, Integer detailsCompleted, List<Anniversaries> anniversaries,
-                 Cart cart, WishList wishList) {
-        this.email = email;
-        this.phone = phone;
-        this.verifyingToken = verifyingToken;
-        this.account = account;
-        this.password = password;
-        this.name = name;
-        this.gender = gender;
-        this.birthday = birthday;
-        this.bunnyCoin = bunnyCoin;
-        this.active = active;
-        this.forgetToken = forgetToken;
-        this.loginMethod = loginMethod;
-        this.googleToken = googleToken;
-        this.facebookToken = facebookToken;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
-        this.lastLoginTime = lastLoginTime;
-        this.gameTimes = gameTimes;
-        this.tokenExpirationTime = tokenExpirationTime;
-        this.detailsCompleted = detailsCompleted;
-        this.anniversaries = anniversaries;
-        this.cart = cart;
-        this.wishList = wishList;
+    public void setUserVip(String userVip) {
+        this.userVip = userVip;
     }
 
     public Long getId() {
@@ -355,6 +370,14 @@ public class Users {
 
     public void setWishList(WishList wishList) {
         this.wishList = wishList;
+    }
+
+    public Integer getAccumulateSpent() {
+        return accumulateSpent;
+    }
+
+    public void setAccumulateSpent(Integer accumulateSpent) {
+        this.accumulateSpent = accumulateSpent;
     }
 
     @Override
