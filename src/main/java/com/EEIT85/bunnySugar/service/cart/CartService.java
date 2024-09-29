@@ -1,7 +1,6 @@
 package com.EEIT85.bunnySugar.service.cart;
 
 import com.EEIT85.bunnySugar.dto.cart.CartInsertDto;
-import com.EEIT85.bunnySugar.dto.cart.CartItemDto;
 import com.EEIT85.bunnySugar.dto.cart.CartSelectDto;
 import com.EEIT85.bunnySugar.dto.cart.CartUpdateDto;
 import com.EEIT85.bunnySugar.entity.Cart;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CartService {

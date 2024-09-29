@@ -86,7 +86,7 @@ public class OrdersService {
         orders.setCreateTime(LocalDateTime.now());
         orders.setUpdateTime(LocalDateTime.now());
         orders.setPaymentDetails(paymentDetails);
-        orders.setTotal(ordersInsertDto.getTotal()); //要從cartItem撈出來算
+        orders.setTotal(cart.getTotal());
         orders.setPaymentPrice(ordersInsertDto.getTotal());
         orders.setPickupTime(ordersInsertDto.getPickupTime());
         orders.setCouponName(ordersInsertDto.getCouponName());
