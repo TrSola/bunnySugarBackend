@@ -9,7 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/cart")
+import java.util.List;
+
+@RequestMapping("/api/cart")
 @RestController
 public class CartController {
     Long userId = 1L; // 假設用戶 ID 固定為 1，實際情況應根據需求調整
@@ -18,13 +20,11 @@ public class CartController {
     CartService cartService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<Page<CartSelectDto>> getCartItems(
-            @PathVariable Long userId,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Page<CartSelectDto> cartItems = cartService.getCartItemsByUserId(userId, page, size);
+    public ResponseEntity<List<CartSelectDto>> getCartItems(@PathVariable Long userId) {
+        List<CartSelectDto> cartItems = cartService.getCartItemsByUserId(userId);
         return ResponseEntity.ok(cartItems);
     }
+
 
     @PostMapping
     public ResponseEntity<String> addToCart(@RequestBody CartInsertDto cartInsertDto) {

@@ -18,6 +18,12 @@ public class Users {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "user_vip" , nullable = false)
+    private String userVip;
+
+    @Column(name = "accumulate_spent", nullable = false)
+    private Integer accumulateSpent;
+
     @Column(length = 255, nullable = false, name = "email")  // 信箱
     private String email;
 
@@ -42,7 +48,7 @@ public class Users {
     @Column(name = "birthday", nullable = true)  // 生日，可為空
     private LocalDate birthday;
 
-    @Column(name = "bunny_coin", nullable = true)  // 小兔幣(紅利金)，可為空
+    @Column(name = "bunny_coin", nullable = false)  // 小兔幣(紅利金)，可為空
     private Integer bunnyCoin;
 
     @Column(nullable = false, name = "active")  // 是否驗證
@@ -98,13 +104,17 @@ public class Users {
     // Constructors, Getters, Setters...
     public Users() {}
 
-    // 所有參數的構造函數
-    public Users(String email, String phone, String verifyingToken, String account, String password, String name,
-                 String gender, LocalDate birthday, Integer bunnyCoin, Integer active,
-                 String forgetToken, String loginMethod, String googleToken, String facebookToken,
-                 LocalDateTime createTime, LocalDateTime updateTime, LocalDateTime lastLoginTime,
-                 Integer gameTimes, LocalDateTime tokenExpirationTime, Integer detailsCompleted, List<Anniversaries> anniversaries,
-                 Cart cart, WishList wishList) {
+    public List<Orders> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Orders> orders) {
+        this.orders = orders;
+    }
+
+    public Users(String userVip, Integer accumulateSpent, String email, String phone, String verifyingToken, String account, String password, String name, String gender, LocalDate birthday, Integer bunnyCoin, Integer active, String forgetToken, String loginMethod, String googleToken, String facebookToken, LocalDateTime createTime, LocalDateTime updateTime, LocalDateTime lastLoginTime, Integer gameTimes, LocalDateTime tokenExpirationTime, Integer detailsCompleted, List<Anniversaries> anniversaries, Cart cart, WishList wishList, List<Orders> orders) {
+        this.userVip = userVip;
+        this.accumulateSpent = accumulateSpent;
         this.email = email;
         this.phone = phone;
         this.verifyingToken = verifyingToken;
@@ -128,6 +138,46 @@ public class Users {
         this.anniversaries = anniversaries;
         this.cart = cart;
         this.wishList = wishList;
+        this.orders = orders;
+    }
+//    // 所有參數的構造函數
+//    public Users(String email, String phone, String verifyingToken, String account, String password, String name,
+//                 String gender, LocalDate birthday, Integer bunnyCoin, Integer active,
+//                 String forgetToken, String loginMethod, String googleToken, String facebookToken,
+//                 LocalDateTime createTime, LocalDateTime updateTime, LocalDateTime lastLoginTime,
+//                 Integer gameTimes, LocalDateTime tokenExpirationTime, Integer detailsCompleted, List<Anniversaries> anniversaries,
+//                 Cart cart, WishList wishList) {
+//        this.email = email;
+//        this.phone = phone;
+//        this.verifyingToken = verifyingToken;
+//        this.account = account;
+//        this.password = password;
+//        this.name = name;
+//        this.gender = gender;
+//        this.birthday = birthday;
+//        this.bunnyCoin = bunnyCoin;
+//        this.active = active;
+//        this.forgetToken = forgetToken;
+//        this.loginMethod = loginMethod;
+//        this.googleToken = googleToken;
+//        this.facebookToken = facebookToken;
+//        this.createTime = createTime;
+//        this.updateTime = updateTime;
+//        this.lastLoginTime = lastLoginTime;
+//        this.gameTimes = gameTimes;
+//        this.tokenExpirationTime = tokenExpirationTime;
+//        this.detailsCompleted = detailsCompleted;
+//        this.anniversaries = anniversaries;
+//        this.cart = cart;
+//        this.wishList = wishList;
+//    }
+
+    public String getUserVip() {
+        return userVip;
+    }
+
+    public void setUserVip(String userVip) {
+        this.userVip = userVip;
     }
 
     public Long getId() {
@@ -320,6 +370,14 @@ public class Users {
 
     public void setWishList(WishList wishList) {
         this.wishList = wishList;
+    }
+
+    public Integer getAccumulateSpent() {
+        return accumulateSpent;
+    }
+
+    public void setAccumulateSpent(Integer accumulateSpent) {
+        this.accumulateSpent = accumulateSpent;
     }
 
     @Override

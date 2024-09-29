@@ -1,50 +1,24 @@
 package com.EEIT85.bunnySugar.dto.cart;
 
-import org.springframework.stereotype.Component;
-
-@Component
-public class CartSelectDto {
-
+public class CartItemDto {
     private Long id;
     private Integer price;
     private Integer quantity;
     private String productName;
     private String imageUrl;
     private Integer stocks;
-    private Integer bunnyCoin;
-    private String userVip;
-    private Integer accumulateSpent;
 
-
-    public CartSelectDto() {
+    public CartItemDto() {
     }
 
-    public CartSelectDto(Long id, Integer price, Integer quantity, String productName, String imageUrl, Integer stocks, Integer bunnyCoin, String userVip, Integer accumulateSpent) {
+    public CartItemDto(Long id, Integer price, Integer quantity,
+                       String productName, String imageUrl, Integer stocks) {
         this.id = id;
         this.price = price;
         this.quantity = quantity;
         this.productName = productName;
         this.imageUrl = imageUrl;
         this.stocks = stocks;
-        this.bunnyCoin = bunnyCoin;
-        this.userVip = userVip;
-        this.accumulateSpent = accumulateSpent;
-    }
-
-    public Integer getAccumulateSpent() {
-        return accumulateSpent;
-    }
-
-    public void setAccumulateSpent(Integer accumulateSpent) {
-        this.accumulateSpent = accumulateSpent;
-    }
-
-    public String getUserVip() {
-        return userVip;
-    }
-
-    public void setUserVip(String userVip) {
-        this.userVip = userVip;
     }
 
     public Long getId() {
@@ -95,11 +69,5 @@ public class CartSelectDto {
         this.stocks = stocks;
     }
 
-    public Integer getBunnyCoin() {
-        return bunnyCoin;
-    }
-
-    public void setBunnyCoin(Integer bunnyCoin) {
-        this.bunnyCoin = bunnyCoin;
-    }
+    // getters and setters
 }
