@@ -8,55 +8,55 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 
-@RequestMapping("/api/cart")
 @RestController
+@RequestMapping("/api/cart") // 在这里添加 '/api' 前缀
 public class CartController {
-    Long userId = 1L; // 假設用戶 ID 固定為 1，實際情況應根據需求調整
 
     @Autowired
     CartService cartService;
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<List<CartSelectDto>> getCartItems(@PathVariable Long userId) {
+    @GetMapping
+    public ResponseEntity<List<CartSelectDto>> getCartItems(HttpServletRequest request) {
+        Long userId = (Long) request.getAttribute("userId");
         List<CartSelectDto> cartItems = cartService.getCartItemsByUserId(userId);
         return ResponseEntity.ok(cartItems);
     }
 
-
     @PostMapping
-    public ResponseEntity<String> addToCart(@RequestBody CartInsertDto cartInsertDto) {
+    public ResponseEntity<String> addToCart(HttpServletRequest request, @RequestBody CartInsertDto cartInsertDto) {
+        Long userId = (Long) request.getAttribute("userId");
+        cartInsertDto.setUsersId(userId);
         cartService.insertCart(cartInsertDto);
         return ResponseEntity.ok("成功新增購物車");
     }
 
-    @DeleteMapping("/{userId}/{itemId}")
-    public ResponseEntity<String> deleteCartItem(@PathVariable Long userId,
-                                            @PathVariable Long itemId) {
+    @DeleteMapping("/{itemId}")
+    public ResponseEntity<String> deleteCartItem(HttpServletRequest request, @PathVariable Long itemId) {
+        Long userId = (Long) request.getAttribute("userId");
         cartService.deleteCartItem(userId, itemId);
         return ResponseEntity.ok("成功刪除單一購物車品項");
     }
 
-    @DeleteMapping("/{usersId}")
-    public ResponseEntity<String> deleteAllCartItems(@PathVariable Long usersId) {
-        cartService.deleteAllCartItems(usersId);
+    @DeleteMapping
+    public ResponseEntity<String> deleteAllCartItems(HttpServletRequest request) {
+        Long userId = (Long) request.getAttribute("userId");
+        cartService.deleteAllCartItems(userId);
         return ResponseEntity.ok("成功清空購物車");
     }
 
-
     @PutMapping("/{cartItemId}")
-    public ResponseEntity<String> updateCartItem(
-            @PathVariable Long cartItemId,
-            @RequestBody CartUpdateDto cartUpdateDto) {
+    public ResponseEntity<String> updateCartItem(HttpServletRequest request,
+                                                 @PathVariable Long cartItemId,
+                                                 @RequestBody CartUpdateDto cartUpdateDto) {
+        Long userId = (Long) request.getAttribute("userId");
         cartService.updateCartItem(cartItemId, cartUpdateDto);
         return ResponseEntity.ok("Cart item updated successfully");
     }
-
 }
-
-
-
-
-

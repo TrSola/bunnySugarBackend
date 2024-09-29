@@ -46,6 +46,8 @@ public class UserService {
                 return null;
             } else {
                 existingUser.setActive(0);
+                existingUser.setAccumulateSpent(0);
+                existingUser.setUserVip("白兔");
                 existingUser.setUpdateTime(LocalDateTime.now());
                 String verifyingToken = String.format("%06d", (int)(Math.random() * 1000000));
                 existingUser.setVerifyingToken(verifyingToken);
@@ -61,6 +63,8 @@ public class UserService {
 
         // 新用戶註冊
         user.setActive(0);  // 未驗證
+        user.setAccumulateSpent(0);
+        user.setUserVip("白兔");
         user.setCreateTime(LocalDateTime.now());
         user.setUpdateTime(LocalDateTime.now());
         String verifyingToken = String.format("%06d", (int)(Math.random() * 1000000));
@@ -159,9 +163,9 @@ public class UserService {
 
     public Map<String, Object> login(UsersLoginRequestDto loginRequest) {
         Map<String, Object> response = new HashMap<>();
+
         // 根據帳號查找用戶
         Users loginedUser = findByUserAccount(loginRequest.getAccount());
-
         if (loginedUser == null) {
             response.put("status", "error");
             response.put("message", "帳號不存在");
@@ -175,17 +179,32 @@ public class UserService {
             return response;
         }
 
-        // 生成 JWT token
+        // 生成 JWT token，現在不需要指定過期時間
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", loginedUser.getId());
         claims.put("account", loginedUser.getAccount());
-        Date expirationTime = new Date(System.currentTimeMillis() + 30 * 24 * 3600 * 1000); // 維持一個月
-        String token = jwtUtil.generateToken(claims, expirationTime);
+
+        // 直接調用 JwtUtil 中的 generateToken 方法
+        String token = jwtUtil.generateToken(claims);
+
+        // 解析並檢查 JWT Token
+        try {
+            Map<String, Object> parsedClaims = jwtUtil.parseJwtToken(token);
+            System.out.println("Parsed Claims: " + parsedClaims); // 在 Console 中輸出解析的 Claims
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status", "error");
+            response.put("message", "Token 解析失敗: " + e.getMessage());
+            return response;
+        }
 
         response.put("status", "success");
         response.put("token", token);
+
         return response;
     }
+
+
 
 
     // Find user by account

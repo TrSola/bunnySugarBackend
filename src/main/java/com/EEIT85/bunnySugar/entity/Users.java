@@ -404,6 +404,8 @@ public class Users {
                 ", gameTimes=" + gameTimes +
                 ", tokenExpirationTime=" + tokenExpirationTime +
                 ", detailsCompleted=" + detailsCompleted +
+                ", accumulateSpent=" + accumulateSpent +
+                ", userVip='" + userVip + '\'' +
                 '}';
     }
 }
