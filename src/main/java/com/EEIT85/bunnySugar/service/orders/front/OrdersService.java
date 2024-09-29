@@ -1,8 +1,11 @@
 package com.EEIT85.bunnySugar.service.orders.front;
 
+import com.EEIT85.bunnySugar.dto.orders.front.OrderDetailsFrontDto;
+import com.EEIT85.bunnySugar.dto.orders.front.OrdersFrontDto;
 import com.EEIT85.bunnySugar.dto.orders.front.OrdersInsertDto;
 import com.EEIT85.bunnySugar.entity.*;
 import com.EEIT85.bunnySugar.repository.CartRepository;
+import com.EEIT85.bunnySugar.repository.OrderDetailsRepository;
 import com.EEIT85.bunnySugar.repository.OrdersRepository;
 import com.EEIT85.bunnySugar.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -25,6 +28,10 @@ public class OrdersService {
 
     @Autowired
     UserRepository userRepository;
+
+
+    @Autowired
+    private OrderDetailsRepository orderDetailsRepository;
 
     @Transactional
     public void insertOrder(OrdersInsertDto ordersInsertDto, Long userId) {
@@ -95,5 +102,23 @@ public class OrdersService {
 
 
         ordersRepository.save(orders);
+    }
+
+
+
+    // 前台根據訂單編號查詢訂單及細節
+    public OrdersFrontDto getOrderByOrderNumber(String orderNumber) {
+        // 查詢訂單基本信息
+        OrdersFrontDto ordersFrontDto = ordersRepository.findOrderByOrderNumber(orderNumber);
+
+        if (ordersFrontDto == null) {
+            throw new IllegalArgumentException("未找到該訂單");
+        }
+
+        // 查詢訂單詳細信息
+        List<OrderDetailsFrontDto> orderDetailsFrontDtoList = orderDetailsRepository.findOrderDetailsByOrderNumber(orderNumber);
+        ordersFrontDto.setOrderDetails(orderDetailsFrontDtoList);
+
+        return ordersFrontDto;
     }
 }

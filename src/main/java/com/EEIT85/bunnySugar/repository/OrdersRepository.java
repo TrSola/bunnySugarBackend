@@ -1,5 +1,6 @@
 package com.EEIT85.bunnySugar.repository;
 
+import com.EEIT85.bunnySugar.dto.orders.front.OrdersFrontDto;
 import com.EEIT85.bunnySugar.entity.Orders;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface OrdersRepository extends JpaRepository<Orders, Long> {
@@ -46,5 +49,13 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
     @Query("UPDATE Orders o SET o.pickupStatus = :pickupStatus WHERE o.id = :orderId")
     int updatePickupStatus(@Param("orderId") Long orderId, @Param("pickupStatus") String pickupStatus);
 
+
+    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.front.OrdersFrontDto(o.orderNumber, o.createTime, pd.paymentStatus, o.pickupStatus, "
+            + "o.pickupTime, o.total, o.couponName, o.usedBunnyCoins, pd.paidPrice, u.name, u.phone, u.email) "
+            + "FROM Orders o "
+            + "JOIN o.user u "
+            + "JOIN o.paymentDetails pd "
+            + "WHERE o.orderNumber = :orderNumber")
+    OrdersFrontDto findOrderByOrderNumber(@Param("orderNumber") String orderNumber);
 
 }

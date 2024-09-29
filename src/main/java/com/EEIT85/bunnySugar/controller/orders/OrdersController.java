@@ -3,6 +3,7 @@ package com.EEIT85.bunnySugar.controller.orders;
 import com.EEIT85.bunnySugar.dto.orders.Admin.OrdersAdminUpdateDto;
 import com.EEIT85.bunnySugar.dto.orders.Admin.OrdersFullInfoAdminDto;
 import com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto;
+import com.EEIT85.bunnySugar.dto.orders.front.OrdersFrontDto;
 import com.EEIT85.bunnySugar.dto.orders.front.OrdersInsertDto;
 import com.EEIT85.bunnySugar.repository.OrdersRepository;
 import com.EEIT85.bunnySugar.service.orders.admin.OrdersAdminService;
@@ -15,6 +16,8 @@ import org.springframework.data.web.PagedModel;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/api/orders")
 @RestController
@@ -34,7 +37,7 @@ public class OrdersController {
         return ResponseEntity.ok("成功新增訂單");
     }
 
-    @GetMapping
+    @PostMapping
     public ResponseEntity<Page<OrdersInfoAdminDto>> getAllOrders(
             @RequestParam(defaultValue = "1") int page,   // 當前頁碼，預設為第1頁（頁碼從1開始）
             @RequestParam(defaultValue = "10") int size   // 每頁顯示的資料數量，預設為10條
@@ -50,7 +53,7 @@ public class OrdersController {
         return ResponseEntity.ok(ordersPage);
     }
 
-    @PostMapping("/byPhone")
+    @PostMapping("/admin/byPhone")
     public ResponseEntity<Page<OrdersInfoAdminDto>> getOrdersByUserPhone(
             @RequestParam String phone,                    // 會員電話
             @RequestParam(defaultValue = "1") int page,    // 當前頁碼，預設為第1頁
@@ -61,7 +64,7 @@ public class OrdersController {
         return ResponseEntity.ok(ordersPage);
     }
 
-    @PostMapping("/details")
+    @PostMapping("/admin/details")
     public ResponseEntity<OrdersFullInfoAdminDto> getOrderDetailsByOrderId(
             @RequestParam Long orderId,
             @RequestParam(defaultValue = "1") int page,
@@ -76,11 +79,23 @@ public class OrdersController {
 
 
     // 更新取貨或付款狀態
-    @PostMapping("/{orderId}/updateStatus")
+    @PostMapping("/admin/{orderId}/updateStatus")
     public ResponseEntity<String> updateOrderStatus(
             @PathVariable Long orderId,
             @RequestBody OrdersAdminUpdateDto dto) {
         ordersAdminService.updateOrderStatus(orderId, dto);
         return ResponseEntity.ok("訂單狀態更新成功");
+    }
+
+    // 前台根據訂單編號查詢訂單及細節
+    @PostMapping("/details/{orderNumber}")
+    public ResponseEntity<OrdersFrontDto> getOrderByOrderNumber(@PathVariable String orderNumber) {
+        OrdersFrontDto order = ordersService.getOrderByOrderNumber(orderNumber);
+
+        if (order == null) {
+            return ResponseEntity.notFound().build(); // 查無訂單時返回404
+        }
+
+        return ResponseEntity.ok(order);
     }
 }
