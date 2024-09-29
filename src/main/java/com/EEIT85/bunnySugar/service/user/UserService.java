@@ -46,6 +46,8 @@ public class UserService {
                 return null;
             } else {
                 existingUser.setActive(0);
+                existingUser.setAccumulateSpent(0);
+                existingUser.setUserVip("白兔");
                 existingUser.setUpdateTime(LocalDateTime.now());
                 String verifyingToken = String.format("%06d", (int)(Math.random() * 1000000));
                 existingUser.setVerifyingToken(verifyingToken);
@@ -61,6 +63,8 @@ public class UserService {
 
         // 新用戶註冊
         user.setActive(0);  // 未驗證
+        user.setAccumulateSpent(0);
+        user.setUserVip("白兔");
         user.setCreateTime(LocalDateTime.now());
         user.setUpdateTime(LocalDateTime.now());
         String verifyingToken = String.format("%06d", (int)(Math.random() * 1000000));

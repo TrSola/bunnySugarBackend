@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-@RequestMapping("/cart")
 @RestController
+@RequestMapping("/api/cart") // 在这里添加 '/api' 前缀
 public class CartController {
 
     @Autowired
@@ -23,17 +23,15 @@ public class CartController {
             HttpServletRequest request,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        // 將 userId 轉換為 Long
-        String userIdStr = (String) request.getAttribute("userId");
-        Long userId = userIdStr != null ? Long.parseLong(userIdStr) : null; // 處理可能為 null 的情況
+        Long userId = (Long) request.getAttribute("userId"); // 直接獲取Long type
+        System.out.println("userId type: " + userId.getClass().getSimpleName() + ", value" + userId);
         Page<CartSelectDto> cartItems = cartService.getCartItemsByUserId(userId, page, size);
         return ResponseEntity.ok(cartItems);
     }
 
     @PostMapping
     public ResponseEntity<String> addToCart(HttpServletRequest request, @RequestBody CartInsertDto cartInsertDto) {
-        String userIdStr = (String) request.getAttribute("userId");
-        Long userId = userIdStr != null ? Long.parseLong(userIdStr) : null;
+        Long userId = (Long) request.getAttribute("userId");
         cartInsertDto.setUsersId(userId);
         cartService.insertCart(cartInsertDto);
         return ResponseEntity.ok("成功新增購物車");
@@ -41,16 +39,14 @@ public class CartController {
 
     @DeleteMapping("/{itemId}")
     public ResponseEntity<String> deleteCartItem(HttpServletRequest request, @PathVariable Long itemId) {
-        String userIdStr = (String) request.getAttribute("userId");
-        Long userId = userIdStr != null ? Long.parseLong(userIdStr) : null;
+        Long userId = (Long) request.getAttribute("userId");
         cartService.deleteCartItem(userId, itemId);
         return ResponseEntity.ok("成功刪除單一購物車品項");
     }
 
     @DeleteMapping
     public ResponseEntity<String> deleteAllCartItems(HttpServletRequest request) {
-        String userIdStr = (String) request.getAttribute("userId");
-        Long userId = userIdStr != null ? Long.parseLong(userIdStr) : null;
+        Long userId = (Long) request.getAttribute("userId");
         cartService.deleteAllCartItems(userId);
         return ResponseEntity.ok("成功清空購物車");
     }
@@ -59,8 +55,7 @@ public class CartController {
     public ResponseEntity<String> updateCartItem(HttpServletRequest request,
                                                  @PathVariable Long cartItemId,
                                                  @RequestBody CartUpdateDto cartUpdateDto) {
-        String userIdStr = (String) request.getAttribute("userId");
-        Long userId = userIdStr != null ? Long.parseLong(userIdStr) : null;
+        Long userId = (Long) request.getAttribute("userId");
         cartService.updateCartItem(cartItemId, cartUpdateDto);
         return ResponseEntity.ok("Cart item updated successfully");
     }

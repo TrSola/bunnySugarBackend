@@ -29,7 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor) // 註冊 LoginInterceptor
-                .addPathPatterns("/cart/**")
+                .addPathPatterns("/api/**")
                 .excludePathPatterns("/user/login", "user/registerVerify", "user/verify", "user/completeDetails"); // 可選：排除不需要攔截的路徑，例如登錄和註冊
     }
 }

@@ -78,6 +78,13 @@ public class Users {
     @Column(nullable = true, name = "details_completed")
     private Integer detailsCompleted;
 
+    // 新增欄位
+    @Column(name = "accumulate_spent", nullable = false)  // 累計消費
+    private Integer accumulateSpent;
+
+    @Column(length = 10, name = "user_vip", nullable = false)  // VIP 狀態
+    private String userVip;
+
     @JsonManagedReference("Users_Anniversaries")
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Anniversaries> anniversaries;
@@ -103,7 +110,8 @@ public class Users {
                  String gender, LocalDate birthday, Integer bunnyCoin, Integer active,
                  String forgetToken, String loginMethod, String googleToken, String facebookToken,
                  LocalDateTime createTime, LocalDateTime updateTime, LocalDateTime lastLoginTime,
-                 Integer gameTimes, LocalDateTime tokenExpirationTime, Integer detailsCompleted, List<Anniversaries> anniversaries,
+                 Integer gameTimes, LocalDateTime tokenExpirationTime, Integer detailsCompleted, Integer accumulateSpent,
+                 String userVip, List<Anniversaries> anniversaries,
                  Cart cart, WishList wishList) {
         this.email = email;
         this.phone = phone;
@@ -125,6 +133,8 @@ public class Users {
         this.gameTimes = gameTimes;
         this.tokenExpirationTime = tokenExpirationTime;
         this.detailsCompleted = detailsCompleted;
+        this.accumulateSpent = accumulateSpent;
+        this.userVip = userVip;
         this.anniversaries = anniversaries;
         this.cart = cart;
         this.wishList = wishList;
@@ -322,6 +332,18 @@ public class Users {
         this.wishList = wishList;
     }
 
+    public Integer getAccumulateSpent() { return accumulateSpent;
+    }
+
+    public void setAccumulateSpent(Integer accumulateSpent) { this.accumulateSpent = accumulateSpent;
+    }
+
+    public String getUserVip() { return userVip;
+    }
+
+    public void setUserVip(String userVip) { this.userVip = userVip;
+    }
+
     @Override
     public String toString() {
         return "Users{" +
@@ -346,6 +368,8 @@ public class Users {
                 ", gameTimes=" + gameTimes +
                 ", tokenExpirationTime=" + tokenExpirationTime +
                 ", detailsCompleted=" + detailsCompleted +
+                ", accumulateSpent=" + accumulateSpent +
+                ", userVip='" + userVip + '\'' +
                 '}';
     }
 }
