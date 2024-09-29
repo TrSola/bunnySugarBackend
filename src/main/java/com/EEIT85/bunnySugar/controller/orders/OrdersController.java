@@ -1,5 +1,6 @@
 package com.EEIT85.bunnySugar.controller.orders;
 
+import com.EEIT85.bunnySugar.dto.orders.Admin.OrdersAdminUpdateDto;
 import com.EEIT85.bunnySugar.dto.orders.Admin.OrdersFullInfoAdminDto;
 import com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto;
 import com.EEIT85.bunnySugar.dto.orders.front.OrdersInsertDto;
@@ -39,30 +40,24 @@ public class OrdersController {
             @RequestParam(defaultValue = "10") int size   // 每頁顯示的資料數量，預設為10條
     ) {
         System.out.println("Received request for page " + page + " with size " + size);
-        // Pageable類型，PageRequest.of的頁碼從0開始，所以這裡需要減去1
+        // PageRequest.of的頁碼從0開始，所以這裡需要減去1
         Pageable pageable = PageRequest.of(page - 1, size);
 
         // 調用服務層方法獲取分頁的訂單資料
         Page<OrdersInfoAdminDto> ordersPage = ordersAdminService.getAllOrders(pageable);
         System.out.println("Returned page size: " + ordersPage.getContent().size());
 
-        // 直接返回 Page<OrdersInfoAdminDto>，保持 Spring Data Web 的返回格式
         return ResponseEntity.ok(ordersPage);
     }
 
-    @PostMapping("/by-phone")
+    @PostMapping("/byPhone")
     public ResponseEntity<Page<OrdersInfoAdminDto>> getOrdersByUserPhone(
             @RequestParam String phone,                    // 會員電話
             @RequestParam(defaultValue = "1") int page,    // 當前頁碼，預設為第1頁
             @RequestParam(defaultValue = "10") int size    // 每頁顯示的資料數量，預設為10條
     ) {
-        // Pageable類型，PageRequest.of的頁碼從0開始，所以這裡需要減去1
         Pageable pageable = PageRequest.of(page - 1, size);
-
-        // 調用服務層方法根據會員電話獲取分頁的訂單資料
         Page<OrdersInfoAdminDto> ordersPage = ordersAdminService.getOrdersByUserPhone(phone, pageable);
-
-        // 返回HTTP狀態為200的ResponseEntity，並將查詢結果作為返回數據
         return ResponseEntity.ok(ordersPage);
     }
 
@@ -71,16 +66,21 @@ public class OrdersController {
             @RequestParam Long orderId,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {
-        // Pageable 分頁參數
         Pageable pageable = PageRequest.of(page - 1, size);
-
         OrdersFullInfoAdminDto orderDetails = ordersAdminService.getOrderFullInfoByOrderId(orderId, pageable);
-
         if (orderDetails == null) {
             return ResponseEntity.notFound().build(); // 查無資料返回404
         }
-
         return ResponseEntity.ok(orderDetails);
     }
 
+
+    // 更新取貨或付款狀態
+    @PostMapping("/{orderId}/updateStatus")
+    public ResponseEntity<String> updateOrderStatus(
+            @PathVariable Long orderId,
+            @RequestBody OrdersAdminUpdateDto dto) {
+        ordersAdminService.updateOrderStatus(orderId, dto);
+        return ResponseEntity.ok("訂單狀態更新成功");
+    }
 }

@@ -13,7 +13,7 @@ public class OrdersFullInfoAdminDto { //訂單管理頁面所跳出的詳細資�
     private LocalDateTime createTime;
     private String paymentStatus;
     private String pickupStatus;
-    private Integer paymentPrice;
+    private Integer paidPrice;
     private String paymentMethod;
     private LocalDateTime paymentDate;
     private Integer total;
@@ -85,12 +85,12 @@ public class OrdersFullInfoAdminDto { //訂單管理頁面所跳出的詳細資�
         this.pickupStatus = pickupStatus;
     }
 
-    public Integer getPaymentPrice() {
-        return paymentPrice;
+    public Integer getPaidPrice() {
+        return paidPrice;
     }
 
-    public void setPaymentPrice(Integer paymentPrice) {
-        this.paymentPrice = paymentPrice;
+    public void setPaidPrice(Integer paidPrice) {
+        this.paidPrice = paidPrice;
     }
 
     public String getPaymentMethod() {
@@ -140,6 +140,7 @@ public class OrdersFullInfoAdminDto { //訂單管理頁面所跳出的詳細資�
     public void setPickupTime(LocalDateTime pickupTime) {
         this.pickupTime = pickupTime;
     }
+
 }
 
 

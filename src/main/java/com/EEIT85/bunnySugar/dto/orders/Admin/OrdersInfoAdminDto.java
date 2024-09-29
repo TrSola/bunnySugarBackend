@@ -9,7 +9,10 @@ public class OrdersInfoAdminDto { //訂單管理頁面(不含跳出的詳細資�
     private String userPhone;
     private String userEmail;
     private List<OrderDetailsAdminDto> orderDetails;
-    private Integer paymentPrice;
+    private Integer paidPrice;
+
+
+
     private String paymentStatus;
 
     public String getOrderNumber() {
@@ -52,13 +55,6 @@ public class OrdersInfoAdminDto { //訂單管理頁面(不含跳出的詳細資�
         this.orderDetails = orderDetails;
     }
 
-    public Integer getPaymentPrice() {
-        return paymentPrice;
-    }
-
-    public void setPaymentPrice(Integer paymentPrice) {
-        this.paymentPrice = paymentPrice;
-    }
 
     public String getPaymentStatus() {
         return paymentStatus;
@@ -68,6 +64,14 @@ public class OrdersInfoAdminDto { //訂單管理頁面(不含跳出的詳細資�
         this.paymentStatus = paymentStatus;
     }
 
+
+    public Integer getPaidPrice() {
+        return paidPrice;
+    }
+
+    public void setPaidPrice(Integer paidPrice) {
+        this.paidPrice = paidPrice;
+    }
 }
 
 

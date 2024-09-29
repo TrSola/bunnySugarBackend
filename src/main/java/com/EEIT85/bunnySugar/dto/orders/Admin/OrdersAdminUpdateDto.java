@@ -1,20 +1,9 @@
 package com.EEIT85.bunnySugar.dto.orders.Admin;
 
-import java.time.LocalDateTime;
-import java.util.List;
 
 public class OrdersAdminUpdateDto {
-    private Long id;
     private String pickupStatus;
-    private List<OrderDetailsAdminUpdateDto> orderDetails;
-
-    public OrdersAdminUpdateDto() {
-    }
-
-    public OrdersAdminUpdateDto(Long id, String pickupStatus, LocalDateTime pickupTime) {
-        this.id = id;
-        this.pickupStatus = pickupStatus;
-    }
+    private String paymentStatus;
 
     public String getPickupStatus() {
         return pickupStatus;
@@ -24,19 +13,11 @@ public class OrdersAdminUpdateDto {
         this.pickupStatus = pickupStatus;
     }
 
-    public Long getId() {
-        return id;
+    public String getPaymentStatus() {
+        return paymentStatus;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public List<OrderDetailsAdminUpdateDto> getOrderDetails() {
-        return orderDetails;
-    }
-
-    public void setOrderDetails(List<OrderDetailsAdminUpdateDto> orderDetails) {
-        this.orderDetails = orderDetails;
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 }

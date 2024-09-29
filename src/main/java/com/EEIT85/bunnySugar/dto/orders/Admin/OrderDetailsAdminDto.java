@@ -6,7 +6,6 @@ public class OrderDetailsAdminDto {
     private String productName; // 產品名稱
     private Integer quantity; //數量
     private Integer price; //單價
-    private LocalDateTime pickupTime;
 
     public String getProductName() {
         return productName;
@@ -32,11 +31,4 @@ public class OrderDetailsAdminDto {
         this.price = price;
     }
 
-    public LocalDateTime getPickupTime() {
-        return pickupTime;
-    }
-
-    public void setPickupTime(LocalDateTime pickupTime) {
-        this.pickupTime = pickupTime;
-    }
 }

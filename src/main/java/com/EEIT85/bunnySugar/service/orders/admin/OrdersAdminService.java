@@ -1,12 +1,13 @@
 package com.EEIT85.bunnySugar.service.orders.admin;
 
 import com.EEIT85.bunnySugar.dto.orders.Admin.OrderDetailsAdminDto;
+import com.EEIT85.bunnySugar.dto.orders.Admin.OrdersAdminUpdateDto;
 import com.EEIT85.bunnySugar.dto.orders.Admin.OrdersFullInfoAdminDto;
 import com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto;
-import com.EEIT85.bunnySugar.repository.OrderDetailsRepository;
-import com.EEIT85.bunnySugar.repository.OrdersRepository;
-import com.EEIT85.bunnySugar.repository.ProductsRepository;
-import com.EEIT85.bunnySugar.repository.UserRepository;
+import com.EEIT85.bunnySugar.entity.Orders;
+import com.EEIT85.bunnySugar.entity.PaymentDetails;
+import com.EEIT85.bunnySugar.repository.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,6 +23,9 @@ import java.util.List;
 public class OrdersAdminService {
     @Autowired
     private OrdersRepository ordersRepository;
+
+    @Autowired
+    private PaymentDetailsRepository paymentDetailsRepository;
 
     // 查詢所有訂單，並返回分頁的訂單資訊
     public Page<OrdersInfoAdminDto> getAllOrders(Pageable pageable) {
@@ -48,7 +52,7 @@ public class OrdersAdminService {
                 ordersInfoAdminDto.setUserName((String) row[1]);
                 ordersInfoAdminDto.setUserPhone((String) row[2]);
                 ordersInfoAdminDto.setUserEmail((String) row[3]);
-                ordersInfoAdminDto.setPaymentPrice((Integer) row[4]);
+                ordersInfoAdminDto.setPaidPrice((Integer) row[4]);
                 ordersInfoAdminDto.setPaymentStatus((String) row[5]);
 
                 // 處理 orderDetails
@@ -87,7 +91,7 @@ public class OrdersAdminService {
             ordersInfoAdminDto.setUserName((String) row[1]);
             ordersInfoAdminDto.setUserPhone((String) row[2]);
             ordersInfoAdminDto.setUserEmail((String) row[3]);
-            ordersInfoAdminDto.setPaymentPrice((Integer) row[4]);
+            ordersInfoAdminDto.setPaidPrice((Integer) row[4]);
             ordersInfoAdminDto.setPaymentStatus((String) row[5]);
 
             OrderDetailsAdminDto orderDetailsDto = new OrderDetailsAdminDto();
@@ -127,7 +131,7 @@ public class OrdersAdminService {
         ordersFullInfoAdminDto.setCreateTime((LocalDateTime) firstRow[4]);
         ordersFullInfoAdminDto.setPaymentStatus((String) firstRow[5]);
         ordersFullInfoAdminDto.setPickupStatus((String) firstRow[6]);
-        ordersFullInfoAdminDto.setPaymentPrice((Integer) firstRow[7]);
+        ordersFullInfoAdminDto.setPaidPrice((Integer) firstRow[7]);
         ordersFullInfoAdminDto.setPaymentMethod((String) firstRow[8]);
         ordersFullInfoAdminDto.setPaymentDate((LocalDateTime) firstRow[9]);
         ordersFullInfoAdminDto.setTotal((Integer) firstRow[10]);
@@ -147,6 +151,23 @@ public class OrdersAdminService {
 
         ordersFullInfoAdminDto.setOrderDetails(orderDetailsList);
         return ordersFullInfoAdminDto;
+    }
+
+    // 更新取貨或付款狀態，保持未修改的欄位原有狀態
+    @Transactional
+    public void updateOrderStatus(Long orderId, OrdersAdminUpdateDto dto) {
+        // 先查詢當前的取貨狀態與付款狀態
+        Orders order = ordersRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("訂單未找到"));
+
+        // 檢查是否需要更新取貨狀態，否則保持原狀態
+        String newPickupStatus = dto.getPickupStatus() != null ? dto.getPickupStatus() : order.getPickupStatus();
+        ordersRepository.updatePickupStatus(orderId, newPickupStatus);
+
+        // 更新付款狀態，同樣保持原狀態
+        PaymentDetails paymentDetails = paymentDetailsRepository.findByOrdersId(orderId);
+        String newPaymentStatus = dto.getPaymentStatus() != null ? dto.getPaymentStatus() : paymentDetails.getPaymentStatus();
+        paymentDetailsRepository.updatePaymentStatus(orderId, newPaymentStatus);
     }
 
 }
