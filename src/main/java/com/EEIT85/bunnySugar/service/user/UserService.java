@@ -169,31 +169,30 @@ public class UserService {
         if (loginedUser == null) {
             response.put("status", "error");
             response.put("message", "帳號不存在");
-            return response;
+            return response; // 不要生成 JWT，直接返回
         }
 
         // 驗證密碼
         if (!BCrypt.checkpw(loginRequest.getPassword(), loginedUser.getPassword())) {
             response.put("status", "error");
             response.put("message", "密碼錯誤");
-            return response;
+            return response; // 不要生成 JWT，直接返回
         }
 
+        // 更新最後登錄時間
         LocalDateTime now = LocalDateTime.now();
         userRepository.updateLastLoginTime(loginedUser.getId(), now);
 
-        // 生成 JWT token，現在不需要指定過期時間
+        // 生成 JWT token
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", loginedUser.getId());
         claims.put("account", loginedUser.getAccount());
-
-        // 直接調用 JwtUtil 中的 generateToken 方法
         String token = jwtUtil.generateToken(claims);
 
-        // 解析並檢查 JWT Token
+        // 檢查 JWT token 是否能解析成功
         try {
             Map<String, Object> parsedClaims = jwtUtil.parseJwtToken(token);
-            System.out.println("Parsed Claims: " + parsedClaims); // 在 Console 中輸出解析的 Claims
+            System.out.println("Parsed Claims: " + parsedClaims);
         } catch (Exception e) {
             e.printStackTrace();
             response.put("status", "error");
@@ -203,9 +202,9 @@ public class UserService {
 
         response.put("status", "success");
         response.put("token", token);
-
         return response;
     }
+
 
     // Find user by account
     public Users findByUserAccount(String account) {

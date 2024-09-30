@@ -8,6 +8,8 @@ import com.EEIT85.bunnySugar.service.user.UserService;
 import com.EEIT85.bunnySugar.utils.JwtUtil;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -82,7 +84,14 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Map<String, Object> login(@RequestBody UsersLoginRequestDto loginRequest) {
-        return userService.login(loginRequest);
+    public ResponseEntity<Map<String, Object>> login(@RequestBody UsersLoginRequestDto loginRequest) {
+        Map<String, Object> response = userService.login(loginRequest);
+
+        // 根據 response 中的 status 決定要返回的 HTTP 狀態碼
+        if ("error".equals(response.get("status"))) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response); // 狀態錯誤時，回傳 401
+        }
+
+        return ResponseEntity.ok(response); // 成功時，回傳 200
     }
 }
