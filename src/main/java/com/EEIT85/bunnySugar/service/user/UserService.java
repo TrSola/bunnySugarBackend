@@ -179,6 +179,9 @@ public class UserService {
             return response;
         }
 
+        LocalDateTime now = LocalDateTime.now();
+        userRepository.updateLastLoginTime(loginedUser.getId(), now);
+
         // 生成 JWT token，現在不需要指定過期時間
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", loginedUser.getId());
@@ -203,9 +206,6 @@ public class UserService {
 
         return response;
     }
-
-
-
 
     // Find user by account
     public Users findByUserAccount(String account) {

@@ -2,18 +2,27 @@ package com.EEIT85.bunnySugar.repository;
 
 import com.EEIT85.bunnySugar.dto.users.admin.MemberAdminDto;
 import com.EEIT85.bunnySugar.entity.Users;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDateTime;
 
 @Repository
 public interface UserRepository extends JpaRepository<Users, Long> {
     Users findByAccount(String account);
     Users findByVerifyingToken(String token);
     Users findByEmail(String email);  // 根據信箱查詢用戶
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Users u SET u.lastLoginTime = :lastLoginTime WHERE u.id = :userId")
+    void updateLastLoginTime(Long userId, LocalDateTime lastLoginTime);
 
     // 查詢所有會員的DTO並分頁
     @Query("SELECT NEW com.EEIT85.bunnySugar.dto.users.admin.MemberAdminDto(" +
