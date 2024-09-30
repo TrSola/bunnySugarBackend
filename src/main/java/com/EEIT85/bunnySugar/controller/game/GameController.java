@@ -28,10 +28,15 @@ public class GameController {
     }
 
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Integer> endGame(@PathVariable Long id, @RequestBody GameDetailsDto result) {
-        Integer gameTimes = gameService.endGame(id, result);
-        return ResponseEntity.ok(gameTimes);
+    @PutMapping("/end")
+    public ResponseEntity<String> endGame(HttpServletRequest request, @RequestBody GameDetailsDto result) {
+        Long userId = (Long) request.getAttribute("userId"); // 從 request 中獲取 userId
+        Integer gameTimes = gameService.endGame(userId, result);
+        if (gameTimes != null && gameTimes >= 0) {
+            return ResponseEntity.ok("Game ended successfully! Remaining game times: " + gameTimes);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error ending the game or insufficient game times.");
+        }
     }
 }
 
