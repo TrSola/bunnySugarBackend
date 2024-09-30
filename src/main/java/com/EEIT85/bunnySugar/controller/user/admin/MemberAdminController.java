@@ -62,5 +62,16 @@ public class MemberAdminController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("會員不存在");
         }
     }
+
+    //刪除會員
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteMemberById(@PathVariable Long id) {
+        boolean success = memberAdminService.deleteMemberById(id);
+        if (success) {
+            return ResponseEntity.ok("會員刪除成功");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("會員不存在");
+        }
+    }
 }
 
