@@ -1,6 +1,6 @@
 package com.EEIT85.bunnySugar.config;
 
-import com.EEIT85.bunnySugar.interceptors.LoginInterceptor; // 引入 LoginInterceptor
+import com.EEIT85.bunnySugar.interceptors.LoginInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -11,10 +11,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     private final LoginInterceptor loginInterceptor; // 宣告 LoginInterceptor
+    private final SecurityWhiteList securityWhiteList; // 引入 SecurityWhiteList 類別
 
     @Autowired
-    public WebConfig(LoginInterceptor loginInterceptor) {
-        this.loginInterceptor = loginInterceptor; // 通過建構子注入 LoginInterceptor
+    public WebConfig(LoginInterceptor loginInterceptor, SecurityWhiteList securityWhiteList) {
+        this.loginInterceptor = loginInterceptor;
+        this.securityWhiteList = securityWhiteList;
     }
 
     @Override
@@ -28,8 +30,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginInterceptor) // 註冊 LoginInterceptor
-//                .addPathPatterns("/api/**")
-                .excludePathPatterns("/user/login", "user/registerVerify", "user/verify", "user/completeDetails"); // 可選：排除不需要攔截的路徑，例如登錄和註冊
+        registry.addInterceptor(loginInterceptor) // 註冊 LoginInterceptor 攔截器
+                .addPathPatterns("/api/**") // 指定需要攔截的路徑
+                .excludePathPatterns(securityWhiteList.getWhitelistPaths()); // 使用 SecurityWhiteList 提供的白名單路徑
     }
 }
