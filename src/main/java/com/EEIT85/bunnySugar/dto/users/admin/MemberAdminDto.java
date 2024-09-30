@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class MemberAdminDto {
+    private Long id;
     private String name;
     private String gender;
     private String email;
@@ -14,13 +15,22 @@ public class MemberAdminDto {
     public MemberAdminDto() {
     }
 
-    public MemberAdminDto(String name, String gender, String email, String phone, LocalDate birthday, String userVip) {
+    public MemberAdminDto(Long id, String name, String gender, String email, String phone, LocalDate birthday, String userVip) {
+        this.id = id;
         this.name = name;
         this.gender = gender;
         this.email = email;
         this.phone = phone;
         this.birthday = birthday;
         this.userVip = userVip;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

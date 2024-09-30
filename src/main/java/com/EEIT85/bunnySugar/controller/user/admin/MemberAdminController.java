@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin/members")
+@RequestMapping("/api/admin/members")
 public class MemberAdminController {
 
     @Autowired
@@ -40,7 +40,7 @@ public class MemberAdminController {
 //        }
 //    }
 
-    // 根據ID查詢會員
+    // 根據電話號碼查詢會員
     @GetMapping("/{userPhone}")
     public ResponseEntity<MemberAdminDto> getMemberByUserPhone(@PathVariable String userPhone) {
         MemberAdminDto member = memberAdminService.getMemberByUserPhone(userPhone);

@@ -26,7 +26,7 @@ public interface UserRepository extends JpaRepository<Users, Long> {
 
     // 查詢所有會員的DTO並分頁
     @Query("SELECT NEW com.EEIT85.bunnySugar.dto.users.admin.MemberAdminDto(" +
-            "u.name, u.gender, u.email, u.phone, u.birthday, u.userVip) FROM Users u")
+            "u.id, u.name, u.gender, u.email, u.phone, u.birthday, u.userVip) FROM Users u")
     Page<MemberAdminDto> findAllMemberAdminSelectDto(Pageable pageable);
 
 //    // 根據ID查詢會員DTO
@@ -36,7 +36,7 @@ public interface UserRepository extends JpaRepository<Users, Long> {
 
     // 根據電話號碼查詢會員DTO
     @Query("SELECT NEW com.EEIT85.bunnySugar.dto.users.admin.MemberAdminDto(" +
-            "u.name, u.gender, u.email, u.phone, u.birthday, u.userVip) FROM Users u WHERE u.phone = :phone")
+            "u.id, u.name, u.gender, u.email, u.phone, u.birthday, u.userVip) FROM Users u WHERE u.phone = :phone")
     MemberAdminDto findMemberAdminSelectDtoByUserPhone(@Param("phone") String phone);
 }
 
