@@ -22,9 +22,14 @@ public class MemberAdminService {
         return userRepository.findAllMemberAdminSelectDto(pageable);
     }
 
-    // 根據ID查詢會員並返回DTO
-    public MemberAdminDto getMemberById(Long id) {
-        return userRepository.findMemberAdminSelectDtoById(id);
+//    // 根據ID查詢會員並返回DTO
+//    public MemberAdminDto getMemberById(Long id) {
+//        return userRepository.findMemberAdminSelectDtoById(id);
+//    }
+
+    // 根據電話號碼查詢會員並返回DTO
+    public MemberAdminDto getMemberByUserPhone(String userPhone) {
+        return  userRepository.findMemberAdminSelectDtoByUserPhone(userPhone);
     }
 
     // 更新會員的 userVip
@@ -44,5 +49,17 @@ public class MemberAdminService {
             return false;
         }
     }
+
+    //刪除會員
+    public boolean deleteMemberById(Long id) {
+        Optional<Users> existingUser = userRepository.findById(id);
+        if (existingUser.isPresent()) {
+            userRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
 }

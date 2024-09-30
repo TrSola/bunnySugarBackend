@@ -35,5 +35,17 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(responseBody, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(MemberNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleOrderNotFoundException(MemberNotFoundException ex) {
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("timestamp", new Date());
+        responseBody.put("status", HttpStatus.NOT_FOUND.value());
+        responseBody.put("error", "Member Not Found");
+        responseBody.put("message", ex.getMessage());
+        responseBody.put("path", "/memberPage");
+
+        return new ResponseEntity<>(responseBody, HttpStatus.NOT_FOUND);
+    }
 }
 

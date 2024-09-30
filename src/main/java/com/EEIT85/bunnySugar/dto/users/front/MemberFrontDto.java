@@ -1,26 +1,27 @@
-package com.EEIT85.bunnySugar.dto.users.admin;
+package com.EEIT85.bunnySugar.dto.users.front;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-public class MemberAdminDto {
+public class MemberFrontDto {
     private String name;
     private String gender;
     private String email;
     private String phone;
     private LocalDate birthday;
-    private String userVip;
+    private Integer gameTimes;
+    private Integer bunnyCoin;
 
-    public MemberAdminDto() {
+    public MemberFrontDto() {
     }
 
-    public MemberAdminDto(String name, String gender, String email, String phone, LocalDate birthday, String userVip) {
+    public MemberFrontDto(String name, String gender, String email, String phone, LocalDate birthday, Integer gameTimes, Integer bunnyCoin) {
         this.name = name;
         this.gender = gender;
         this.email = email;
         this.phone = phone;
         this.birthday = birthday;
-        this.userVip = userVip;
+        this.gameTimes = gameTimes;
+        this.bunnyCoin = bunnyCoin;
     }
 
     public String getName() {
@@ -63,11 +64,19 @@ public class MemberAdminDto {
         this.birthday = birthday;
     }
 
-    public String getUserVip() {
-        return userVip;
+    public Integer getGameTimes() {
+        return gameTimes;
     }
 
-    public void setUserVip(String userVip) {
-        this.userVip = userVip;
+    public void setGameTimes(Integer gameTimes) {
+        this.gameTimes = gameTimes;
+    }
+
+    public Integer getBunnyCoin() {
+        return bunnyCoin;
+    }
+
+    public void setBunnyCoin(Integer bunnyCoin) {
+        this.bunnyCoin = bunnyCoin;
     }
 }
