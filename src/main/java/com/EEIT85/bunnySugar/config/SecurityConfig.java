@@ -27,7 +27,7 @@ public class SecurityConfig {
                         .requestMatchers("/user/registerVerify").permitAll()
                         .requestMatchers("/user/verify").permitAll()
                         .requestMatchers("/user/completeDetails").permitAll()
-                        .anyRequest().authenticated() // 其他請求需要認證
+                        .anyRequest().permitAll() // 其他請求需要認證
                 )
                 .addFilterBefore(jwtSecurityFilter, UsernamePasswordAuthenticationFilter.class); // 添加 JWT 过滤器
 
