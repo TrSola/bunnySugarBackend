@@ -40,11 +40,12 @@ public class CartService {
 
 
     @Transactional
-    public void insertCart(CartInsertDto cartInsertDto) {
+    public void insertCart(CartInsertDto cartInsertDto, Long userId) {
 
 
         //用dto中的userId找出他在資料庫中對應的購物車
-        Cart cart = cartRepository.findByUsersId(cartInsertDto.getUsersId());
+        Cart cart = cartRepository.findByUsersId(userId);
+        System.out.println(cart);
         //用dto中的productId找出對應的Product
         Products products =
                 productsRepository.findById(cartInsertDto.getProductId())
@@ -52,7 +53,9 @@ public class CartService {
 
         //用products_id資訊查是否有這個CartItem
         Optional<CartItems> existingCartItem =
-                cartItemsRepository.findByProductsId(products.getId());
+                cartItemsRepository.findByProductsIdAndCartId(products.getId(),
+                        cart.getId());
+        System.out.println(existingCartItem);
         //如果有，修改後存入 若沒有．新建一個購物清單實體 準備存入資料庫
         if (existingCartItem.isPresent()) {
             CartItems cartItem = existingCartItem.get();

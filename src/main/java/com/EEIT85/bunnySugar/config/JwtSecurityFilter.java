@@ -48,15 +48,15 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
                 // 將解析出的 `claims` 存入 `request` 屬性中
                 request.setAttribute("claims", claims);
 
-                log.info("Token 驗證成功，設置認證上下文 | authenticationToken: {}", authenticationToken);
+//                log.info("Token 驗證成功，設置認證上下文 | authenticationToken: {}", authenticationToken);
             } else {
                 // 解析失敗，清除上下文
-                log.info("Token 驗證失敗，清除上下文 | claims: {}", claims);
+//                log.info("Token 驗證失敗，清除上下文 | claims: {}", claims);
                 SecurityContextHolder.clearContext();
             }
         } else {
             // 如果 token 缺失或無效，清除上下文
-            log.info("Token 驗證失敗，清除上下文 | Token 缺失或無效");
+//            log.info("Token 驗證失敗，清除上下文 | Token 缺失或無效");
             SecurityContextHolder.clearContext();
         }
 
