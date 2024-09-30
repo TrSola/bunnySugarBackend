@@ -19,7 +19,7 @@ public class MemberAdminController {
     private MemberAdminService memberAdminService;
 
     // 查詢所有會員並分頁
-    @PostMapping
+    @GetMapping
     public ResponseEntity<Page<MemberAdminDto>> getAllMembers(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size
@@ -29,10 +29,21 @@ public class MemberAdminController {
         return ResponseEntity.ok(membersPage);
     }
 
+//    // 根據ID查詢會員
+//    @GetMapping("/{id}")
+//    public ResponseEntity<MemberAdminDto> getMemberById(@PathVariable Long id) {
+//        MemberAdminDto member = memberAdminService.getMemberById(id);
+//        if (member != null) {
+//            return ResponseEntity.ok(member);
+//        } else {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//        }
+//    }
+
     // 根據ID查詢會員
-    @GetMapping("/{id}")
-    public ResponseEntity<MemberAdminDto> getMemberById(@PathVariable Long id) {
-        MemberAdminDto member = memberAdminService.getMemberById(id);
+    @GetMapping("/{userPhone}")
+    public ResponseEntity<MemberAdminDto> getMemberByUserPhone(@PathVariable String userPhone) {
+        MemberAdminDto member = memberAdminService.getMemberByUserPhone(userPhone);
         if (member != null) {
             return ResponseEntity.ok(member);
         } else {
