@@ -24,10 +24,12 @@ public class CartController {
 
     @GetMapping
     public ResponseEntity<List<CartSelectDto>> getCartItems(HttpServletRequest request) {
+        System.out.println("getCartItems方法呼叫，準備取得使用者 ID"); // 加入這行用來確認方法被執行
         Long userId = (Long) request.getAttribute("userId");
         List<CartSelectDto> cartItems = cartService.getCartItemsByUserId(userId);
         return ResponseEntity.ok(cartItems);
     }
+
 
     @PostMapping
     public ResponseEntity<String> addToCart(HttpServletRequest request, @RequestBody CartInsertDto cartInsertDto) {
