@@ -9,16 +9,18 @@ public class MemberAdminDto {
     private String email;
     private String phone;
     private LocalDate birthday;
+    private String userVip;
 
     public MemberAdminDto() {
     }
 
-    public MemberAdminDto(String name, String gender, String email, String phone, LocalDate birthday) {
+    public MemberAdminDto(String name, String gender, String email, String phone, LocalDate birthday, String userVip) {
         this.name = name;
         this.gender = gender;
         this.email = email;
         this.phone = phone;
         this.birthday = birthday;
+        this.userVip = userVip;
     }
 
     public String getName() {
@@ -59,5 +61,13 @@ public class MemberAdminDto {
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
+    }
+
+    public String getUserVip() {
+        return userVip;
+    }
+
+    public void setUserVip(String userVip) {
+        this.userVip = userVip;
     }
 }
