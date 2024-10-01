@@ -22,7 +22,10 @@ public class MemberAdminService {
         return userRepository.findAllMemberAdminSelectDto(pageable);
     }
 
-
+    // 根據ID查詢會員並返回DTO
+    public Optional<Users> getMemberById(Long userId) {
+        return userRepository.findById(userId);
+    }
 
     // 根據電話號碼查詢會員並返回DTO
     public MemberAdminDto getMemberByUserPhone(String userPhone) {

@@ -42,6 +42,22 @@ public class MemberAdminController {
         return ResponseEntity.ok(membersPage);
     }
 
+    // 根據會員ID查詢會員
+    @GetMapping("/getById")
+    public Object getMemberById(HttpServletRequest request) {
+        Long userId = (Long) request.getAttribute("userId");
+        System.out.println(userId);
+        if (userId == null) {
+            throw new IllegalArgumentException("User ID is null");
+        }
+        Optional<Users> member = memberAdminService.getMemberById(userId);
+        if (member != null) {
+            return ResponseEntity.ok(member);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
 
 
     // 根據電話號碼查詢會員
