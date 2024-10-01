@@ -33,7 +33,7 @@ public class MemberFrontService {
                     return memberFrontDto;
                 })
                 .orElseThrow(() -> new MemberNotFoundException("會員不存在"));
-    }git checkout HEAD --
+    }
 
 
     // 更新會員資料
