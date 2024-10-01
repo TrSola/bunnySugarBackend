@@ -9,6 +9,7 @@ import com.EEIT85.bunnySugar.entity.WishList;
 import com.EEIT85.bunnySugar.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,13 +40,13 @@ public class UserService {
     @Autowired
     private JwtUtil jwtUtil;
 
-    public Users registerUserAndAll(Users user) throws MessagingException {
+    public ResponseEntity<?> registerUserAndAll(Users user) throws MessagingException {
         // 檢查信箱是否已存在
         Users existingUser = findByUserEmail(user.getEmail());
 
         if (existingUser != null) {
             if (existingUser.getDetailsCompleted() == 1) {
-                return null;
+                return ResponseEntity.badRequest().body("此信箱已經註冊過囉");
             } else {
                 existingUser.setActive(0);
                 existingUser.setAccumulateSpent(0);
@@ -59,7 +60,7 @@ public class UserService {
                 verificationEmailService.sendVerificationEmail(existingUser.getEmail(), verifyingToken);
 
                 userRepository.save(existingUser);
-                return existingUser;
+                return ResponseEntity.ok(existingUser);
             }
         }
 
@@ -81,7 +82,7 @@ public class UserService {
         // 發送驗證信
         verificationEmailService.sendVerificationEmail(user.getEmail(), verifyingToken);
 
-        return user; // 返回保存的使用者物件
+        return ResponseEntity.ok(user); // 返回保存的使用者物件
     }
 
 

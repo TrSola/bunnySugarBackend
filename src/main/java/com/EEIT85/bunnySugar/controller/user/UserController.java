@@ -30,18 +30,21 @@ public class UserController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/registerVerify")
-    public Map<String, Object> registerVerify(@RequestBody Users user) throws MessagingException {
+    public ResponseEntity<Map<String, Object>> registerVerify(@RequestBody Users user) throws MessagingException {
         Map<String, Object> response = new HashMap<>();
 
-        Users registeredUser = userService.registerUserAndAll(user);
-        if (registeredUser != null) {
+        ResponseEntity<?> registeredUserResponse = userService.registerUserAndAll(user);
+
+        // 檢查返回的 ResponseEntity
+        if (registeredUserResponse.getStatusCode() == HttpStatus.OK) {
             response.put("status", "success");
             response.put("message", "請檢查您的信箱以獲取驗證碼");
         } else {
             response.put("status", "error");
-            response.put("message", "這個信箱已經註冊過BunnySugar囉！");
+            response.put("message", registeredUserResponse.getBody() != null ? registeredUserResponse.getBody() : "這個信箱已經註冊過BunnySugar囉！");
         }
-        return response;
+
+        return ResponseEntity.ok(response); // 返回整個響應
     }
 
     @PostMapping("/verify")
