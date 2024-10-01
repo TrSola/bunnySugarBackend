@@ -60,11 +60,21 @@ public class MemberController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<String> updateMember(
-            @PathVariable Long id, @RequestBody MemberFrontUpdateDto updatedMemberDto) {
-        memberFrontService.updateMember(id, updatedMemberDto);
-        return ResponseEntity.ok("會員資料更新成功");
+    @PutMapping("/update")
+    public ResponseEntity<String> updateMember(HttpServletRequest request, @RequestBody MemberFrontUpdateDto updatedMemberDto) {
+        Long userId = (Long) request.getAttribute("userId");
+        System.out.println("Updating User ID: " + userId);
+
+        if (userId == null) {
+            throw new IllegalArgumentException("User ID is null");
+        }
+
+        boolean isUpdated = memberFrontService.updateMember(userId, updatedMemberDto);
+        if (isUpdated) {
+            return ResponseEntity.ok("會員資料更新成功");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("會員未找到，更新失敗");
+        }
     }
 
 }
