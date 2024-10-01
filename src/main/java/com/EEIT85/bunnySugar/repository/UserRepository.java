@@ -29,10 +29,10 @@ public interface UserRepository extends JpaRepository<Users, Long> {
             "u.id, u.name, u.gender, u.email, u.phone, u.birthday, u.userVip) FROM Users u")
     Page<MemberAdminDto> findAllMemberAdminSelectDto(Pageable pageable);
 
-//    // 根據ID查詢會員DTO
-//    @Query("SELECT NEW com.EEIT85.bunnySugar.dto.users.admin.MemberAdminDto(" +
-//            "u.name, u.gender, u.email, u.phone, u.birthday) FROM Users u WHERE u.id = :id")
-//    MemberAdminDto findMemberAdminSelectDtoById(@Param("id") Long id);
+    // 根據ID查詢會員DTO
+    @Query("SELECT NEW com.EEIT85.bunnySugar.dto.users.admin.MemberAdminDto(" +
+            "u.id, u.name, u.gender, u.email, u.phone, u.birthday, u.userVip) FROM Users u WHERE u.id = :id")
+    MemberAdminDto findMemberAdminSelectDtoById(@Param("id") Long id);
 
     // 根據電話號碼查詢會員DTO
     @Query("SELECT NEW com.EEIT85.bunnySugar.dto.users.admin.MemberAdminDto(" +
