@@ -13,6 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.EEIT85.bunnySugar.utils.JwtUtil;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseToken;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -203,6 +205,60 @@ public class UserService {
         response.put("status", "success");
         response.put("token", token);
         return response;
+    }
+
+    public Map<String, Object> verifyGoogleToken(String googleToken) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            // 使用 Firebase 驗證 Google ID Token
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(googleToken);
+
+            // 從 token 中解析用戶的資訊
+            String googleId = decodedToken.getUid(); // 這是 user_id
+            String email = decodedToken.getEmail();
+            String name = decodedToken.getName();
+
+            // 如果 email 為空，則驗證失敗
+            if (email == null || email.isEmpty()) {
+                response.put("status", "error");
+                response.put("message", "Google ID Token 中沒有包含 email 資訊");
+                return response;
+            }
+
+            // 查詢用戶是否存在，根據 email 作為唯一識別
+            Users user = userRepository.findByEmail(email);
+            if (user == null) {
+                // 如果用戶不存在，則創建新用戶
+                user = new Users();
+                user.setEmail(email);
+                user.setName(name);
+                user.setAccount(email);
+                user.setCreateTime(LocalDateTime.now());
+                user.setUpdateTime(LocalDateTime.now());
+                user.setActive(1);  // 設置用戶狀態為已驗證
+                user.setFacebookToken(googleId); // 可以將 user_id 存入 googleId 字段
+                user = userRepository.save(user);  // 保存新用戶到資料庫
+            } else {
+                // 如果用戶已存在，可以選擇更新 googleId
+                user.setFacebookToken(googleId);
+                userRepository.save(user);
+            }
+
+            // 使用用戶的 ID 和 email 來生成 JWT
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("id", user.getId());
+            claims.put("account", user.getAccount());  // 這裡使用 email 作為 account
+            String token = jwtUtil.generateToken(claims);
+
+            response.put("status", "success");
+            response.put("token", token);
+            response.put("user", user);
+            return response;
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("message", "Google ID Token 驗證失敗: " + e.getMessage());
+            return response;
+        }
     }
 
 
