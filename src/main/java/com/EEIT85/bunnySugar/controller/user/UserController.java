@@ -100,11 +100,13 @@ public class UserController {
 
     //google登入的方法
     @PostMapping("/googleLogin")
-    public ResponseEntity<Map<String, Object>> googleLogin(@RequestBody String googleToken) {
+    public ResponseEntity<Map<String, Object>> googleLogin(@RequestBody Map<String, String> request) {
+        String googleToken = request.get("googleToken");
         Map<String, Object> response = userService.verifyGoogleToken(googleToken);
+        System.out.println("有成功進來處理google登入用戶詳情");
 
-        // 根據 response 中的 status 決定要返回的 HTTP 狀態碼
         if ("error".equals(response.get("status"))) {
+            System.out.println("進入有錯誤回應");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response); // 狀態錯誤時，回傳 401
         }
 

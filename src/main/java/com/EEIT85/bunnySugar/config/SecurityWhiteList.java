@@ -12,7 +12,8 @@ public class SecurityWhiteList {
             "/user/login",
             "/user/registerVerify",
             "/user/verify",
-            "/user/completeDetails"
+            "/user/completeDetails",
+            "/user/googleLogin"
     );
 
     // 提供方法來返回白名單路徑（作為 List）

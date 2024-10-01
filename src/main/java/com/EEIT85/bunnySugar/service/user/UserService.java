@@ -7,6 +7,7 @@ import com.EEIT85.bunnySugar.entity.Cart;
 import com.EEIT85.bunnySugar.entity.Users;
 import com.EEIT85.bunnySugar.entity.WishList;
 import com.EEIT85.bunnySugar.repository.UserRepository;
+import com.google.firebase.FirebaseApp;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -211,11 +211,13 @@ public class UserService {
     public Map<String, Object> verifyGoogleToken(String googleToken) {
         Map<String, Object> response = new HashMap<>();
         try {
+            System.out.println("收到的 Google Token: " + googleToken);
+
             // 使用 Firebase 驗證 Google ID Token
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(googleToken);
+            System.out.println("Google ID Token 驗證成功");
 
-            // 從 token 中解析用戶的資訊
-            String googleId = decodedToken.getUid(); // 這是 user_id
+            String googleId = decodedToken.getUid(); // user_id
             String email = decodedToken.getEmail();
             String name = decodedToken.getName();
 
@@ -226,29 +228,35 @@ public class UserService {
                 return response;
             }
 
-            // 查詢用戶是否存在，根據 email 作為唯一識別
+            // 查詢用戶是否存在
             Users user = userRepository.findByEmail(email);
             if (user == null) {
-                // 如果用戶不存在，則創建新用戶
+                // 創建新用戶
                 user = new Users();
                 user.setEmail(email);
                 user.setName(name);
                 user.setAccount(email);
+                user.setAccumulateSpent(0);
+                user.setUserVip("白兔");
                 user.setCreateTime(LocalDateTime.now());
                 user.setUpdateTime(LocalDateTime.now());
+                user.setLastLoginTime(LocalDateTime.now());
                 user.setActive(1);  // 設置用戶狀態為已驗證
-                user.setFacebookToken(googleId); // 可以將 user_id 存入 googleId 字段
+                user.setGoogleToken(googleId); // 將 user_id 存入 googleId 字段
                 user = userRepository.save(user);  // 保存新用戶到資料庫
             } else {
-                // 如果用戶已存在，可以選擇更新 googleId
-                user.setFacebookToken(googleId);
+                // 如果用戶已存在，檢查 googleToken 是否為空
+                if (user.getGoogleToken() == null || user.getGoogleToken().isEmpty()) {
+                    user.setGoogleToken(googleId); // 只在 googleToken 為空時更新
+                }
+                user.setLastLoginTime(LocalDateTime.now()); // 始終更新最後登入時間
                 userRepository.save(user);
             }
 
             // 使用用戶的 ID 和 email 來生成 JWT
             Map<String, Object> claims = new HashMap<>();
             claims.put("id", user.getId());
-            claims.put("account", user.getAccount());  // 這裡使用 email 作為 account
+            claims.put("account", user.getAccount());  // 使用 email 作為 account
             String token = jwtUtil.generateToken(claims);
 
             response.put("status", "success");
@@ -256,11 +264,13 @@ public class UserService {
             response.put("user", user);
             return response;
         } catch (Exception e) {
+            e.printStackTrace();
             response.put("status", "error");
             response.put("message", "Google ID Token 驗證失敗: " + e.getMessage());
             return response;
         }
     }
+
 
 
     // Find user by account

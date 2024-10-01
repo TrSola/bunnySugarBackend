@@ -34,3 +34,6 @@ build/
 
 ##env
 .env
+
+##firebase service Account Key
+/src/main/resources/serviceAccountKey.json
