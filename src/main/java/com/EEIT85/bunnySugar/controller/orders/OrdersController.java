@@ -8,6 +8,7 @@ import com.EEIT85.bunnySugar.dto.orders.front.OrdersInsertDto;
 import com.EEIT85.bunnySugar.repository.OrdersRepository;
 import com.EEIT85.bunnySugar.service.orders.admin.OrdersAdminService;
 import com.EEIT85.bunnySugar.service.orders.front.OrdersService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,13 +32,14 @@ public class OrdersController {
     OrdersAdminService ordersAdminService;
 
 
-    @PostMapping("/{userId}")
-    public ResponseEntity<String> addToOrders(@RequestBody OrdersInsertDto ordersInsertDto, @PathVariable Long userId) {
+    @PostMapping
+    public ResponseEntity<String> addToOrders(HttpServletRequest request, @RequestBody OrdersInsertDto ordersInsertDto) {
+        Long userId = (Long) request.getAttribute("userId");
         ordersService.insertOrder(ordersInsertDto, userId);
         return ResponseEntity.ok("成功新增訂單");
     }
 
-    @PostMapping
+    @GetMapping
     public ResponseEntity<Page<OrdersInfoAdminDto>> getAllOrders(
             @RequestParam(defaultValue = "1") int page,   // 當前頁碼，預設為第1頁（頁碼從1開始）
             @RequestParam(defaultValue = "10") int size   // 每頁顯示的資料數量，預設為10條

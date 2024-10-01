@@ -37,27 +37,12 @@ public class MemberController {
         return res;
     }
 
-//    // 查詢會員資料
-//    @GetMapping("/{id}")
-//    public ResponseEntity<MemberFrontDto> getMemberById(@PathVariable Long id) {
-//        MemberFrontDto memberFrontDto = memberFrontService.getMemberById(id);
-//        return ResponseEntity.ok(memberFrontDto);
-//    }
-
-    // 根據會員ID查詢會員
-    @GetMapping("/getById")
-    public Object getMemberById(HttpServletRequest request) {
+    // 用ID查詢會員資料
+    @GetMapping
+    public ResponseEntity<MemberFrontDto> getMemberById(HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
-        System.out.println(userId);
-        if (userId == null) {
-            throw new IllegalArgumentException("User ID is null");
-        }
-        Optional<Users> member = memberFrontService.getMemberById(userId);
-        if (member != null) {
-            return ResponseEntity.ok(member);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+        MemberFrontDto memberFrontDto = memberFrontService.getMemberById(userId);
+        return ResponseEntity.ok(memberFrontDto);
     }
 
     @PutMapping("/update")

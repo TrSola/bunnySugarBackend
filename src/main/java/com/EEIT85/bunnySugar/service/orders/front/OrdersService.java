@@ -84,7 +84,7 @@ public class OrdersService {
         paymentDetails.setPaidPrice(ordersInsertDto.getTotal());
         paymentDetails.setPaymentMethod(ordersInsertDto.getPaymentMethod());
         paymentDetails.setPaymentDate(LocalDateTime.now());
-        paymentDetails.setPaymentStatus(ordersInsertDto.getPaymentStatus());
+        paymentDetails.setPaymentStatus("未付款");
 
         //建立paymentDetails與orders的關聯
         paymentDetails.setOrders(orders);
@@ -98,7 +98,7 @@ public class OrdersService {
         orders.setPickupTime(ordersInsertDto.getPickupTime());
         orders.setCouponName(ordersInsertDto.getCouponName());
         orders.setUsedBunnyCoins(ordersInsertDto.getUsedBunnyCoins());
-        orders.setPickupStatus(ordersInsertDto.getPickupStatus());
+        orders.setPickupStatus("未取貨");
 
 
         ordersRepository.save(orders);
