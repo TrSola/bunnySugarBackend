@@ -61,4 +61,16 @@ public class MemberFrontService {
         userRepository.save(user);
         return true; // 返回 true 表示更新成功
     }
+
+
+    //刪除會員
+    public boolean deleteMemberById(Long id) {
+        Optional<Users> existingUser = userRepository.findById(id);
+        if (existingUser.isPresent()) {
+            userRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
