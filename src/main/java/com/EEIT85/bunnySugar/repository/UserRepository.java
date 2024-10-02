@@ -36,8 +36,8 @@ public interface UserRepository extends JpaRepository<Users, Long> {
 
     // 根據電話號碼查詢會員DTO
     @Query("SELECT NEW com.EEIT85.bunnySugar.dto.users.admin.MemberAdminDto(" +
-            "u.id, u.name, u.gender, u.email, u.phone, u.birthday, u.userVip) FROM Users u WHERE u.phone = :phone")
-    MemberAdminDto findMemberAdminSelectDtoByUserPhone(@Param("phone") String phone);
+            "u.id, u.name, u.gender, u.email, u.phone, u.birthday, u.userVip) FROM Users u WHERE u.phone LIKE %:phone%")
+    Page<MemberAdminDto> findMemberAdminSelectDtoByUserPhone(@Param("phone") String phone, Pageable pageable);
 
 
 }

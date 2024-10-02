@@ -28,8 +28,8 @@ public class MemberAdminService {
     }
 
     // 根據電話號碼查詢會員並返回DTO
-    public MemberAdminDto getMemberByUserPhone(String userPhone) {
-        return  userRepository.findMemberAdminSelectDtoByUserPhone(userPhone);
+    public Page<MemberAdminDto> getMembersByUserPhone(String userPhone, Pageable pageable) {
+        return userRepository.findMemberAdminSelectDtoByUserPhone(userPhone, pageable);
     }
 
     // 更新會員的 userVip
