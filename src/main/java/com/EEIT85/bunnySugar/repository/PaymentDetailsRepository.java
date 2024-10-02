@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface PaymentDetailsRepository extends JpaRepository<PaymentDetails, Long> {
     PaymentDetails findByOrdersId(Long orderId);
@@ -16,5 +19,12 @@ public interface PaymentDetailsRepository extends JpaRepository<PaymentDetails, 
     int updatePaymentStatus(@Param("orderId") Long orderId, @Param("paymentStatus") String paymentStatus);
 
 
+    @Query("SELECT pd.merchantNo FROM PaymentDetails pd " +
+            "JOIN pd.orders o " +
+            "JOIN o.user u " +
+            "WHERE u.id = :userId")
+    List<String> findMerchantNoByUserId(@Param("userId") Long userId);
 
+    @Query("SELECT pd FROM PaymentDetails pd WHERE pd.merchantNo = :merchantNo")
+    Optional<PaymentDetails> findPaymentStatusByMerchantNo(@Param("merchantNo") String merchantNo);
 }

@@ -29,11 +29,6 @@ public class ECPAYService {
         String form = null;
         try {
 
-            // 生成 UUID
-            String uuId =
-                    UUID.randomUUID().toString().replaceAll("-", "").substring(0,
-                            8);
-
             Pay pay = new Pay();
             pay.setMerchantNo(postMerchantDto.getMerchantNo());
             pay.setTotal(postMerchantDto.getTotal());
@@ -51,7 +46,7 @@ public class ECPAYService {
             obj.setItemName("本次購買總金額");
             obj.setReturnURL("http://localhost:8081/test");
             obj.setNeedExtraPaidInfo("N");
-            obj.setClientBackURL("http://www.google.com.tw");
+            obj.setClientBackURL("http://127.0.0.1:8080/products");
             obj.setNeedExtraPaidInfo("Y");
             form = all.aioCheckOut(obj, null);
 

@@ -3,6 +3,7 @@ package com.EEIT85.bunnySugar.controller;
 import com.EEIT85.bunnySugar.dto.PostMerchantDto;
 import com.EEIT85.bunnySugar.dto.QueryOrderDTO;
 import com.EEIT85.bunnySugar.service.ECPAYService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
-@RequestMapping("/api/ECPAY")
+@RequestMapping("/api")
 @RestController
 public class ECPAYController {
 
@@ -20,15 +21,15 @@ public class ECPAYController {
     ECPAYService ecpayService;
 
     @PostMapping("/ecpayCheckout")
-    public String ecpayCheckout(HttpServletResponse response,
+    public String ecpayCheckout(
                                 @RequestBody PostMerchantDto postMerchantDto) throws IOException {
         String aioCheckOutALLForm = ecpayService.ecpayCheckout(postMerchantDto);
+        System.out.println(2);
         return aioCheckOutALLForm;
     }
 
     @PostMapping("/queryOrder")
-    public String queryOrder(HttpServletResponse response,
-                             @RequestBody QueryOrderDTO queryOrderDTO) throws IOException {
+    public String queryOrder(@RequestBody QueryOrderDTO queryOrderDTO) throws IOException {
         return ecpayService.queryOrder(queryOrderDTO);
     }
 }

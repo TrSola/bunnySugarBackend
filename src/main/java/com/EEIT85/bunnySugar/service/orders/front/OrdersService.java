@@ -35,12 +35,10 @@ public class OrdersService {
 
     @Transactional
     public void insertOrder(OrdersInsertDto ordersInsertDto, Long userId) {
-
         Orders orders = new Orders();
         //產生訂單編號
-        String random = UUID.randomUUID().toString().replaceAll("-", "").substring(0,
-                7);
-        orders.setOrderNumber(random);
+
+        orders.setOrderNumber(ordersInsertDto.getMerchantNo());
         //找出目前的使用者並將使用者資訊存入訂單
         Users user = userRepository.getReferenceById(userId);
         //計算本次消費獲得的coin
@@ -78,7 +76,7 @@ public class OrdersService {
         orders.setOrderDetails(orderDetails);
         //payment部份
         PaymentDetails paymentDetails = new PaymentDetails();
-        paymentDetails.setMerchantNo(random);
+        paymentDetails.setMerchantNo(ordersInsertDto.getMerchantNo());
         paymentDetails.setCreateTime(LocalDateTime.now());
         paymentDetails.setUpdateTime(LocalDateTime.now());
         paymentDetails.setPaidPrice(ordersInsertDto.getTotal());

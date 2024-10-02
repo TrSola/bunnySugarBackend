@@ -11,7 +11,7 @@ public class OrdersInsertDto {
     private String paymentMethod; //cart
     private Integer paymentPrice; //cart 折扣後的金額
 //    private String paymentStatus; //預設為未付款 查綠界訂單 完成付款後修改
-//    private String merchantNo; // 點擊進入綠界時取得
+    private String merchantNo; // 點擊進入綠界時取得
     //orders
 //    private String orderNumber; // 要用時自己產生隨機亂碼
     private Integer total; // cart(sum) 原價
@@ -26,13 +26,22 @@ public class OrdersInsertDto {
     public OrdersInsertDto() {
     }
 
-    public OrdersInsertDto(String paymentMethod, Integer paymentPrice, Integer total, String couponName, Integer usedBunnyCoins, LocalDateTime pickupTime) {
+    public OrdersInsertDto(String paymentMethod, Integer paymentPrice, String merchantNo, Integer total, String couponName, Integer usedBunnyCoins, LocalDateTime pickupTime) {
         this.paymentMethod = paymentMethod;
         this.paymentPrice = paymentPrice;
+        this.merchantNo = merchantNo;
         this.total = total;
         this.couponName = couponName;
         this.usedBunnyCoins = usedBunnyCoins;
         this.pickupTime = pickupTime;
+    }
+
+    public String getMerchantNo() {
+        return merchantNo;
+    }
+
+    public void setMerchantNo(String merchantNo) {
+        this.merchantNo = merchantNo;
     }
 
     public String getPaymentMethod() {

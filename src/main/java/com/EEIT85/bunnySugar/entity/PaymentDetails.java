@@ -124,4 +124,18 @@ public class PaymentDetails {
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Override
+    public String toString() {
+        return "PaymentDetails{" +
+                "id=" + id +
+                ", merchantNo='" + merchantNo + '\'' +
+                ", paymentMethod='" + paymentMethod + '\'' +
+                ", paymentStatus='" + paymentStatus + '\'' +
+                ", paidPrice=" + paidPrice +
+                ", paymentDate=" + paymentDate +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
 }
