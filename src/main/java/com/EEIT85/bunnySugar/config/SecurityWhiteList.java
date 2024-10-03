@@ -14,6 +14,8 @@ public class SecurityWhiteList {
             "/user/verify",
             "/user/completeDetails",
             "/user/googleLogin",
+            "/api/products/**",
+            "/user/googleLogin",
             // 靜態資源路徑白名單
             "/test.html",
             "/static/**",  // 配置靜態資源路徑
