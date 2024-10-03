@@ -7,6 +7,8 @@ import com.EEIT85.bunnySugar.repository.ProductsRepository;
 import com.EEIT85.bunnySugar.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -38,11 +40,9 @@ public class ProductsService {
     }
 
     // 取回所有產品，並將其轉換為 DTO
-    public List<ProductsSelectDto> getAll() {
-        List<Products> productsList = productsRepository.findAll();
-        return productsList.stream()
-                .map(this::convertToDto)  // 使用封裝的方法進行轉換
-                .collect(Collectors.toList());
+    public Page<ProductsSelectDto> getAll(Pageable pageable) {
+        Page<Products> productsPage = productsRepository.findAll(pageable);
+        return productsPage.map(this::convertToDto);
     }
 
     // 根據 ID 查詢產品，並轉換為 DTO
@@ -62,54 +62,47 @@ public class ProductsService {
         if (categoryNames.isEmpty()) {
             throw new ResourceNotFoundException("No categories found.");
         }
-        // Convert List to Set to remove duplicates
+        // 有序不重複
         return new LinkedHashSet<>(categoryNames);
     }
 
+    // 查詢對應 categoryName 的所有風味名稱
     public Set<String> getFlavorsByCategoryName(String categoryName) {
-        // 查詢對應 categoryName 的所有風味名稱
         List<String> flavors = categoriesRepository.findFlavorsByCategoryName(categoryName);
         if (flavors.isEmpty()) {
             throw new ResourceNotFoundException("No flavors found for the given category.");
         }
-        // 將 List 轉換成 Set 去重並返回
+        // 有序不重複
         return new LinkedHashSet<>(flavors);
     }
 
-    // 根據category名稱查詢
-    public List<ProductsSelectDto> getProductsByCategoryName(String categoryName) {
-        List<Products> productsListByCategory = productsRepository.findProductsByCategoryName(categoryName);
-        if (productsListByCategory.isEmpty()) {
+    // 根據category名稱查詢商品
+    public Page<ProductsSelectDto> getProductsByCategoryName(String categoryName, Pageable pageable) {
+        Page<Products> productsPage = productsRepository.findProductsByCategoryName(categoryName, pageable);
+        if (productsPage.isEmpty()) {
             throw new ResourceNotFoundException("Category '" + categoryName + "' does not exist.");
         }
 
-        return productsListByCategory.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+        return productsPage.map(this::convertToDto);
     }
 
     // 根據flavor名稱查詢
-    public List<ProductsSelectDto> getProductsByFlavor(String flavor) {
-        List<Products> productsListByCategory = productsRepository.findProductsByFlavor(flavor);
-        if (productsListByCategory.isEmpty()) {
+    public Page<ProductsSelectDto> getProductsByFlavor(String flavor, Pageable pageable) {
+        Page<Products> productsPage = productsRepository.findProductsByFlavor(flavor, pageable);
+        if (productsPage.isEmpty()) {
             throw new ResourceNotFoundException("Flavor '" + flavor + "' does not exist.");
         }
 
-        return productsListByCategory.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+        return productsPage.map(this::convertToDto);
     }
 
     // 透過產品名稱模糊查詢
-    public List<ProductsSelectDto> searchProductsByNameLike(String keyword) {
-        List<Products> productsList = productsRepository.findByProductNameContaining(keyword);
-        if (productsList.isEmpty()) {
+    public Page<ProductsSelectDto> searchProductsByNameLike(String keyword, Pageable pageable) {
+        Page<Products> productsPage = productsRepository.findByProductNameContaining(keyword, pageable);
+        if (productsPage.isEmpty()) {
             throw new ResourceNotFoundException("Keyword '" + keyword + "' does not exist.");
         }
 
-        return productsList.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-
+        return productsPage.map(this::convertToDto);
     }
 }
