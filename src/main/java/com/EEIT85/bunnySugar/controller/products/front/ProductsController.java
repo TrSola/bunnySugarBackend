@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RequestMapping("/api/products")
 @RestController
@@ -24,6 +25,17 @@ public class ProductsController {
     @GetMapping("/{id}")
     public ProductsSelectDto getById(@PathVariable Long id) {
         return productsService.getById(id);
+    }
+
+    @GetMapping("/categories")
+    public Set<String> getAllCategoryNames() {
+        return productsService.getAllCategoryNames();
+    }
+
+    @GetMapping("/categories/flavors")
+    public Set<String> getFlavorsByCategoryName(@RequestParam String categoryName) {
+        // 根據種類名稱獲取對應的風味列表
+        return productsService.getFlavorsByCategoryName(categoryName);
     }
 
     @GetMapping("/category/{categoryName}")

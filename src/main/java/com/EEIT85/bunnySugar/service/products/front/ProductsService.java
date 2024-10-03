@@ -2,14 +2,14 @@ package com.EEIT85.bunnySugar.service.products.front;
 
 import com.EEIT85.bunnySugar.dto.products.ProductsSelectDto;
 import com.EEIT85.bunnySugar.entity.Products;
+import com.EEIT85.bunnySugar.repository.CategoriesRepository;
 import com.EEIT85.bunnySugar.repository.ProductsRepository;
 import com.EEIT85.bunnySugar.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,6 +17,9 @@ public class ProductsService {
 
     @Autowired
     ProductsRepository productsRepository;
+
+    @Autowired
+    CategoriesRepository categoriesRepository;
 
       // 封裝將 Products 轉換為 ProductsSelectDto 的方法
     private ProductsSelectDto convertToDto(Products product) {
@@ -50,6 +53,27 @@ public class ProductsService {
         }
         Products product = findProduct.get();
         return convertToDto(product);  // 使用封裝的方法進行轉換
+    }
+
+    // 獲取所有的 category 名稱
+    public Set<String> getAllCategoryNames() {
+        // Fetch all category names and return as a Set to remove duplicates
+        List<String> categoryNames = categoriesRepository.findAllCategoryNames();
+        if (categoryNames.isEmpty()) {
+            throw new ResourceNotFoundException("No categories found.");
+        }
+        // Convert List to Set to remove duplicates
+        return new LinkedHashSet<>(categoryNames);
+    }
+
+    public Set<String> getFlavorsByCategoryName(String categoryName) {
+        // 查詢對應 categoryName 的所有風味名稱
+        List<String> flavors = categoriesRepository.findFlavorsByCategoryName(categoryName);
+        if (flavors.isEmpty()) {
+            throw new ResourceNotFoundException("No flavors found for the given category.");
+        }
+        // 將 List 轉換成 Set 去重並返回
+        return new LinkedHashSet<>(flavors);
     }
 
     // 根據category名稱查詢

@@ -13,7 +13,8 @@ public class SecurityWhiteList {
             "/user/registerVerify",
             "/user/verify",
             "/user/completeDetails",
-            "/user/googleLogin"
+            "/user/googleLogin",
+            "/api/products/**"
     );
 
     // 提供方法來返回白名單路徑（作為 List）
