@@ -3,7 +3,6 @@ package com.EEIT85.bunnySugar.service;
 import com.EEIT85.bunnySugar.dto.PostMerchantDto;
 import com.EEIT85.bunnySugar.dto.QueryOrderDTO;
 import com.EEIT85.bunnySugar.repository.OrdersRepository;
-import com.EEIT85.bunnySugar.repository.PayRepository;
 import ecpay.payment.integration.AllInOne;
 import ecpay.payment.integration.domain.AioCheckOutALL;
 import ecpay.payment.integration.domain.QueryTradeInfoObj;
@@ -21,8 +20,7 @@ import java.util.Arrays;
 public class ECPAYService {
     @Autowired
     OrdersRepository ordersRepository;
-    @Autowired
-    PayRepository payRepository;
+
     public String ecpayCheckout(PostMerchantDto postMerchantDto) throws UnsupportedEncodingException {
         String form = null;
         try {
