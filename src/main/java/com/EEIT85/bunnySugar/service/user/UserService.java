@@ -186,10 +186,15 @@ public class UserService {
         LocalDateTime now = LocalDateTime.now();
         userRepository.updateLastLoginTime(loginedUser.getId(), now);
 
+        // 檢查用戶身分
+        String role = loginedUser.getId() <= 13 ? "ADMIN" : "USER"; // 根據 ID 判斷身分
+
         // 生成 JWT token
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", loginedUser.getId());
         claims.put("account", loginedUser.getAccount());
+        claims.put("user", role); // 將身分添加到 claims 中
+        System.out.println(claims);
         String token = jwtUtil.generateToken(claims);
 
         // 檢查 JWT token 是否能解析成功
@@ -205,17 +210,15 @@ public class UserService {
 
         response.put("status", "success");
         response.put("token", token);
+        response.put("user", role);
         return response;
     }
 
     public Map<String, Object> verifyGoogleToken(String googleToken) {
         Map<String, Object> response = new HashMap<>();
         try {
-//            System.out.println("收到的 Google Token: " + googleToken);
-
             // 使用 Firebase 驗證 Google ID Token
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(googleToken);
-//            System.out.println("Google ID Token 驗證成功");
 
             String googleId = decodedToken.getUid(); // user_id
             String email = decodedToken.getEmail();
@@ -254,15 +257,20 @@ public class UserService {
                 userRepository.save(user);
             }
 
-            // 使用用戶的 ID 和 email 來生成 JWT
+            // 使用用戶的 ID 來生成 JWT
             Map<String, Object> claims = new HashMap<>();
             claims.put("id", user.getId());
             claims.put("account", user.getAccount());  // 使用 email 作為 account
+
+            // 根據用戶的 ID 判斷身分
+            String role = user.getId() <= 13 ? "ADMIN" : "USER"; // 判斷身分
+            claims.put("role", role); // 將身分添加到 claims 中
+
             String token = jwtUtil.generateToken(claims);
 
             response.put("status", "success");
             response.put("token", token);
-            response.put("user", user);
+            response.put("user", role);
             return response;
         } catch (Exception e) {
             e.printStackTrace();
@@ -271,6 +279,7 @@ public class UserService {
             return response;
         }
     }
+
 
 
 
