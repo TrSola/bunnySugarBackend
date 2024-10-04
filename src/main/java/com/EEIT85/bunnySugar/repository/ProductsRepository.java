@@ -1,5 +1,6 @@
 package com.EEIT85.bunnySugar.repository;
 
+import com.EEIT85.bunnySugar.dto.products.ProductsAdminSelectDto;
 import com.EEIT85.bunnySugar.entity.Products;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,5 +29,22 @@ public interface ProductsRepository extends JpaRepository<Products,
     @Query("SELECT p FROM Products p JOIN p.categories c WHERE c.flavor = :flavor")
     Page<Products> findProductsByFlavor(@Param("flavor") String flavor, Pageable pageable);
 
-
+    @Query("SELECT NEW com.EEIT85.bunnySugar.dto.products.ProductsAdminSelectDto" +
+            "(\n" +
+            "    p.id,\n" +
+            "    c.categoryName,\n" +
+            "    p.productName,\n" +
+            "    pd.price,\n" +
+            "    pd.enable,\n" +
+            "    pd.description,\n" +
+            "    pd.materialDescription,\n" +
+            "    pd.img1,\n" +
+            "    pd.img2,\n" +
+            "    pd.img3,\n" +
+            "    pd.img4\n" +
+            ")\n" +
+            "FROM Products p\n" +
+            "JOIN p.categories c\n" +
+            "JOIN p.productDetails pd")
+    List<ProductsAdminSelectDto> getAdminAllProducts();
 }

@@ -64,7 +64,6 @@ public class Products {
     @Column(name = "stocks", nullable = false)
     private Integer stocks;
 
-
     public Products() {
     }
 

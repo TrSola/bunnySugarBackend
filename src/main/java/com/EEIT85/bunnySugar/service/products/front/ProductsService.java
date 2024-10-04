@@ -25,18 +25,21 @@ public class ProductsService {
 
       // 封裝將 Products 轉換為 ProductsSelectDto 的方法
     private ProductsSelectDto convertToDto(Products product) {
-        return new ProductsSelectDto(
-                product.getId(),
-                product.getProductName(),
-                product.getStocks(),
-                product.getProductDetails().getDescription(),
-                product.getProductDetails().getPrice(),
-                product.getProductDetails().getImageUrl(),
-                product.getProductDetails().getMaterialDescription(),
-                product.getCategories().getCategoryName(),
-                product.getCategories().getFlavor(),
-                product.getCategories().getCategoryDescription()
-        );
+        ProductsSelectDto productsSelectDto = new ProductsSelectDto();
+        productsSelectDto.setId(product.getId());
+        productsSelectDto.setProductName(product.getProductName());
+        productsSelectDto.setStocks(product.getStocks());
+        productsSelectDto.setDescription(product.getProductDetails().getDescription());
+        productsSelectDto.setPrice(product.getProductDetails().getPrice());
+        productsSelectDto.setMaterialDescription(product.getProductDetails().getMaterialDescription());
+        productsSelectDto.setImg1(product.getProductDetails().getImg1());
+        productsSelectDto.setImg2(product.getProductDetails().getImg2());
+        productsSelectDto.setImg3(product.getProductDetails().getImg3());
+        productsSelectDto.setImg4(product.getProductDetails().getImg4());
+        productsSelectDto.setCategoryName(product.getCategories().getCategoryName());
+        productsSelectDto.setFlavor(product.getCategories().getFlavor());
+        productsSelectDto.setCategoryDescription(product.getCategories().getCategoryDescription());
+        return productsSelectDto;
     }
 
     // 取回所有產品，並將其轉換為 DTO
