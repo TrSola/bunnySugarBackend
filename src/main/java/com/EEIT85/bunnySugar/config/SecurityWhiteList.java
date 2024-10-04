@@ -16,10 +16,11 @@ public class SecurityWhiteList {
             "/user/googleLogin",
             "/api/products/**",
             "/user/googleLogin",
-            // 靜態資源路徑白名單
+            // 靜態資源路徑白名單   // 這邊之後邊用邊調整
             "/test.html",
+            "/public/**",
+            "/public/imgZip/**",
             "/static/**",  // 配置靜態資源路徑
-            "/",           // 允許根目錄
             "/index.html",  // 主頁面
             "/favicon.ico", // 網站圖標
             "/js/**",       // 允許 JavaScript 資源

@@ -64,7 +64,7 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    // 從請求中提取 JWT
+    // 從請求中獲得 JWT
     private String extractToken(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         if (token != null && token.startsWith("Bearer ")) {
@@ -73,7 +73,7 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
         return null;
     }
 
-    // 這裡可以擴展權限解析邏輯，目前返回空權限列表
+    // 這裡可以擴展權限解析邏輯，目前return空權限列表
     private List<SimpleGrantedAuthority> getAuthoritiesFromClaims(Map<String, Object> claims) {
         return Collections.emptyList();
     }

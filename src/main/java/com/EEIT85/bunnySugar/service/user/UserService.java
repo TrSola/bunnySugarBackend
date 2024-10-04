@@ -242,6 +242,7 @@ public class UserService {
                 user.setUpdateTime(LocalDateTime.now());
                 user.setLastLoginTime(LocalDateTime.now());
                 user.setActive(1);  // 設置用戶狀態為已驗證
+                user.setDetailsCompleted(1);
                 user.setGoogleToken(googleId); // 將 user_id 存入 googleId 字段
                 user = userRepository.save(user);  // 保存新用戶到資料庫
             } else {
