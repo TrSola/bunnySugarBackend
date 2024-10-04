@@ -43,9 +43,11 @@ public class ProductsAdminController {
         }
     }
 
+
     @PutMapping("/{id}")
     public ResponseEntity<String> updateProduct(@PathVariable Long id,
                                                 @RequestBody ProductsUpdateDto productsUpdateDto) {
+
         try {
             productsAdminService.updateProduct(id, productsUpdateDto);
             return ResponseEntity.ok("成功更新");

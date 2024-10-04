@@ -16,24 +16,34 @@ public class FindOrCreateCategoryIdService {
         @Autowired
         private CategoriesRepository categoriesRepository;
 
-        public Long findOrCreateCategoryId(ProductsAdminBaseDto productsAdminBaseDto) {
-            // 依照CategoryName及flavor 找出資料庫中的種類
-            Categories categories =
-                    categoriesRepository.findByCategoryNameAndFlavor(productsAdminBaseDto.getCategoryName(), productsAdminBaseDto.getFlavor());
+    public Long findOrCreateAndUpdateCategoryId(ProductsAdminBaseDto productsAdminBaseDto) {
+        // 依照 CategoryName 及 flavor 找出資料庫中的種類
+        Categories categories = categoriesRepository.findByCategoryNameAndFlavor(
+                productsAdminBaseDto.getCategoryName(),
+                productsAdminBaseDto.getFlavor()
+        );
 
-            //如果沒有就創建
-            if (categories == null) {
-                categories = new Categories(productsAdminBaseDto.getCategoryName(),
-                        productsAdminBaseDto.getFlavor(),
-                        productsAdminBaseDto.getCategoryDescription(), LocalDateTime.now(),
-                        LocalDateTime.now());
-            }
-
-            Categories saveCategories = categoriesRepository.save(categories);
-
-            // 回傳該種類的 ID
-            return saveCategories.getId();
+        if (categories == null) {
+            categories = new Categories();
+            categories.setCreateTime(LocalDateTime.now());
         }
+
+        // 無論是新建還是已存在的類別，都更新這些字段
+        categories.setCategoryName(productsAdminBaseDto.getCategoryName());
+        categories.setFlavor(productsAdminBaseDto.getFlavor());
+
+        // 只有在提供了新的描述時才更新描述字段
+        if (productsAdminBaseDto.getCategoryDescription() != null) {
+            categories.setCategoryDescription(productsAdminBaseDto.getCategoryDescription());
+        }
+
+        categories.setUpdateTime(LocalDateTime.now());
+
+        Categories savedCategories = categoriesRepository.save(categories);
+
+        // 回傳該種類的 ID
+        return savedCategories.getId();
+    }
 
 
 }

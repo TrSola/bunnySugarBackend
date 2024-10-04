@@ -29,11 +29,6 @@ public class ECPAYService {
         String form = null;
         try {
 
-            Pay pay = new Pay();
-            pay.setMerchantNo(postMerchantDto.getMerchantNo());
-            pay.setTotal(postMerchantDto.getTotal());
-            pay.setPaidStatus(false);
-            payRepository.save(pay);
             //時間格式化
             String formattedDate = getFormattedCurrentDate();
             // 設定支付訊息

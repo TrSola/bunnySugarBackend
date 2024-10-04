@@ -12,12 +12,16 @@ public class ProductsAdminSelectDto {
     private String img2;
     private String img3;
     private String img4;
+    private String flavor;
+    private Integer stocks;
+    private String categoryDescription;
 
 
     public ProductsAdminSelectDto() {
     }
 
-    public ProductsAdminSelectDto(Long id, String categoryName, String productName, Integer price, Boolean enable, String description, String materialDescription, String img1, String img2, String img3, String img4) {
+
+    public ProductsAdminSelectDto(Long id, String categoryName, String productName, Integer price, Boolean enable, String description, String materialDescription, String img1, String img2, String img3, String img4, String flavor, Integer stocks, String categoryDescription) {
         this.id = id;
         this.categoryName = categoryName;
         this.productName = productName;
@@ -29,6 +33,17 @@ public class ProductsAdminSelectDto {
         this.img2 = img2;
         this.img3 = img3;
         this.img4 = img4;
+        this.flavor = flavor;
+        this.stocks = stocks;
+        this.categoryDescription = categoryDescription;
+    }
+
+    public String getCategoryDescription() {
+        return categoryDescription;
+    }
+
+    public void setCategoryDescription(String categoryDescription) {
+        this.categoryDescription = categoryDescription;
     }
 
     public String getImg1() {
@@ -61,6 +76,22 @@ public class ProductsAdminSelectDto {
 
     public void setImg4(String img4) {
         this.img4 = img4;
+    }
+
+    public String getFlavor() {
+        return flavor;
+    }
+
+    public void setFlavor(String flavor) {
+        this.flavor = flavor;
+    }
+
+    public Integer getStocks() {
+        return stocks;
+    }
+
+    public void setStocks(Integer stocks) {
+        this.stocks = stocks;
     }
 
     public Long getId() {

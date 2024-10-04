@@ -41,10 +41,16 @@ public interface ProductsRepository extends JpaRepository<Products,
             "    pd.img1,\n" +
             "    pd.img2,\n" +
             "    pd.img3,\n" +
-            "    pd.img4\n" +
+            "    pd.img4,\n" +
+            "    c.flavor,\n" +
+            "    p.stocks,\n" +
+            "    c.categoryDescription\n" +
             ")\n" +
             "FROM Products p\n" +
             "JOIN p.categories c\n" +
             "JOIN p.productDetails pd")
     List<ProductsAdminSelectDto> getAdminAllProducts();
+
+    @Query("SELECT p FROM Products p LEFT JOIN FETCH p.categories LEFT JOIN FETCH p.productDetails WHERE p.id = :id")
+    Products findProductWithDetailsById(@Param("id") Long id);
 }
