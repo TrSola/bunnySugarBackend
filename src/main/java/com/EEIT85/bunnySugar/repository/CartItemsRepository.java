@@ -29,15 +29,15 @@ public interface CartItemsRepository extends JpaRepository<CartItems, Long> {
 
     Optional<CartItems> findByIdAndCart_Users_Id(Long itemId, Long userId);
 
-    @Query("SELECT new com.EEIT85.bunnySugar.dto.cart.CartSelectDto(ci.id, pd.price, " +
-            "ci.quantity, p.productName, pd.img1, p.stocks, u.bunnyCoin, u" +
-            ".userVip, u.accumulateSpent) " +
+    @Query("SELECT new com.EEIT85.bunnySugar.dto.cart.CartSelectDto(" +
+            "ci.id, pd.price, ci.quantity, p.productName, p.stocks, " +
+            "u.bunnyCoin, u.userVip, u.accumulateSpent, pd.img1) " +
             "FROM CartItems ci " +
-            "JOIN ci.cart c " +
             "JOIN ci.products p " +
             "JOIN p.productDetails pd " +
+            "JOIN ci.cart c " +
             "JOIN c.users u " +
-            "WHERE c.users.id = :userId")
+            "WHERE u.id = :userId")
     List<CartSelectDto> findCartItemsByUserId(@Param("userId") Long userId);
 
 

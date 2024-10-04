@@ -9,26 +9,26 @@ public class CartSelectDto {
     private Integer price;
     private Integer quantity;
     private String productName;
-    private String imageUrl;
     private Integer stocks;
     private Integer bunnyCoin;
     private String userVip;
     private Integer accumulateSpent;
+    private String img1;
 
 
     public CartSelectDto() {
     }
 
-    public CartSelectDto(Long id, Integer price, Integer quantity, String productName, String imageUrl, Integer stocks, Integer bunnyCoin, String userVip, Integer accumulateSpent) {
+    public CartSelectDto(Long id, Integer price, Integer quantity, String productName, Integer stocks, Integer bunnyCoin, String userVip, Integer accumulateSpent, String img1) {
         this.id = id;
         this.price = price;
         this.quantity = quantity;
         this.productName = productName;
-        this.imageUrl = imageUrl;
         this.stocks = stocks;
         this.bunnyCoin = bunnyCoin;
         this.userVip = userVip;
         this.accumulateSpent = accumulateSpent;
+        this.img1 = img1;
     }
 
     public Integer getAccumulateSpent() {
@@ -79,12 +79,12 @@ public class CartSelectDto {
         this.productName = productName;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImg1() {
+        return img1;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImg1(String img1) {
+        this.img1 = img1;
     }
 
     public Integer getStocks() {

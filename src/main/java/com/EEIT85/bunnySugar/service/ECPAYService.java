@@ -2,7 +2,6 @@ package com.EEIT85.bunnySugar.service;
 
 import com.EEIT85.bunnySugar.dto.PostMerchantDto;
 import com.EEIT85.bunnySugar.dto.QueryOrderDTO;
-import com.EEIT85.bunnySugar.entity.Pay;
 import com.EEIT85.bunnySugar.repository.OrdersRepository;
 import com.EEIT85.bunnySugar.repository.PayRepository;
 import ecpay.payment.integration.AllInOne;
@@ -17,7 +16,6 @@ import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.UUID;
 
 @Service
 public class ECPAYService {
