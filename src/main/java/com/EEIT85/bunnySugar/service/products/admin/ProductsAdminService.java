@@ -1,6 +1,8 @@
 package com.EEIT85.bunnySugar.service.products.admin;
 
+import com.EEIT85.bunnySugar.dto.products.ProductsAdminSelectDto;
 import com.EEIT85.bunnySugar.dto.products.ProductsInsertDto;
+import com.EEIT85.bunnySugar.dto.products.ProductsSelectDto;
 import com.EEIT85.bunnySugar.dto.products.ProductsUpdateDto;
 import com.EEIT85.bunnySugar.entity.Categories;
 import com.EEIT85.bunnySugar.entity.ProductDetails;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ProductsAdminService {
@@ -36,9 +39,12 @@ public class ProductsAdminService {
         Long categoriesId =
                 findOrCreateCategoryIdService.findOrCreateCategoryId(productsInsertDto);
         //將dto的值取出放入新產品
-        Products products = new Products(productsInsertDto.getProductName(),
-                LocalDateTime.now(), LocalDateTime.now(),
-                productsInsertDto.getStocks());
+        Products products = new Products();
+        products.setProductName(productsInsertDto.getProductName());
+        products.setCreateTime(LocalDateTime.now());
+        products.setUpdateTime(LocalDateTime.now());
+        products.setStocks(productsInsertDto.getStocks());
+
         //依照上面的id找出對應的Categories物件
         Categories categories = categoriesRepository.findById(categoriesId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid category ID: " + categoriesId));
@@ -96,14 +102,20 @@ public class ProductsAdminService {
     }
 
     private ProductDetails createProductDetails(Products product, ProductsInsertDto productsInsertDto) {
-        return new ProductDetails(product,
-                productsInsertDto.getDescription(),
-                productsInsertDto.getPrice(),
-                productsInsertDto.getImageUrl(),
-                productsInsertDto.getMaterialDescription(),
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                productsInsertDto.getEnable());
+        ProductDetails productDetails = new ProductDetails();
+                productDetails.setProducts(product);
+                productDetails.setDescription(productsInsertDto.getDescription());
+                productDetails.setPrice(productsInsertDto.getPrice());
+                productDetails.setDescription(productsInsertDto.getMaterialDescription());
+                productDetails.setMaterialDescription(productsInsertDto.getMaterialDescription());
+                productDetails.setCreateTime(LocalDateTime.now());
+                productDetails.setUpdateTime(LocalDateTime.now());
+                productDetails.setEnable(productsInsertDto.getEnable());
+                productDetails.setImg1(productsInsertDto.getImg1());
+                productDetails.setImg2(productsInsertDto.getImg2());
+                productDetails.setImg3(productsInsertDto.getImg3());
+                productDetails.setImg4(productsInsertDto.getImg4());
+                return productDetails;
     }
 
 
@@ -118,15 +130,20 @@ public class ProductsAdminService {
     private void updateProductDetails(Products products,
                                       ProductsUpdateDto productsUpdateDto,
                                       ProductDetails productDetails) {
+        productDetails.setProducts(products);
         productDetails.setDescription(productsUpdateDto.getDescription());
         productDetails.setPrice(productsUpdateDto.getPrice());
-        productDetails.setImageUrl(productsUpdateDto.getImageUrl());
         productDetails.setMaterialDescription(productsUpdateDto.getMaterialDescription());
         productDetails.setUpdateTime(LocalDateTime.now());
         productDetails.setEnable(productsUpdateDto.getEnable());
+        productDetails.setImg1(productsUpdateDto.getImg1());
+        productDetails.setImg2(productDetails.getImg2());
+        productDetails.setImg3(productDetails.getImg3());
+        productDetails.setImg4(productDetails.getImg4());
     }
 
 
-
-
+    public List<ProductsAdminSelectDto> getAll() {
+        return productsRepository.getAdminAllProducts();
+    }
 }

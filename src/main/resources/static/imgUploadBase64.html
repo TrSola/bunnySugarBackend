@@ -25,12 +25,13 @@
     setup() {
       const selectedFile = ref(null);
       const imageUrl = ref('');
+
 //把前端傳進來的圖片存進file
       const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
           if (file.size > 5 * 1024 * 1024) {
-            alert("File size exceeds 5MB limit.");
+            alert("圖片超過5MB");
             return;
           }
           selectedFile.value = file;
@@ -52,28 +53,28 @@
           alert("Please select an image.");
         }
       };
-//上傳伺服器
-      const sendToServer = (base64Image) => {
-        fetch('/upload', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ img: base64Image }), // 将字段名设置为 img
-        })
-        .then((response) => {
-          if (response.ok) {
-            alert("Image uploaded successfully!");
-            fetchImage(); // 上传成功后获取图像
-          } else {
-            alert("Failed to upload image: " + response.statusText);
-          }
-        })
-        .catch((error) => {
-          console.error("Error uploading image:", error);
-          alert("An error occurred while uploading the image.");
-        });
-      };
+//上傳伺服器 不需要 搭配自己的insert API就好
+<!--      const sendToServer = (base64Image) => {-->
+<!--        fetch('/upload', {-->
+<!--          method: 'POST',-->
+<!--          headers: {-->
+<!--            'Content-Type': 'application/json',-->
+<!--          },-->
+<!--          body: JSON.stringify({ img: base64Image }), // 将字段名设置为 img-->
+<!--        })-->
+<!--        .then((response) => {-->
+<!--          if (response.ok) {-->
+<!--            alert("Image uploaded successfully!");-->
+<!--            fetchImage(); // 上传成功后获取图像-->
+<!--          } else {-->
+<!--            alert("Failed to upload image: " + response.statusText);-->
+<!--          }-->
+<!--        })-->
+<!--        .catch((error) => {-->
+<!--          console.error("Error uploading image:", error);-->
+<!--          alert("An error occurred while uploading the image.");-->
+<!--        });-->
+<!--      };-->
 
 //抓取圖片 轉換格式為base64 顯示在畫面上
       const fetchImage = () => {

@@ -1,5 +1,7 @@
 package com.EEIT85.bunnySugar.dto.products;
 
+import jakarta.persistence.Column;
+
 public class ProductsSelectDto {
     private Long id;
     private String productName;
@@ -11,11 +13,18 @@ public class ProductsSelectDto {
     private String categoryName;
     private String flavor;
     private String categoryDescription;
+    private String img1;
+
+    private String img2;
+
+    private String img3;
+
+    private String img4;
 
     public ProductsSelectDto() {
     }
 
-    public ProductsSelectDto(Long id, String productName, Integer stocks, String description, Integer price, String imageUrl, String materialDescription, String categoryName, String flavor, String categoryDescription) {
+    public ProductsSelectDto(Long id, String productName, Integer stocks, String description, Integer price, String imageUrl, String materialDescription, String categoryName, String flavor, String categoryDescription, String img1, String img2, String img3, String img4) {
         this.id = id;
         this.productName = productName;
         this.stocks = stocks;
@@ -26,6 +35,42 @@ public class ProductsSelectDto {
         this.categoryName = categoryName;
         this.flavor = flavor;
         this.categoryDescription = categoryDescription;
+        this.img1 = img1;
+        this.img2 = img2;
+        this.img3 = img3;
+        this.img4 = img4;
+    }
+
+    public String getImg1() {
+        return img1;
+    }
+
+    public void setImg1(String img1) {
+        this.img1 = img1;
+    }
+
+    public String getImg2() {
+        return img2;
+    }
+
+    public void setImg2(String img2) {
+        this.img2 = img2;
+    }
+
+    public String getImg3() {
+        return img3;
+    }
+
+    public void setImg3(String img3) {
+        this.img3 = img3;
+    }
+
+    public String getImg4() {
+        return img4;
+    }
+
+    public void setImg4(String img4) {
+        this.img4 = img4;
     }
 
     public ProductsSelectDto(Long id, String productName, Integer price) {

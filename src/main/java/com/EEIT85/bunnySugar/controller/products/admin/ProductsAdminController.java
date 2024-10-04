@@ -1,7 +1,9 @@
 package com.EEIT85.bunnySugar.controller.products.admin;
 
 
+import com.EEIT85.bunnySugar.dto.products.ProductsAdminSelectDto;
 import com.EEIT85.bunnySugar.dto.products.ProductsInsertDto;
+import com.EEIT85.bunnySugar.dto.products.ProductsSelectDto;
 import com.EEIT85.bunnySugar.dto.products.ProductsUpdateDto;
 import com.EEIT85.bunnySugar.exception.ResourceNotFoundException;
 import com.EEIT85.bunnySugar.service.products.admin.ProductsAdminService;
@@ -10,19 +12,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
-@RequestMapping("/admin/products")
+@RequestMapping("/api/admin/products")
 @RestController
 public class ProductsAdminController {
-
 
     @Autowired
     ProductsAdminService productsAdminService;
 
+    @GetMapping
+    public List<ProductsAdminSelectDto> getAllAdminProducts() {
+        return productsAdminService.getAll();
+    }
 
     @PostMapping
     public ResponseEntity<String> insertProducts(@RequestBody ProductsInsertDto productsInsertDto) {
         productsAdminService.insertProducts(productsInsertDto);
+        System.out.println(productsInsertDto);
         return ResponseEntity.ok("成功新增");
     }
 
