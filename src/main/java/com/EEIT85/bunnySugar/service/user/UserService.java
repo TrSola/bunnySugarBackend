@@ -211,11 +211,11 @@ public class UserService {
     public Map<String, Object> verifyGoogleToken(String googleToken) {
         Map<String, Object> response = new HashMap<>();
         try {
-            System.out.println("收到的 Google Token: " + googleToken);
+//            System.out.println("收到的 Google Token: " + googleToken);
 
             // 使用 Firebase 驗證 Google ID Token
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(googleToken);
-            System.out.println("Google ID Token 驗證成功");
+//            System.out.println("Google ID Token 驗證成功");
 
             String googleId = decodedToken.getUid(); // user_id
             String email = decodedToken.getEmail();

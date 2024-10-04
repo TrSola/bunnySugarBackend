@@ -64,7 +64,7 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    // 從請求中獲得 JWT
+    // 從請求中提取 JWT
     private String extractToken(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         if (token != null && token.startsWith("Bearer ")) {
@@ -73,8 +73,20 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
         return null;
     }
 
-    // 這裡可以擴展權限解析邏輯，目前return空權限列表
+    // 這裡可以擴展權限解析邏輯，目前返回空權限列表
     private List<SimpleGrantedAuthority> getAuthoritiesFromClaims(Map<String, Object> claims) {
-        return Collections.emptyList();
+        Long userId = Long.valueOf(claims.get("id").toString());
+        List<SimpleGrantedAuthority> authorities;
+
+        if (userId <= 13) {
+            authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")); // 分配管理者角色
+            log.info("用戶 {} 是管理者", claims.get("account")); //
+            System.out.println("userId = " + userId);
+        } else {
+            // return空列表，只要確定用戶不是匿名就好
+            return Collections.emptyList();
+        }
+
+        return authorities;
     }
 }

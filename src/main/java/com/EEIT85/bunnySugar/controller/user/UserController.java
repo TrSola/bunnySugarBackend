@@ -103,7 +103,7 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> googleLogin(@RequestBody Map<String, String> request) {
         String googleToken = request.get("googleToken");
         Map<String, Object> response = userService.verifyGoogleToken(googleToken);
-        System.out.println("有成功進來處理google登入用戶詳情");
+//        System.out.println("有成功進來處理google登入用戶詳情");
 
         if ("error".equals(response.get("status"))) {
             System.out.println("進入有錯誤回應");
