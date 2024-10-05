@@ -84,6 +84,9 @@ public class Users {
     @Column(nullable = true, name = "details_completed")
     private Integer detailsCompleted;
 
+    @Column(nullable = true, name = "role")
+    private String userRole;
+
     @JsonManagedReference("Users_Anniversaries")
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Anniversaries> anniversaries;
@@ -112,7 +115,7 @@ public class Users {
         this.orders = orders;
     }
 
-    public Users(String userVip, Integer accumulateSpent, String email, String phone, String verifyingToken, String account, String password, String name, String gender, LocalDate birthday, Integer bunnyCoin, Integer active, String forgetToken, String loginMethod, String googleToken, String facebookToken, LocalDateTime createTime, LocalDateTime updateTime, LocalDateTime lastLoginTime, Integer gameTimes, LocalDateTime tokenExpirationTime, Integer detailsCompleted, List<Anniversaries> anniversaries, Cart cart, WishList wishList, List<Orders> orders) {
+    public Users(String userVip, Integer accumulateSpent, String email, String phone, String verifyingToken, String account, String password, String name, String gender, LocalDate birthday, Integer bunnyCoin, Integer active, String forgetToken, String loginMethod, String googleToken, String facebookToken, LocalDateTime createTime, LocalDateTime updateTime, LocalDateTime lastLoginTime, Integer gameTimes, LocalDateTime tokenExpirationTime, Integer detailsCompleted, List<Anniversaries> anniversaries, Cart cart, WishList wishList, List<Orders> orders, String userRole) {
         this.userVip = userVip;
         this.accumulateSpent = accumulateSpent;
         this.email = email;
@@ -139,6 +142,7 @@ public class Users {
         this.cart = cart;
         this.wishList = wishList;
         this.orders = orders;
+        this.userRole = userRole;
     }
 //    // 所有參數的構造函數
 //    public Users(String email, String phone, String verifyingToken, String account, String password, String name,
@@ -379,6 +383,10 @@ public class Users {
     public void setAccumulateSpent(Integer accumulateSpent) {
         this.accumulateSpent = accumulateSpent;
     }
+
+    public String getUserRole() { return userRole; }
+
+    public void setUserRole(String userRole) { this.userRole = userRole; }
 
     @Override
     public String toString() {

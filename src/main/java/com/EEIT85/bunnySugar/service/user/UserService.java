@@ -52,6 +52,7 @@ public class UserService {
                 existingUser.setAccumulateSpent(0);
                 existingUser.setUserVip("白兔");
                 existingUser.setUpdateTime(LocalDateTime.now());
+                user.setUserRole("USER");
                 String verifyingToken = String.format("%06d", (int)(Math.random() * 1000000));
                 existingUser.setVerifyingToken(verifyingToken);
                 existingUser.setTokenExpirationTime(LocalDateTime.now().plusMinutes(10));
@@ -70,6 +71,7 @@ public class UserService {
         user.setUserVip("白兔");
         user.setCreateTime(LocalDateTime.now());
         user.setUpdateTime(LocalDateTime.now());
+        user.setUserRole("USER");
         String verifyingToken = String.format("%06d", (int)(Math.random() * 1000000));
         user.setVerifyingToken(verifyingToken);
         user.setTokenExpirationTime(LocalDateTime.now().plusMinutes(10));
@@ -187,7 +189,7 @@ public class UserService {
         userRepository.updateLastLoginTime(loginedUser.getId(), now);
 
         // 檢查用戶身分
-        String role = loginedUser.getId() <= 13 ? "ADMIN" : "USER"; // 根據 ID 判斷身分
+        String role = loginedUser.getUserRole();
 
         // 生成 JWT token
         Map<String, Object> claims = new HashMap<>();
@@ -247,7 +249,10 @@ public class UserService {
                 user.setActive(1);  // 設置用戶狀態為已驗證
                 user.setDetailsCompleted(1);
                 user.setGoogleToken(googleId); // 將 user_id 存入 googleId 字段
+                user.setUserRole("USER");
                 user = userRepository.save(user);  // 保存新用戶到資料庫
+                wishListService.createWishListForUser(user);
+                usersCartService.createCartForUser(user);
             } else {
                 // 如果用戶已存在，檢查 googleToken 是否為空
                 if (user.getGoogleToken() == null || user.getGoogleToken().isEmpty()) {
@@ -263,7 +268,7 @@ public class UserService {
             claims.put("account", user.getAccount());  // 使用 email 作為 account
 
             // 根據用戶的 ID 判斷身分
-            String role = user.getId() <= 13 ? "ADMIN" : "USER"; // 判斷身分
+            String role = user.getUserRole();
             claims.put("role", role); // 將身分添加到 claims 中
 
             String token = jwtUtil.generateToken(claims);
