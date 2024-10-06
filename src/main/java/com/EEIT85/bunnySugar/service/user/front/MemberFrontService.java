@@ -23,6 +23,7 @@ public class MemberFrontService {
         return userRepository.findById(id)
                 .map(user -> {
                     MemberFrontDto memberFrontDto = new MemberFrontDto();
+                    memberFrontDto.setId(user.getId());
                     memberFrontDto.setName(user.getName());
                     memberFrontDto.setGender(user.getGender());
                     memberFrontDto.setPhone(user.getPhone());

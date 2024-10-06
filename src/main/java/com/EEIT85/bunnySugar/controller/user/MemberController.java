@@ -41,6 +41,7 @@ public class MemberController {
     @GetMapping
     public ResponseEntity<MemberFrontDto> getMemberById(HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
+        System.out.println(userId);
         MemberFrontDto memberFrontDto = memberFrontService.getMemberById(userId);
         return ResponseEntity.ok(memberFrontDto);
     }
@@ -63,16 +64,14 @@ public class MemberController {
     }
 
     // 刪除會員
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteMemberById(
-            HttpServletRequest request,  // 確保用戶已登入
-            @PathVariable Long id) {
+    @DeleteMapping
+    public ResponseEntity<String> deleteMemberById(HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
         if (userId == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("未授權的操作");
         }
 
-        boolean success = memberFrontService.deleteMemberById(id);
+        boolean success = memberFrontService.deleteMemberById(userId);
         if (success) {
             return ResponseEntity.ok("會員刪除成功");
         } else {

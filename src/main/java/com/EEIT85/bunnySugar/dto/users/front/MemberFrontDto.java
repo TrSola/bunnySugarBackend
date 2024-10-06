@@ -3,6 +3,7 @@ package com.EEIT85.bunnySugar.dto.users.front;
 import java.time.LocalDate;
 
 public class MemberFrontDto {
+    private Long id;
     private String name;
     private String gender;
     private String email;
@@ -14,7 +15,8 @@ public class MemberFrontDto {
     public MemberFrontDto() {
     }
 
-    public MemberFrontDto(String name, String gender, String email, String phone, LocalDate birthday, Integer gameTimes, Integer bunnyCoin) {
+    public MemberFrontDto(Long id, String name, String gender, String email, String phone, LocalDate birthday, Integer gameTimes, Integer bunnyCoin) {
+        this.id = id;
         this.name = name;
         this.gender = gender;
         this.email = email;
@@ -23,6 +25,10 @@ public class MemberFrontDto {
         this.gameTimes = gameTimes;
         this.bunnyCoin = bunnyCoin;
     }
+
+    public Long getId() { return id; }
+
+    public void setId(Long id) { this.id = id; }
 
     public String getName() {
         return name;
