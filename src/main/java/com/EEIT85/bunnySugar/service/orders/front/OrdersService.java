@@ -41,9 +41,6 @@ public class OrdersService {
         orders.setOrderNumber(ordersInsertDto.getMerchantNo());
         //找出目前的使用者並將使用者資訊存入訂單
         Users user = userRepository.getReferenceById(userId);
-        //計算本次消費獲得的coin
-        Integer addCoin = ordersInsertDto.getTotal() / 500;
-        user.setBunnyCoin(user.getBunnyCoin() + addCoin);
         //計算本次累積消費
         user.setAccumulateSpent(user.getAccumulateSpent() + ordersInsertDto.getTotal());
         Integer totalSpent = user.getAccumulateSpent();
