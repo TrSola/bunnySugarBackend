@@ -1,9 +1,6 @@
 package com.EEIT85.bunnySugar.service.products.admin;
 
-import com.EEIT85.bunnySugar.dto.products.ProductsAdminSelectDto;
-import com.EEIT85.bunnySugar.dto.products.ProductsInsertDto;
-import com.EEIT85.bunnySugar.dto.products.ProductsSelectDto;
-import com.EEIT85.bunnySugar.dto.products.ProductsUpdateDto;
+import com.EEIT85.bunnySugar.dto.products.*;
 import com.EEIT85.bunnySugar.entity.Categories;
 import com.EEIT85.bunnySugar.entity.ProductDetails;
 import com.EEIT85.bunnySugar.entity.Products;
@@ -13,6 +10,9 @@ import com.EEIT85.bunnySugar.repository.ProductsRepository;
 import com.EEIT85.bunnySugar.exception.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -152,6 +152,10 @@ public class ProductsAdminService {
 
     public List<ProductsAdminSelectDto> getAll() {
         return productsRepository.getAdminAllProducts();
+    }
+
+    public Page<ProductsAdminSelectDto> getAllPaginated(Pageable pageable) {
+        return productsRepository.getAdminAllProductsPaginated(pageable);
     }
 
 }

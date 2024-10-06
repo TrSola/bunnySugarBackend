@@ -53,4 +53,13 @@ public interface ProductsRepository extends JpaRepository<Products,
 
     @Query("SELECT p FROM Products p LEFT JOIN FETCH p.categories LEFT JOIN FETCH p.productDetails WHERE p.id = :id")
     Products findProductWithDetailsById(@Param("id") Long id);
+
+    @Query("SELECT NEW com.EEIT85.bunnySugar.dto.products.ProductsAdminSelectDto(" +
+            "p.id, c.categoryName, p.productName, pd.price, pd.enable, pd.description, " +
+            "pd.materialDescription, pd.img1, pd.img2, pd.img3, pd.img4, c.flavor, " +
+            "p.stocks, c.categoryDescription) " +
+            "FROM Products p " +
+            "JOIN p.categories c " +
+            "JOIN p.productDetails pd")
+    Page<ProductsAdminSelectDto> getAdminAllProductsPaginated(Pageable pageable);
 }

@@ -37,7 +37,7 @@ public class ECPAYService {
             obj.setItemName("本次購買總金額");
             obj.setReturnURL("http://localhost:8081/test");
             obj.setNeedExtraPaidInfo("N");
-            obj.setClientBackURL("http://127.0.0.1:8080/products");
+            obj.setClientBackURL("http://127.0.0.1:5173");
             obj.setNeedExtraPaidInfo("Y");
             form = all.aioCheckOut(obj, null);
 

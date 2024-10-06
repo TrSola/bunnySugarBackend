@@ -3,11 +3,13 @@ package com.EEIT85.bunnySugar.controller.products.admin;
 
 import com.EEIT85.bunnySugar.dto.products.ProductsAdminSelectDto;
 import com.EEIT85.bunnySugar.dto.products.ProductsInsertDto;
-import com.EEIT85.bunnySugar.dto.products.ProductsSelectDto;
 import com.EEIT85.bunnySugar.dto.products.ProductsUpdateDto;
 import com.EEIT85.bunnySugar.exception.ResourceNotFoundException;
 import com.EEIT85.bunnySugar.service.products.admin.ProductsAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +23,18 @@ public class ProductsAdminController {
     @Autowired
     ProductsAdminService productsAdminService;
 
+
     @GetMapping
     public List<ProductsAdminSelectDto> getAllAdminProducts() {
         return productsAdminService.getAll();
+    }
+
+    @GetMapping("/page")
+    public Page<ProductsAdminSelectDto> getAllAdminProductsPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productsAdminService.getAllPaginated(pageable);
     }
 
     @PostMapping
