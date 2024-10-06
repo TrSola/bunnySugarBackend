@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/game")
+@RequestMapping("/api/game")
 @CrossOrigin(origins = "http://localhost:5173")
 public class GameController {
 

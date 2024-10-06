@@ -14,6 +14,7 @@ public class OrdersFrontDto {
     private String userEmail;
     private String orderNumber;
     private LocalDateTime createTime;
+    private String paymentMethod;
     private String paymentStatus;
     private String pickupStatus;
     private LocalDateTime pickupTime;
@@ -21,11 +22,29 @@ public class OrdersFrontDto {
     public OrdersFrontDto() {
     }
 
-    public OrdersFrontDto(String orderNumber, LocalDateTime createTime, String paymentStatus, String pickupStatus,
+    public OrdersFrontDto(List<OrderDetailsFrontDto> orderDetails, Integer total, String couponName, Integer usedBunnyCoins, Integer paidPrice, String userName, String userPhone, String userEmail, String orderNumber, LocalDateTime createTime, String paymentMethod, String paymentStatus, String pickupStatus, LocalDateTime pickupTime) {
+        this.orderDetails = orderDetails;
+        this.total = total;
+        this.couponName = couponName;
+        this.usedBunnyCoins = usedBunnyCoins;
+        this.paidPrice = paidPrice;
+        this.userName = userName;
+        this.userPhone = userPhone;
+        this.userEmail = userEmail;
+        this.orderNumber = orderNumber;
+        this.createTime = createTime;
+        this.paymentMethod = paymentMethod;
+        this.paymentStatus = paymentStatus;
+        this.pickupStatus = pickupStatus;
+        this.pickupTime = pickupTime;
+    }
+
+    public OrdersFrontDto(String orderNumber, LocalDateTime createTime, String paymentMethod, String paymentStatus, String pickupStatus,
                           LocalDateTime pickupTime, Integer total, String couponName, Integer usedBunnyCoins,
                           Integer paidPrice, String userName, String userPhone, String userEmail) {
         this.orderNumber = orderNumber;
         this.createTime = createTime;
+        this.paymentMethod = paymentMethod;
         this.paymentStatus = paymentStatus;
         this.pickupStatus = pickupStatus;
         this.pickupTime = pickupTime;
@@ -140,5 +159,13 @@ public class OrdersFrontDto {
 
     public void setPickupTime(LocalDateTime pickupTime) {
         this.pickupTime = pickupTime;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 }

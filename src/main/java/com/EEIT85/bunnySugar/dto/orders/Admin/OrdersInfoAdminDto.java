@@ -1,19 +1,30 @@
 package com.EEIT85.bunnySugar.dto.orders.Admin;
 
-import java.time.LocalDateTime;
+import com.EEIT85.bunnySugar.dto.orders.front.OrderDetailsFrontDto;
+
 import java.util.List;
 
 public class OrdersInfoAdminDto { //訂單管理頁面(不含跳出的詳細資訊)
     private String orderNumber;
     private String userName;
     private String userPhone;
-    private String userEmail;
-    private List<OrderDetailsAdminDto> orderDetails;
+    private List<OrderDetailsFrontDto> orderDetails;
     private Integer paidPrice;
-
-
-
     private String paymentStatus;
+    private String pickupStatus;
+
+    public OrdersInfoAdminDto() {
+    }
+
+    public OrdersInfoAdminDto(String orderNumber, String userName, String userPhone, Integer paidPrice, String paymentStatus, String pickupStatus) {
+        this.orderNumber = orderNumber;
+        this.userName = userName;
+        this.userPhone = userPhone;
+        this.paidPrice = paidPrice;
+        this.paymentStatus = paymentStatus;
+        this.pickupStatus = pickupStatus;
+    }
+
 
     public String getOrderNumber() {
         return orderNumber;
@@ -39,22 +50,21 @@ public class OrdersInfoAdminDto { //訂單管理頁面(不含跳出的詳細資�
         this.userPhone = userPhone;
     }
 
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
-
-    public List<OrderDetailsAdminDto> getOrderDetails() {
+    public List<OrderDetailsFrontDto> getOrderDetails() {
         return orderDetails;
     }
 
-    public void setOrderDetails(List<OrderDetailsAdminDto> orderDetails) {
+    public void setOrderDetails(List<OrderDetailsFrontDto> orderDetails) {
         this.orderDetails = orderDetails;
     }
 
+    public Integer getPaidPrice() {
+        return paidPrice;
+    }
+
+    public void setPaidPrice(Integer paidPrice) {
+        this.paidPrice = paidPrice;
+    }
 
     public String getPaymentStatus() {
         return paymentStatus;
@@ -64,13 +74,12 @@ public class OrdersInfoAdminDto { //訂單管理頁面(不含跳出的詳細資�
         this.paymentStatus = paymentStatus;
     }
 
-
-    public Integer getPaidPrice() {
-        return paidPrice;
+    public String getPickupStatus() {
+        return pickupStatus;
     }
 
-    public void setPaidPrice(Integer paidPrice) {
-        this.paidPrice = paidPrice;
+    public void setPickupStatus(String pickupStatus) {
+        this.pickupStatus = pickupStatus;
     }
 }
 

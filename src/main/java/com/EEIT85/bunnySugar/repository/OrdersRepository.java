@@ -1,6 +1,11 @@
 package com.EEIT85.bunnySugar.repository;
 
+import com.EEIT85.bunnySugar.dto.orders.Admin.OrderDetailsAdminDto;
+import com.EEIT85.bunnySugar.dto.orders.front.OrderDetailsFrontDto;
 import com.EEIT85.bunnySugar.dto.orders.front.OrdersFrontDto;
+import com.EEIT85.bunnySugar.dto.orders.front.OrdersInfoDto;
+import com.EEIT85.bunnySugar.dto.orders.Admin.OrdersFullInfoAdminDto;
+import com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto;
 import com.EEIT85.bunnySugar.entity.Orders;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
@@ -15,47 +20,71 @@ import java.util.List;
 
 @Repository
 public interface OrdersRepository extends JpaRepository<Orders, Long> {
-    @Query("SELECT o.orderNumber, u.name, u.phone, u.email, pd.paidPrice, "
-            + "pd.paymentStatus, od.products.productName, od.quantity "
-            + "FROM Orders o "
-            + "JOIN o.user u "
-            + "JOIN o.orderDetails od "
-            + "JOIN od.products p "
-            + "JOIN o.paymentDetails pd")
-    Page<Object[]> findAllOrdersInfo(Pageable pageable);
 
-    @Query("SELECT o.orderNumber, u.name, u.phone, u.email, pd.paidPrice, "
-            + "pd.paymentStatus, od.products.productName, od.quantity "
-            + "FROM Orders o "
-            + "JOIN o.user u "
-            + "JOIN o.orderDetails od "
-            + "JOIN od.products p "
-            + "JOIN o.paymentDetails pd "
-            + "WHERE u.phone = :phone")  // 根據會員電話查詢
-    Page<Object[]> findOrdersByUserPhone(@Param("phone") String phone, Pageable pageable);
+    // 訂單後台查詢全部訂單基本資訊，(不含商品細節)
+    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto(o.orderNumber, u.name, u.phone, pd.paidPrice,  " +
+            "pd.paymentStatus, o.pickupStatus) " +
+            "FROM Orders o " +
+            "JOIN o.user u " +
+            "JOIN o.paymentDetails pd")
+    Page<OrdersInfoAdminDto> findAllOrdersInfo(Pageable pageable);
 
-    // 根據訂單ID查詢訂單的詳細信息
-    @Query("SELECT o.orderNumber, u.name, u.phone, u.email, o.createTime, pd.paymentStatus, o.pickupStatus, "
-            + "pd.paidPrice, pd.paymentMethod, pd.paymentDate, o.total, o.couponName, o.usedBunnyCoins, "
-            + "o.pickupTime, od.products.productName, od.quantity, od.price "
-            + "FROM Orders o "
-            + "JOIN o.user u "
-            + "JOIN o.orderDetails od "
-            + "JOIN o.paymentDetails pd "
-            + "WHERE o.id = :id")
-    Page<Object[]> findOrderFullInfoByOrderId(@Param("id") Long id, Pageable pageable);
+    // 訂單後台根據會員電話查詢訂單(不含商品細節)
+    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto(o.orderNumber, u.name, u.phone, pd.paidPrice,  " +
+            "pd.paymentStatus, o.pickupStatus) " +
+            "FROM Orders o " +
+            "JOIN o.user u " +
+            "JOIN o.paymentDetails pd " +
+            "WHERE u.phone = :phone")
+    Page<OrdersInfoAdminDto> findOrdersInfoByUserPhone(@Param("phone") String phone, Pageable pageable);
 
+    // 訂單後台根據orderNumber查詢訂單(不含商品細節)
+    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto(o.orderNumber, u.name, u.phone, pd.paidPrice,  " +
+            "pd.paymentStatus, o.pickupStatus) " +
+            "FROM Orders o " +
+            "JOIN o.user u " +
+            "JOIN o.paymentDetails pd " +
+            "WHERE o.orderNumber = :orderNumber")
+    OrdersInfoAdminDto findOrdersInfoByOrderNumber(@Param("orderNumber") String orderNumber);
+
+
+    // 訂單後台編輯，跳出根據orderNumber查詢訂單的詳細資
+    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.Admin.OrdersFullInfoAdminDto(o.orderNumber, u.name, u.phone, u.email, o.createTime, " +
+            "pd.paymentStatus, o.pickupStatus, pd.paidPrice, pd.paymentMethod, pd.paymentDate, o.total, " +
+            "o.couponName, o.usedBunnyCoins, o.pickupTime) " +
+            "FROM Orders o " +
+            "JOIN o.user u " +
+            "JOIN o.orderDetails od " +
+            "JOIN o.paymentDetails pd " +
+            "WHERE o.orderNumber = :orderNumber")
+    OrdersFullInfoAdminDto findOrderFullInfoByOrderNumber(@Param("orderNumber") String orderNumber);
+
+    // 訂單前後台根據orderNumber查詢指定訂單中的 OrderDetails(很多商品)
+    @Query("SELECT od FROM OrderDetails od JOIN od.orders o WHERE o.orderNumber = :orderNumber")
+    List<OrderDetailsFrontDto> findOrderDetailsByOrderNumber(@Param("orderNumber") String orderNumber);
+
+
+    // 更新訂單取貨狀態
     @Modifying
     @Query("UPDATE Orders o SET o.pickupStatus = :pickupStatus WHERE o.id = :orderId")
     int updatePickupStatus(@Param("orderId") Long orderId, @Param("pickupStatus") String pickupStatus);
 
+    // 訂單前台根據 userId 查詢訂單簡略資料(不含商品細節)
+    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.front.OrdersInfoDto(o.orderNumber, o.createTime, pd.paidPrice, o.pickupStatus) " +
+            "FROM Orders o " +
+            "JOIN o.user u " +
+            "JOIN o.paymentDetails pd " +
+            "WHERE u.id = :userId")
+    Page<OrdersInfoDto> findAllOrdersByUserId(@Param("userId") Long userId, Pageable pageable);
 
-    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.front.OrdersFrontDto(o.orderNumber, o.createTime, pd.paymentStatus, o.pickupStatus, "
-            + "o.pickupTime, o.total, o.couponName, o.usedBunnyCoins, pd.paidPrice, u.name, u.phone, u.email) "
-            + "FROM Orders o "
-            + "JOIN o.user u "
-            + "JOIN o.paymentDetails pd "
-            + "WHERE o.orderNumber = :orderNumber")
-    OrdersFrontDto findOrderByOrderNumber(@Param("orderNumber") String orderNumber);
+    // 前台根據訂單編號查詢訂單資訊(不含商品細節)
+    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.front.OrdersFrontDto(o.orderNumber, o.createTime, pd.paymentMethod, pd.paymentStatus, o.pickupStatus, " +
+            "o.pickupTime, o.total, o.couponName, o.usedBunnyCoins, pd.paidPrice, u.name, u.phone, u.email) " +
+            "FROM Orders o " +
+            "JOIN o.user u " +
+            "JOIN o.paymentDetails pd " +
+            "WHERE o.orderNumber = :orderNumber")
+    OrdersFrontDto findFrontOrderByOrderNumber(@Param("orderNumber") String orderNumber);
+//
 
 }

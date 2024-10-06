@@ -5,6 +5,11 @@ public class OrdersAdminUpdateDto {
     private String pickupStatus;
     private String paymentStatus;
 
+    public OrdersAdminUpdateDto(String pickupStatus, String paymentStatus) {
+        this.pickupStatus = pickupStatus;
+        this.paymentStatus = paymentStatus;
+    }
+
     public String getPickupStatus() {
         return pickupStatus;
     }

@@ -2,6 +2,8 @@ package com.EEIT85.bunnySugar.service.orders.front;
 
 import com.EEIT85.bunnySugar.dto.orders.front.OrderDetailsFrontDto;
 import com.EEIT85.bunnySugar.dto.orders.front.OrdersFrontDto;
+import com.EEIT85.bunnySugar.dto.orders.front.OrdersInfoDto;
+import com.EEIT85.bunnySugar.dto.orders.front.OrdersInfoDto;
 import com.EEIT85.bunnySugar.dto.orders.front.OrdersInsertDto;
 import com.EEIT85.bunnySugar.entity.*;
 import com.EEIT85.bunnySugar.repository.CartRepository;
@@ -10,13 +12,13 @@ import com.EEIT85.bunnySugar.repository.OrdersRepository;
 import com.EEIT85.bunnySugar.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class OrdersService {
@@ -39,8 +41,14 @@ public class OrdersService {
         //產生訂單編號
 
         orders.setOrderNumber(ordersInsertDto.getMerchantNo());
+
         //找出目前的使用者並將使用者資訊存入訂單
         Users user = userRepository.getReferenceById(userId);
+
+        //計算本次消費獲得的coin
+        Integer addCoin = ordersInsertDto.getTotal() / 500;
+        user.setBunnyCoin(user.getBunnyCoin() + addCoin);
+
         //計算本次累積消費
         user.setAccumulateSpent(user.getAccumulateSpent() + ordersInsertDto.getTotal());
         Integer totalSpent = user.getAccumulateSpent();
@@ -58,6 +66,7 @@ public class OrdersService {
         List<OrderDetails> orderDetails = new ArrayList<>();
         Cart cart = cartRepository.findByUsersId(userId);
         Set<CartItems> cartItems = cart.getCartItems();
+
         //cartItems有資料 一一填入orderDetails
         cartItems.forEach(cartItem -> {
             //把detail分別創建為物件新增後再一起加入orderDetails
@@ -70,8 +79,10 @@ public class OrdersService {
             detail.setOrders(orders);
             orderDetails.add(detail);
         });
+
         orders.setOrderDetails(orderDetails);
-        //payment部份
+
+        // payment部份
         PaymentDetails paymentDetails = new PaymentDetails();
         paymentDetails.setMerchantNo(ordersInsertDto.getMerchantNo());
         paymentDetails.setCreateTime(LocalDateTime.now());
@@ -84,10 +95,8 @@ public class OrdersService {
         //建立paymentDetails與orders的關聯
         paymentDetails.setOrders(orders);
         orders.setPaymentDetails(paymentDetails);
-        //orders部份
         orders.setCreateTime(LocalDateTime.now());
         orders.setUpdateTime(LocalDateTime.now());
-        orders.setPaymentDetails(paymentDetails);
         orders.setTotal(cart.getTotal());
         orders.setPaymentPrice(ordersInsertDto.getTotal());
         orders.setPickupTime(ordersInsertDto.getPickupTime());
@@ -95,23 +104,25 @@ public class OrdersService {
         orders.setUsedBunnyCoins(ordersInsertDto.getUsedBunnyCoins());
         orders.setPickupStatus("未取貨");
 
-
         ordersRepository.save(orders);
     }
 
+    // 查詢指定userId的訂單，並返回分頁的訂單資訊
+    public Page<OrdersInfoDto> getAllOrdersByUserId(Long userId, Pageable pageable) {
+        return ordersRepository.findAllOrdersByUserId(userId, pageable);
+    }
 
-
-    // 前台根據訂單編號查詢訂單及細節
     public OrdersFrontDto getOrderByOrderNumber(String orderNumber) {
-        // 查詢訂單基本信息
-        OrdersFrontDto ordersFrontDto = ordersRepository.findOrderByOrderNumber(orderNumber);
-
+        OrdersFrontDto ordersFrontDto = ordersRepository.findFrontOrderByOrderNumber(orderNumber);
         if (ordersFrontDto == null) {
             throw new IllegalArgumentException("未找到該訂單");
         }
-
         // 查詢訂單詳細信息
         List<OrderDetailsFrontDto> orderDetailsFrontDtoList = orderDetailsRepository.findOrderDetailsByOrderNumber(orderNumber);
+
+        // 在這裡打印查詢結果，確認是否成功抓取到訂單細節
+        System.out.println("訂單詳細資料: " + orderDetailsFrontDtoList);
+
         ordersFrontDto.setOrderDetails(orderDetailsFrontDtoList);
 
         return ordersFrontDto;

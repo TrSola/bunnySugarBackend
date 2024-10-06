@@ -7,6 +7,12 @@ public class OrderDetailsAdminDto {
     private Integer quantity; //數量
     private Integer price; //單價
 
+    public OrderDetailsAdminDto(String productName, Integer quantity, Integer price) {
+        this.productName = productName;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
     public String getProductName() {
         return productName;
     }
