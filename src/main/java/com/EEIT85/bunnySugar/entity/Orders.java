@@ -26,7 +26,7 @@ public class Orders {
     private Users user;
 
     //orphanRemoval=true，如果orders被刪除details沒有對應關聯就會自動被刪除
-    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference("orders_orderDetails")
     private List<OrderDetails> orderDetails;
 

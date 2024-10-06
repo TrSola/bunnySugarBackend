@@ -60,7 +60,8 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
     OrdersFullInfoAdminDto findOrderFullInfoByOrderNumber(@Param("orderNumber") String orderNumber);
 
     // 訂單前後台根據orderNumber查詢指定訂單中的 OrderDetails(很多商品)
-    @Query("SELECT od FROM OrderDetails od JOIN od.orders o WHERE o.orderNumber = :orderNumber")
+    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.front.OrderDetailsFrontDto(p.productName, od.quantity, od.price, (od.quantity * od.price)) " +
+            "FROM OrderDetails od JOIN od.products p JOIN od.orders o WHERE o.orderNumber = :orderNumber")
     List<OrderDetailsFrontDto> findOrderDetailsByOrderNumber(@Param("orderNumber") String orderNumber);
 
 

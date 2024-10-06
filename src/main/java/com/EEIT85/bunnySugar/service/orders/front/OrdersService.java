@@ -3,7 +3,6 @@ package com.EEIT85.bunnySugar.service.orders.front;
 import com.EEIT85.bunnySugar.dto.orders.front.OrderDetailsFrontDto;
 import com.EEIT85.bunnySugar.dto.orders.front.OrdersFrontDto;
 import com.EEIT85.bunnySugar.dto.orders.front.OrdersInfoDto;
-import com.EEIT85.bunnySugar.dto.orders.front.OrdersInfoDto;
 import com.EEIT85.bunnySugar.dto.orders.front.OrdersInsertDto;
 import com.EEIT85.bunnySugar.entity.*;
 import com.EEIT85.bunnySugar.repository.CartRepository;
@@ -11,10 +10,11 @@ import com.EEIT85.bunnySugar.repository.OrderDetailsRepository;
 import com.EEIT85.bunnySugar.repository.OrdersRepository;
 import com.EEIT85.bunnySugar.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,7 +31,6 @@ public class OrdersService {
     @Autowired
     UserRepository userRepository;
 
-
     @Autowired
     private OrderDetailsRepository orderDetailsRepository;
 
@@ -39,7 +38,6 @@ public class OrdersService {
     public void insertOrder(OrdersInsertDto ordersInsertDto, Long userId) {
         Orders orders = new Orders();
         //產生訂單編號
-
         orders.setOrderNumber(ordersInsertDto.getMerchantNo());
 
         //找出目前的使用者並將使用者資訊存入訂單
@@ -112,18 +110,30 @@ public class OrdersService {
         return ordersRepository.findAllOrdersByUserId(userId, pageable);
     }
 
+
+    private static final Logger logger = LoggerFactory.getLogger(OrdersService.class);
     public OrdersFrontDto getOrderByOrderNumber(String orderNumber) {
+        logger.info("開始查詢訂單號: {}", orderNumber);
+
         OrdersFrontDto ordersFrontDto = ordersRepository.findFrontOrderByOrderNumber(orderNumber);
         if (ordersFrontDto == null) {
+            logger.error("未找到訂單號為 {} 的訂單", orderNumber);
             throw new IllegalArgumentException("未找到該訂單");
         }
-        // 查詢訂單詳細信息
-        List<OrderDetailsFrontDto> orderDetailsFrontDtoList = orderDetailsRepository.findOrderDetailsByOrderNumber(orderNumber);
 
-        // 在這裡打印查詢結果，確認是否成功抓取到訂單細節
-        System.out.println("訂單詳細資料: " + orderDetailsFrontDtoList);
+        logger.info("成功查詢到訂單: {}", ordersFrontDto);
+
+        List<OrderDetailsFrontDto> orderDetailsFrontDtoList = orderDetailsRepository.findOrderDetailsByOrderNumber(orderNumber);
+        logger.info("訂單詳細資料: {}", orderDetailsFrontDtoList);
+
+        if (orderDetailsFrontDtoList.isEmpty()) {
+            logger.warn("訂單 {} 沒有詳細資料", orderNumber);
+        }
 
         ordersFrontDto.setOrderDetails(orderDetailsFrontDtoList);
+
+
+        logger.info("完成訂單查詢，返回結果: {}", ordersFrontDto);
 
         return ordersFrontDto;
     }

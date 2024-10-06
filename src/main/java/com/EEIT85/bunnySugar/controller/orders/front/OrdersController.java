@@ -55,12 +55,12 @@ public class OrdersController {
     // 前台根據訂單編號查詢訂單及細節
     @GetMapping("/byOrderNumber")
     public ResponseEntity<OrdersFrontDto> getOrderByOrderNumber(
-            HttpServletRequest request,
+//            HttpServletRequest request,
             @RequestParam String orderNumber) {
-        Long userId = (Long) request.getAttribute("userId");
-        if (userId == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+//        Long userId = (Long) request.getAttribute("userId");
+//        if (userId == null) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+//        }
         OrdersFrontDto order = ordersService.getOrderByOrderNumber(orderNumber);
         if (order == null) {
             return ResponseEntity.notFound().build(); // 查無訂單時返回404

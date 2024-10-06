@@ -46,8 +46,7 @@ public class Products {
     @JsonManagedReference("Products_CartItems")
     private List<CartItems> cartItems;
 
-    @OneToMany(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval =
-            true)
+    @OneToMany(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference("products_orderDetails")
     private List<OrderDetails> orderDetails;
 
