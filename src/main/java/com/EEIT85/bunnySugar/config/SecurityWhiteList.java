@@ -12,6 +12,7 @@ public class SecurityWhiteList {
             "/user/login",
             "/user/registerVerify",
             "/user/verify",
+            "/api/wishList/**",
             "/user/completeDetails",
             "/user/googleLogin",
             "/api/products/**",
