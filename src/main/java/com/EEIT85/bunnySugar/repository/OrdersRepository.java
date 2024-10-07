@@ -21,6 +21,7 @@ import java.util.List;
 @Repository
 public interface OrdersRepository extends JpaRepository<Orders, Long> {
 
+
     // 訂單後台查詢全部訂單基本資訊，(不含商品細節)
     @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto(o.orderNumber, u.name, u.phone, pd.paidPrice,  " +
             "pd.paymentStatus, o.pickupStatus) " +
@@ -29,13 +30,32 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
             "JOIN o.paymentDetails pd")
     Page<OrdersInfoAdminDto> findAllOrdersInfo(Pageable pageable);
 
+//    // 訂單或是電話模糊查詢(sql)
+//    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto(o.orderNumber, u.name, u.phone, pd.paidPrice, " +
+//            "pd.paymentStatus, o.pickupStatus) " +
+//            "FROM Orders o " +
+//            "JOIN o.user u " +
+//            "JOIN o.paymentDetails pd " +
+//            "WHERE o.orderNumber LIKE %:search% OR u.phone LIKE %:search%")
+//    Page<OrdersInfoAdminDto> findOrdersInfoByOrderNumberOrUserPhone(@Param("search") String search, Pageable pageable);
+
+    // 訂單編號或是電話模糊查詢(jpql)
+    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto(o.orderNumber, u.name, u.phone, pd.paidPrice, " +
+            "pd.paymentStatus, o.pickupStatus) " +
+            "FROM Orders o " +
+            "JOIN o.user u " +
+            "JOIN o.paymentDetails pd " +
+            "WHERE o.orderNumber LIKE CONCAT('%', :search, '%') OR u.phone LIKE CONCAT('%', :search, '%')")
+    Page<OrdersInfoAdminDto> findOrdersInfoByOrderNumberOrUserPhone(@Param("search") String search, Pageable pageable);
+
+
     // 訂單後台根據會員電話查詢訂單(不含商品細節)
     @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto(o.orderNumber, u.name, u.phone, pd.paidPrice,  " +
             "pd.paymentStatus, o.pickupStatus) " +
             "FROM Orders o " +
             "JOIN o.user u " +
             "JOIN o.paymentDetails pd " +
-            "WHERE u.phone = :phone")
+            "WHERE u.phone LIKE :phone")
     Page<OrdersInfoAdminDto> findOrdersInfoByUserPhone(@Param("phone") String phone, Pageable pageable);
 
     // 訂單後台根據orderNumber查詢訂單(不含商品細節)
@@ -44,7 +64,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
             "FROM Orders o " +
             "JOIN o.user u " +
             "JOIN o.paymentDetails pd " +
-            "WHERE o.orderNumber = :orderNumber")
+            "WHERE o.orderNumber LIKE :orderNumber")
     OrdersInfoAdminDto findOrdersInfoByOrderNumber(@Param("orderNumber") String orderNumber);
 
 

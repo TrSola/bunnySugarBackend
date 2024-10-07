@@ -35,6 +35,17 @@ public class OrdersAdminService {
         return ordersPage;
     }
 
+    // 訂單編號與電話號碼查詢訂單(不含商品細節)
+    public Page<OrdersInfoAdminDto> searchOrders(String search, Pageable pageable) {
+        Page<OrdersInfoAdminDto> ordersPage = ordersRepository.findOrdersInfoByOrderNumberOrUserPhone(search, pageable);
+        // 查詢訂單的商品細節
+        ordersPage.forEach(order -> {
+            List<OrderDetailsFrontDto> orderDetails = ordersRepository.findOrderDetailsByOrderNumber(order.getOrderNumber());
+            order.setOrderDetails(orderDetails);
+        });
+        return ordersPage;
+    }
+
     // 訂單後台根據會員電話查詢訂單(不含商品細節)
     public Page<OrdersInfoAdminDto> getOrdersByUserPhone(String phone, Pageable pageable) {
         Page<OrdersInfoAdminDto> ordersPage = ordersRepository.findOrdersInfoByUserPhone(phone, pageable);
