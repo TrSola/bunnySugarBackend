@@ -40,10 +40,6 @@ public class OrdersController {
         if (userId == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();  // 如果沒有 userId，回應未授權
         }
-        // 確保頁碼不小於1
-        if (page < 1) {
-            page = 1;  // 如果頁碼小於1，則設置為1
-        }
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<OrdersInfoDto> ordersPage = ordersService.getAllOrdersByUserId(userId, pageable);
 
