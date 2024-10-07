@@ -97,7 +97,7 @@ public class Users {
     private Cart cart;
 
     // OneToOne關聯WishList
-    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("Users_WishList")
     private WishList wishList;
 

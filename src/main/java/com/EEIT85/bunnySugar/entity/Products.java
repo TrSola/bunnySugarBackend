@@ -41,7 +41,7 @@ public class Products {
             true)
     private ProductDetails productDetails;  // 新增 ProductDetails 映射
 
-    @OneToOne(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval =
+    @OneToMany(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval =
             true)
     private WishList wishList;
 

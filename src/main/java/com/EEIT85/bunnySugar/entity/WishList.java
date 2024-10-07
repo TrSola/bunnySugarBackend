@@ -15,12 +15,12 @@ public class WishList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JsonBackReference("Users_WishList")
     @JoinColumn(name = "users_id", nullable = false)
     private Users users;
 
-    @OneToOne
+    @ManyToOne
     @JsonBackReference("Products_WishList")
     @JoinColumn(name = "products_id", nullable = false)
     private  Products products;

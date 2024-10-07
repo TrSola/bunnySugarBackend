@@ -11,6 +11,10 @@ public class CartInsertDto {
     public CartInsertDto() {
     }
 
+    public CartInsertDto(Long productId) {
+        this.productId = productId;
+    }
+
     public CartInsertDto(Long productId, Integer quantity, Integer price) {
         this.productId = productId;
         this.quantity = quantity;
