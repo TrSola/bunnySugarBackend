@@ -7,6 +7,8 @@ import com.EEIT85.bunnySugar.entity.Coupon;
 import com.EEIT85.bunnySugar.repository.CouponRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -43,5 +45,9 @@ public class CouponService {
 
     public List<Coupon> getCoupons() {
         return couponRepository.findAll();
+    }
+
+    public Page<Coupon> getCouponsPaginated(Pageable pageable) {
+        return couponRepository.findAll(pageable);
     }
 }
