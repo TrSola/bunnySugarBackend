@@ -74,7 +74,6 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
             "o.couponName, o.usedBunnyCoins, o.pickupTime) " +
             "FROM Orders o " +
             "JOIN o.user u " +
-            "JOIN o.orderDetails od " +
             "JOIN o.paymentDetails pd " +
             "WHERE o.orderNumber = :orderNumber")
     OrdersFullInfoAdminDto findOrderFullInfoByOrderNumber(@Param("orderNumber") String orderNumber);

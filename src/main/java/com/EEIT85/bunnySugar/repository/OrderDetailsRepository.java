@@ -11,11 +11,11 @@ import java.util.List;
 
 @Repository
 public interface OrderDetailsRepository extends JpaRepository<OrderDetails, Long> {
-    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.front.OrderDetailsFrontDto(od.products.productName, od.quantity, od.price) "
-            + "FROM OrderDetails od "
-            + "JOIN od.orders o "
-            + "WHERE o.orderNumber = :orderNumber")
-    List<OrderDetailsFrontDto> findOrderDetailsByOrderNumber(@Param("orderNumber") String orderNumber);
+//    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.front.OrderDetailsFrontDto(od.products.productName, od.quantity, od.price) "
+//            + "FROM OrderDetails od "
+//            + "JOIN od.orders o "
+//            + "WHERE o.orderNumber = :orderNumber")
+//    List<OrderDetailsFrontDto> findOrderDetailsByOrderNumber(@Param("orderNumber") String orderNumber);
 }
 
 

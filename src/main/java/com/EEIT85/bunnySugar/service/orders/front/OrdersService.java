@@ -123,7 +123,7 @@ public class OrdersService {
 
         logger.info("成功查詢到訂單: {}", ordersFrontDto);
 
-        List<OrderDetailsFrontDto> orderDetailsFrontDtoList = orderDetailsRepository.findOrderDetailsByOrderNumber(orderNumber);
+        List<OrderDetailsFrontDto> orderDetailsFrontDtoList = ordersRepository.findOrderDetailsByOrderNumber(orderNumber);
         logger.info("訂單詳細資料: {}", orderDetailsFrontDtoList);
 
         if (orderDetailsFrontDtoList.isEmpty()) {
