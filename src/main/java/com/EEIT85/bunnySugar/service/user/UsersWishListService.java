@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-public class WishListService {
+public class UsersWishListService {
 
     @Autowired
     private WishListRepository wishListRepository;

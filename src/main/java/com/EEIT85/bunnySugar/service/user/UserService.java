@@ -7,7 +7,6 @@ import com.EEIT85.bunnySugar.entity.Cart;
 import com.EEIT85.bunnySugar.entity.Users;
 import com.EEIT85.bunnySugar.entity.WishList;
 import com.EEIT85.bunnySugar.repository.UserRepository;
-import com.google.firebase.FirebaseApp;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +32,7 @@ public class UserService {
     private UsersCartService usersCartService;
 
     @Autowired
-    private WishListService wishListService;
+    private UsersWishListService usersWishListService;
 
     @Autowired
     private VerificationEmailService verificationEmailService;
@@ -79,8 +78,8 @@ public class UserService {
 
         user = userRepository.save(user);
 
-        wishListService.createWishListForUser(user);
-        usersCartService.createCartForUser(user); // 使用實例來調用方法
+        usersCartService.createCartForUser(user);
+        usersWishListService.createWishListForUser(user);
 
         // 發送驗證信
         verificationEmailService.sendVerificationEmail(user.getEmail(), verifyingToken);
@@ -159,8 +158,10 @@ public class UserService {
         // 更新願望清單物件的 createTime 和 updateTime
         List<WishList> wishList = user.getWishList();
         if (wishList != null) {
-//            wishList.setCreateTime(user.getUpdateTime());  // 使用用戶的更新時間作為願望清單的創建時間
-//            wishList.setUpdateTime(user.getUpdateTime());  // 同理
+            for (WishList item : wishList) {
+                item.setCreateTime(user.getUpdateTime());  // 使用用戶的更新時間作為願望清單的創建時間
+                item.setUpdateTime(user.getUpdateTime());  // 同理
+            }
         }
         // 儲存更新後的用戶資料與關聯物件
         userRepository.save(user);
@@ -243,6 +244,7 @@ public class UserService {
                 user.setName(name);
                 user.setAccount(email);
                 user.setAccumulateSpent(0);
+                user.setBunnyCoin(0);
                 user.setUserVip("白兔");
                 user.setCreateTime(LocalDateTime.now());
                 user.setUpdateTime(LocalDateTime.now());
@@ -252,7 +254,7 @@ public class UserService {
                 user.setGoogleToken(googleId); // 將 user_id 存入 googleId 字段
                 user.setUserRole("USER");
                 user = userRepository.save(user);  // 保存新用戶到資料庫
-                wishListService.createWishListForUser(user);
+                usersWishListService.createWishListForUser(user);
                 usersCartService.createCartForUser(user);
             } else {
                 // 如果用戶已存在，檢查 googleToken 是否為空
