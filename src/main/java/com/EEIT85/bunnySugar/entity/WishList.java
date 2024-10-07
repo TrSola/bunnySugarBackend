@@ -20,6 +20,11 @@ public class WishList {
     @JoinColumn(name = "users_id", nullable = false)
     private Users users;
 
+    @OneToOne
+    @JsonBackReference("Products_WishList")
+    @JoinColumn(name = "products_id", nullable = false)
+    private  Products products;
+
     @Column(nullable = false, name = "create_time")
     private LocalDateTime createTime;
 
@@ -29,11 +34,26 @@ public class WishList {
     public WishList() {
     }
 
+    public WishList(Users users, Products products, LocalDateTime createTime, LocalDateTime updateTime) {
+        this.users = users;
+        this.products = products;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+    }
+
     public WishList(Long id, Users users, LocalDateTime createTime, LocalDateTime updateTime) {
         this.id = id;
         this.users = users;
         this.createTime = createTime;
         this.updateTime = updateTime;
+    }
+
+    public Products getProducts() {
+        return products;
+    }
+
+    public void setProducts(Products products) {
+        this.products = products;
     }
 
     public Long getId() {

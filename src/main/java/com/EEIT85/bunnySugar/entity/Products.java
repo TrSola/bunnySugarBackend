@@ -41,6 +41,10 @@ public class Products {
             true)
     private ProductDetails productDetails;  // 新增 ProductDetails 映射
 
+    @OneToOne(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval =
+            true)
+    private WishList wishList;
+
     @OneToMany(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval =
             true)
     @JsonManagedReference("Products_CartItems")
@@ -66,6 +70,18 @@ public class Products {
     public Products() {
     }
 
+    public Products(Categories categories, ProductDetails productDetails, WishList wishList, List<CartItems> cartItems, List<OrderDetails> orderDetails, String productName, LocalDateTime createTime, LocalDateTime updateTime, Integer stocks) {
+        this.categories = categories;
+        this.productDetails = productDetails;
+        this.wishList = wishList;
+        this.cartItems = cartItems;
+        this.orderDetails = orderDetails;
+        this.productName = productName;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.stocks = stocks;
+    }
+
     public Products(String productName, LocalDateTime createTime, LocalDateTime updateTime, Integer stocks, Categories categories, ProductDetails productDetails, List<CartItems> cartItems, List<OrderDetails> orderDetails) {
         this.productName = productName;
         this.createTime = createTime;
@@ -88,6 +104,17 @@ public class Products {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public WishList getWishList() {
+        return wishList;
+    }
+
+    public void setWishList(WishList wishList) {
+        this.wishList = wishList;
+    }
 
     public String getProductName() {
         return productName;
