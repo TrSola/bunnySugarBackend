@@ -69,16 +69,6 @@ public class ECPAYService {
             Arrays.stream(result.split("&"))
                     .map(pair -> pair.split("=", 2)) // 分割每個鍵值對
                     .forEach(keyValue -> json.put(keyValue[0], keyValue.length > 1 ? keyValue[1] : "")); // 添加到 JSON
-
-
-            // 如果取出的TradeStatus為"1" 表示已付款
-            if (json.get("TradeStatus").equals("1")) {
-                //將本筆訂單資料庫的付款狀態改為一
-//                System.out.println(5);
-            }else {
-                //提示使用者 尚未付款
-//                System.out.println(6);
-            }
             return result;
         } catch (EcpayException e) {
             // 異常處理

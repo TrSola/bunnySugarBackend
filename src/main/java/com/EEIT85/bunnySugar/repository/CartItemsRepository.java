@@ -37,7 +37,7 @@ public interface CartItemsRepository extends JpaRepository<CartItems, Long> {
             "JOIN p.productDetails pd " +
             "JOIN ci.cart c " +
             "JOIN c.users u " +
-            "WHERE u.id = :userId")
+            "WHERE u.id = :userId AND p.stocks > 0")
     List<CartSelectDto> findCartItemsByUserId(@Param("userId") Long userId);
 
 

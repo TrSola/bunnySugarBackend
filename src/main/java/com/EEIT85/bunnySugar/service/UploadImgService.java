@@ -22,7 +22,6 @@ public class UploadImgService {
     }
 
     public String getImageById(Long id) {
-        // 获取图像的 Base64 字符串
         return uploadImgRepository.getImageById(id);
     }
 }

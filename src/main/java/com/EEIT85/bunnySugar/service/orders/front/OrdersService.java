@@ -5,10 +5,7 @@ import com.EEIT85.bunnySugar.dto.orders.front.OrdersFrontDto;
 import com.EEIT85.bunnySugar.dto.orders.front.OrdersInfoDto;
 import com.EEIT85.bunnySugar.dto.orders.front.OrdersInsertDto;
 import com.EEIT85.bunnySugar.entity.*;
-import com.EEIT85.bunnySugar.repository.CartRepository;
-import com.EEIT85.bunnySugar.repository.OrderDetailsRepository;
-import com.EEIT85.bunnySugar.repository.OrdersRepository;
-import com.EEIT85.bunnySugar.repository.UserRepository;
+import com.EEIT85.bunnySugar.repository.*;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +27,9 @@ public class OrdersService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    CartItemsRepository cartItemsRepository;
 
     @Autowired
     private OrderDetailsRepository orderDetailsRepository;
@@ -74,6 +74,7 @@ public class OrdersService {
             detail.setCreateTime(LocalDateTime.now());
             detail.setUpdateTime(LocalDateTime.now());
             detail.setProducts(cartItem.getProducts());
+            cartItem.getProducts().setStocks(cartItem.getProducts().getStocks() - cartItem.getQuantity());
             detail.setOrders(orders);
             orderDetails.add(detail);
         });
