@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseToken;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -156,10 +157,10 @@ public class UserService {
         }
 
         // 更新願望清單物件的 createTime 和 updateTime
-        WishList wishList = user.getWishList();
+        List<WishList> wishList = user.getWishList();
         if (wishList != null) {
-            wishList.setCreateTime(user.getUpdateTime());  // 使用用戶的更新時間作為願望清單的創建時間
-            wishList.setUpdateTime(user.getUpdateTime());  // 同理
+//            wishList.setCreateTime(user.getUpdateTime());  // 使用用戶的更新時間作為願望清單的創建時間
+//            wishList.setUpdateTime(user.getUpdateTime());  // 同理
         }
         // 儲存更新後的用戶資料與關聯物件
         userRepository.save(user);

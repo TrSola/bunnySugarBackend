@@ -18,12 +18,12 @@ public class OrderDetails {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)
-//    @JsonBackReference("orders_orderDetails")
+    @JsonBackReference("orders_orderDetails")
     private Orders orders;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
-//    @JsonBackReference("products_orderDetails")
+    @JsonBackReference("products_orderDetails")
     private Products products;
 
     @Column(name = "quantity", nullable = false) // 單一商品數量
