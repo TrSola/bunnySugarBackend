@@ -5,6 +5,7 @@ import com.EEIT85.bunnySugar.dto.orders.front.OrderDetailsFrontDto;
 import java.util.List;
 
 public class OrdersInfoAdminDto { //訂單管理頁面(不含跳出的詳細資訊)
+    private Long orderId;
     private String orderNumber;
     private String userName;
     private String userPhone;
@@ -16,7 +17,8 @@ public class OrdersInfoAdminDto { //訂單管理頁面(不含跳出的詳細資�
     public OrdersInfoAdminDto() {
     }
 
-    public OrdersInfoAdminDto(String orderNumber, String userName, String userPhone, Integer paidPrice, String paymentStatus, String pickupStatus) {
+    public OrdersInfoAdminDto(Long orderId, String orderNumber, String userName, String userPhone, Integer paidPrice, String paymentStatus, String pickupStatus) {
+        this.orderId = orderId;
         this.orderNumber = orderNumber;
         this.userName = userName;
         this.userPhone = userPhone;
@@ -25,6 +27,13 @@ public class OrdersInfoAdminDto { //訂單管理頁面(不含跳出的詳細資�
         this.pickupStatus = pickupStatus;
     }
 
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
 
     public String getOrderNumber() {
         return orderNumber;

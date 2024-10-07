@@ -7,6 +7,7 @@ import java.util.List;
 
 public class OrdersFullInfoAdminDto {
     //訂單管理頁面所跳出的詳細資訊
+    private Long orderId;
     private String orderNumber;
     private String userName;
     private String userPhone;
@@ -23,7 +24,8 @@ public class OrdersFullInfoAdminDto {
     private Integer usedBunnyCoins;
     private LocalDateTime pickupTime;
 
-    public OrdersFullInfoAdminDto(String orderNumber, String userName, String userPhone, String userEmail, LocalDateTime createTime, String paymentStatus, String pickupStatus, Integer paidPrice, String paymentMethod, LocalDateTime paymentDate, Integer total, String couponName, Integer usedBunnyCoins, LocalDateTime pickupTime) {
+    public OrdersFullInfoAdminDto(Long orderId, String orderNumber, String userName, String userPhone, String userEmail, LocalDateTime createTime, String paymentStatus, String pickupStatus, Integer paidPrice, String paymentMethod, LocalDateTime paymentDate, Integer total, String couponName, Integer usedBunnyCoins, LocalDateTime pickupTime) {
+        this.orderId = orderId;
         this.userName = userName;
         this.userPhone = userPhone;
         this.userEmail = userEmail;
@@ -38,6 +40,14 @@ public class OrdersFullInfoAdminDto {
         this.couponName = couponName;
         this.usedBunnyCoins = usedBunnyCoins;
         this.pickupTime = pickupTime;
+    }
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
     public String getUserName() {

@@ -23,7 +23,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
 
 
     // 訂單後台查詢全部訂單基本資訊，(不含商品細節)
-    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto(o.orderNumber, u.name, u.phone, pd.paidPrice,  " +
+    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto(o.id, o.orderNumber, u.name, u.phone, pd.paidPrice,  " +
             "pd.paymentStatus, o.pickupStatus) " +
             "FROM Orders o " +
             "JOIN o.user u " +
@@ -40,7 +40,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
 //    Page<OrdersInfoAdminDto> findOrdersInfoByOrderNumberOrUserPhone(@Param("search") String search, Pageable pageable);
 
     // 訂單編號或是電話模糊查詢(jpql)
-    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto(o.orderNumber, u.name, u.phone, pd.paidPrice, " +
+    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto(o.id, o.orderNumber, u.name, u.phone, pd.paidPrice, " +
             "pd.paymentStatus, o.pickupStatus) " +
             "FROM Orders o " +
             "JOIN o.user u " +
@@ -50,7 +50,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
 
 
     // 訂單後台根據會員電話查詢訂單(不含商品細節)
-    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto(o.orderNumber, u.name, u.phone, pd.paidPrice,  " +
+    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto(o.id, o.orderNumber, u.name, u.phone, pd.paidPrice,  " +
             "pd.paymentStatus, o.pickupStatus) " +
             "FROM Orders o " +
             "JOIN o.user u " +
@@ -59,7 +59,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
     Page<OrdersInfoAdminDto> findOrdersInfoByUserPhone(@Param("phone") String phone, Pageable pageable);
 
     // 訂單後台根據orderNumber查詢訂單(不含商品細節)
-    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto(o.orderNumber, u.name, u.phone, pd.paidPrice,  " +
+    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto(o.id, o.orderNumber, u.name, u.phone, pd.paidPrice,  " +
             "pd.paymentStatus, o.pickupStatus) " +
             "FROM Orders o " +
             "JOIN o.user u " +
@@ -69,7 +69,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
 
 
     // 訂單後台編輯，跳出根據orderNumber查詢訂單的詳細資
-    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.Admin.OrdersFullInfoAdminDto(o.orderNumber, u.name, u.phone, u.email, o.createTime, " +
+    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.Admin.OrdersFullInfoAdminDto(o.id, o.orderNumber, u.name, u.phone, u.email, o.createTime, " +
             "pd.paymentStatus, o.pickupStatus, pd.paidPrice, pd.paymentMethod, pd.paymentDate, o.total, " +
             "o.couponName, o.usedBunnyCoins, o.pickupTime) " +
             "FROM Orders o " +
