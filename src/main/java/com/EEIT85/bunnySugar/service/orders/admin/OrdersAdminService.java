@@ -63,28 +63,34 @@ public class OrdersAdminService {
         return orderInfo;
     }
 
-//    // 訂單後台編輯，跳出根據orderNumber查詢訂單的詳細資
-//    public OrdersFullInfoAdminDto getOrderFullInfoByOrderNumber(String orderNumber) {
-//        // 直接使用 OrdersRepository 的查詢方法
-//        OrdersFullInfoAdminDto orderFullInfo = ordersRepository.findOrderFullInfoByOrderNumber(orderNumber);
-//        // 查詢訂單的商品細節
-//        List<OrdersFullInfoAdminDto> orderDetails = ordersRepository.findOrderFullInfoByOrderNumber(orderNumber);
-//        orderFullInfo.setOrderDetails(orderDetails);
-//        return orderFullInfo;
-//    }
+    // 訂單後台編輯，跳出根據orderNumber查詢訂單的詳細資
+    public OrdersFullInfoAdminDto getOrderFullInfoByOrderNumber(String orderNumber) {
+        // 直接使用 OrdersRepository 的查詢方法
+        OrdersFullInfoAdminDto orderFullInfo = ordersRepository.findOrderFullInfoByOrderNumber(orderNumber);
+        // 查詢訂單的商品細節
+        List<OrderDetailsFrontDto> orderDetails = ordersRepository.findOrderDetailsByOrderNumber(orderNumber);
+        orderFullInfo.setOrderDetails(orderDetails);
+        return orderFullInfo;
+    }
 
     // 更新取貨或付款狀態，保持未修改的欄位原有狀態
     @Transactional
     public void updateOrderStatus(Long orderId, OrdersAdminUpdateDto dto) {
-        // 先查詢當前的取貨狀態與付款狀態
+        // 查詢訂單及其相關的付款信息
         Orders order = ordersRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("訂單未找到"));
-        // 檢查是否需要更新取貨狀態，否則保持原狀態
-        String newPickupStatus = dto.getPickupStatus() != null ? dto.getPickupStatus() : order.getPickupStatus();
-        ordersRepository.updatePickupStatus(orderId, newPickupStatus);
-        // 更新付款狀態，同樣保持原狀態
-        PaymentDetails paymentDetails = paymentDetailsRepository.findByOrdersId(orderId);
-        String newPaymentStatus = dto.getPaymentStatus() != null ? dto.getPaymentStatus() : paymentDetails.getPaymentStatus();
-        paymentDetailsRepository.updatePaymentStatus(orderId, newPaymentStatus);
+        // 更新取貨狀態，保持未修改欄位的原狀態
+        if (dto.getPickupStatus() != null) {
+            order.setPickupStatus(dto.getPickupStatus());
+        }
+        // 獲取訂單的付款詳情並更新付款狀態
+        PaymentDetails paymentDetails = order.getPaymentDetails();
+        if (dto.getPaymentStatus() != null) {
+            paymentDetails.setPaymentStatus(dto.getPaymentStatus());
+        }
+        // 保存更新後的訂單和付款詳情
+        ordersRepository.save(order);
+        paymentDetailsRepository.save(paymentDetails);
     }
+
 }

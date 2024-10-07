@@ -85,10 +85,10 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
     List<OrderDetailsFrontDto> findOrderDetailsByOrderNumber(@Param("orderNumber") String orderNumber);
 
 
-    // 更新訂單取貨狀態
+    // 訂單後台更新訂單狀態
     @Modifying
-    @Query("UPDATE Orders o SET o.pickupStatus = :pickupStatus WHERE o.id = :orderId")
-    int updatePickupStatus(@Param("orderId") Long orderId, @Param("pickupStatus") String pickupStatus);
+    @Query("UPDATE Orders o SET o.pickupStatus = :pickupStatus , o.paymentDetails.paymentStatus = :paymentStatus WHERE o.id = :orderId")
+    int updatePickupStatus(@Param("orderId") Long orderId, @Param("pickupStatus") String pickupStatus, @Param("pickupStatus") String paymentStatus);
 
     // 訂單前台根據 userId 查詢訂單簡略資料(不含商品細節)
     @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.front.OrdersInfoDto(o.orderNumber, o.createTime, pd.paidPrice, o.pickupStatus) " +

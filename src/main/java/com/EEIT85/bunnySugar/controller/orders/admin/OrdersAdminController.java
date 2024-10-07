@@ -22,9 +22,6 @@ import org.springframework.web.bind.annotation.*;
 public class OrdersAdminController {
 
     @Autowired
-    OrdersService ordersService;
-
-    @Autowired
     OrdersAdminService ordersAdminService;
 
     private static final Logger logger = LoggerFactory.getLogger(OrdersAdminController.class);
@@ -71,7 +68,30 @@ public class OrdersAdminController {
         return ResponseEntity.ok("訂單狀態更新成功");
     }
 
-    //    // 根據電話號碼查詢訂單
+    @GetMapping("/details/{orderNumber}")
+    public ResponseEntity<OrdersFullInfoAdminDto> getOrderDetails(
+            @PathVariable String orderNumber,
+            HttpServletRequest request) {
+
+        // 確認用戶ID是否存在於請求屬性中，這裡假設需要用戶驗證
+        Long userId = (Long) request.getAttribute("userId");
+        if (userId == null) {
+            return ResponseEntity.status(401).build(); // 未授權
+        }
+
+        // 從 service 中查詢訂單詳細信息
+        OrdersFullInfoAdminDto orderFullInfo = ordersAdminService.getOrderFullInfoByOrderNumber(orderNumber);
+
+        if (orderFullInfo == null) {
+            return ResponseEntity.status(404).build(); // 找不到訂單
+        }
+
+        // 返回查詢到的訂單詳細信息
+        return ResponseEntity.ok(orderFullInfo);
+    }
+
+
+//    // 根據電話號碼查詢訂單
 //    @GetMapping("/byPhone")
 //    public ResponseEntity<Page<OrdersInfoAdminDto>> getOrdersByUserPhone(
 //            HttpServletRequest request,
@@ -89,7 +109,7 @@ public class OrdersAdminController {
 //    }
 
 //     // 根據訂單編號查詢訂單
-    //    @GetMapping("/byOrderNumber")
+//    @GetMapping("/byOrderNumber")
 //    public ResponseEntity<Page<OrdersInfoAdminDto>> getOrdersByOrderNumber(
 //            HttpServletRequest request,
 //            @RequestParam String orderNumber,
@@ -116,11 +136,9 @@ public class OrdersAdminController {
 //        if (userId == null) {
 //            return ResponseEntity.status(401).build();
 //        }
-//
 //        if (page < 1) {
 //            page = 1;  // 如果頁碼小於1，則設置為1
 //        }
-//
 //        Pageable pageable = PageRequest.of(page - 1, size);
 //        OrdersFullInfoAdminDto orderDetails = ordersAdminService.getOrderFullInfoByOrderId(orderId, pageable);
 //
@@ -128,27 +146,5 @@ public class OrdersAdminController {
 //            return ResponseEntity.notFound().build(); // 查無資料返回404
 //        }
 //        return ResponseEntity.ok(orderDetails);
-//    }
-
-
-
-//    // 根據訂單編號查詢訂單及細節
-//    @GetMapping("/details/{orderNumber}")
-//    public ResponseEntity<OrdersFrontDto> getOrderByOrderNumber(
-//            HttpServletRequest request,
-//            @PathVariable String orderNumber) {
-//
-//        Long userId = (Long) request.getAttribute("userId");
-//        if (userId == null) {
-//            return ResponseEntity.status(401).build();
-//        }
-//
-//        OrdersFrontDto order = ordersService.getOrderByOrderNumber(orderNumber);
-//
-//        if (order == null) {
-//            return ResponseEntity.notFound().build(); // 查無訂單時返回404
-//        }
-//
-//        return ResponseEntity.ok(order);
 //    }
 }
