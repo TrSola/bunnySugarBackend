@@ -7,15 +7,25 @@ public class CouponBaseDto {
     private Integer discountNumber;
     private LocalDate endDate;
     private Boolean enable;
+    private Integer leastPriceForDiscount;
 
     public CouponBaseDto() {
     }
 
-    public CouponBaseDto(String couponName, Integer discountNumber, LocalDate endDate, Boolean enable) {
+    public CouponBaseDto(String couponName, Integer discountNumber, LocalDate endDate, Boolean enable, Integer leastPriceForDiscount) {
         this.couponName = couponName;
         this.discountNumber = discountNumber;
         this.endDate = endDate;
         this.enable = enable;
+        this.leastPriceForDiscount = leastPriceForDiscount;
+    }
+
+    public Integer getLeastPriceForDiscount() {
+        return leastPriceForDiscount;
+    }
+
+    public void setLeastPriceForDiscount(Integer leastPriceForDiscount) {
+        this.leastPriceForDiscount = leastPriceForDiscount;
     }
 
     public String getCouponName() {

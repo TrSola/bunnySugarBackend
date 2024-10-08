@@ -22,9 +22,14 @@ public class CouponService {
     CouponRepository couponRepository;
 
     public void insertCoupon(CouponInsertDto couponInsertDto) {
-        Coupon coupon = new Coupon(couponInsertDto.getCouponName(),
-                couponInsertDto.getDiscountNumber(), couponInsertDto.getEndDate(),
-                couponInsertDto.getEnable(), LocalDateTime.now(), LocalDateTime.now());
+        Coupon coupon = new Coupon();
+        coupon.setCouponName(couponInsertDto.getCouponName());
+                coupon.setDiscountNumber(couponInsertDto.getDiscountNumber());
+                coupon.setEndDate(couponInsertDto.getEndDate());
+                coupon.setEnable(couponInsertDto.getEnable());
+                coupon.setCreateTime(LocalDateTime.now());
+                coupon.setUpdateTime(LocalDateTime.now());
+                coupon.setLeastPriceForDiscount(couponInsertDto.getLeastPriceForDiscount());
         couponRepository.save(coupon);
     }
 
@@ -40,6 +45,7 @@ public class CouponService {
         coupon.setEndDate(couponUpdateDto.getEndDate());
         coupon.setEnable(couponUpdateDto.getEnable());
         coupon.setUpdateTime(LocalDateTime.now());
+        coupon.setLeastPriceForDiscount(couponUpdateDto.getLeastPriceForDiscount());
         couponRepository.save(coupon);
     }
 

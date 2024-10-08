@@ -10,10 +10,10 @@ public class CouponUpdateDto extends CouponBaseDto{
     public CouponUpdateDto() {
     }
 
-    public CouponUpdateDto(String couponName, Integer discountNumber, LocalDate endDate, Boolean enable, LocalDateTime createTime, LocalDateTime updateTime) {
-        super(couponName, discountNumber, endDate, enable);
-        this.createTime = createTime;
+    public CouponUpdateDto(String couponName, Integer discountNumber, LocalDate endDate, Boolean enable, Integer leastPriceForDiscount, LocalDateTime updateTime, LocalDateTime createTime) {
+        super(couponName, discountNumber, endDate, enable, leastPriceForDiscount);
         this.updateTime = updateTime;
+        this.createTime = createTime;
     }
 
     public LocalDateTime getCreateTime() {

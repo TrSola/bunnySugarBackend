@@ -33,16 +33,28 @@ public class Coupon {
     @Column(nullable = false, name = "update_time")
     private LocalDateTime updateTime;
 
+    @Column(nullable = false, name = "least_price_for_discount")
+    private Integer leastPriceForDiscount;
+
     public Coupon() {
     }
 
-    public Coupon(String couponName, Integer discountNumber, LocalDate endDate, Boolean enable, LocalDateTime createTime, LocalDateTime updateTime) {
+    public Coupon(String couponName, Integer discountNumber, LocalDate endDate, Boolean enable, LocalDateTime createTime, LocalDateTime updateTime, Integer leastPriceForDiscount) {
         this.couponName = couponName;
         this.discountNumber = discountNumber;
         this.endDate = endDate;
         this.enable = enable;
         this.createTime = createTime;
         this.updateTime = updateTime;
+        this.leastPriceForDiscount = leastPriceForDiscount;
+    }
+
+    public Integer getLeastPriceForDiscount() {
+        return leastPriceForDiscount;
+    }
+
+    public void setLeastPriceForDiscount(Integer leastPriceForDiscount) {
+        this.leastPriceForDiscount = leastPriceForDiscount;
     }
 
     public Long getId() {
