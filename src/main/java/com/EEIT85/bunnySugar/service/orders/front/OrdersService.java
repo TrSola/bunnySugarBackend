@@ -86,7 +86,7 @@ public class OrdersService {
         paymentDetails.setMerchantNo(ordersInsertDto.getMerchantNo());
         paymentDetails.setCreateTime(LocalDateTime.now());
         paymentDetails.setUpdateTime(LocalDateTime.now());
-        paymentDetails.setPaidPrice(ordersInsertDto.getTotal());
+        paymentDetails.setPaidPrice(ordersInsertDto.getPaymentPrice());
         paymentDetails.setPaymentMethod(ordersInsertDto.getPaymentMethod());
         paymentDetails.setPaymentDate(LocalDateTime.now());
         paymentDetails.setPaymentStatus("未付款");
@@ -97,7 +97,7 @@ public class OrdersService {
         orders.setCreateTime(LocalDateTime.now());
         orders.setUpdateTime(LocalDateTime.now());
         orders.setTotal(cart.getTotal());
-        orders.setPaymentPrice(ordersInsertDto.getTotal());
+        orders.setPaymentPrice(ordersInsertDto.getPaymentPrice());
         orders.setPickupTime(ordersInsertDto.getPickupTime());
         orders.setCouponName(ordersInsertDto.getCouponName());
         orders.setUsedBunnyCoins(ordersInsertDto.getUsedBunnyCoins());
