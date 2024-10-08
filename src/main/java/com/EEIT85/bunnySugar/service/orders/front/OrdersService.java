@@ -44,8 +44,8 @@ public class OrdersService {
         Users user = userRepository.getReferenceById(userId);
 
         //計算本次消費獲得的coin
-        Integer addCoin = ordersInsertDto.getTotal() / 500;
-        user.setBunnyCoin(user.getBunnyCoin() + addCoin);
+        Integer addGameTimes = ordersInsertDto.getTotal() / 500;
+        user.setGameTimes(user.getGameTimes() + addGameTimes);
 
         //計算本次累積消費
         user.setAccumulateSpent(user.getAccumulateSpent() + ordersInsertDto.getTotal());
