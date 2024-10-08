@@ -62,4 +62,16 @@ public interface ProductsRepository extends JpaRepository<Products,
             "JOIN p.categories c " +
             "JOIN p.productDetails pd")
     Page<ProductsAdminSelectDto> getAdminAllProductsPaginated(Pageable pageable);
+
+    @Query("SELECT NEW com.EEIT85.bunnySugar.dto.products.ProductsAdminSelectDto(" +
+            "p.id, c.categoryName, p.productName, pd.price, pd.enable, pd.description, " +
+            "pd.materialDescription, pd.img1, pd.img2, pd.img3, pd.img4, c.flavor, " +
+            "p.stocks, c.categoryDescription) " +
+            "FROM Products p " +
+            "JOIN p.categories c " +
+            "JOIN p.productDetails pd " +
+            "WHERE LOWER(p.productName) LIKE LOWER(CONCAT('%', :search, '%')) " +
+            "OR LOWER(c.categoryName) LIKE LOWER(CONCAT('%', :search, '%'))")
+    Page<ProductsAdminSelectDto> searchProducts(@Param("search") String search, Pageable pageable);
+
 }
