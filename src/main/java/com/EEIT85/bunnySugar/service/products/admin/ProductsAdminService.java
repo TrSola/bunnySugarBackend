@@ -158,4 +158,8 @@ public class ProductsAdminService {
         return productsRepository.getAdminAllProductsPaginated(pageable);
     }
 
+    public Page<ProductsAdminSelectDto> searchProducts(String search, Pageable pageable) {
+        return productsRepository.searchProducts(search, pageable);
+    }
+
 }

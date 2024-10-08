@@ -3,8 +3,11 @@ package com.EEIT85.bunnySugar.service.game;
 import com.EEIT85.bunnySugar.dto.game.GameDetailsDto;
 import com.EEIT85.bunnySugar.entity.Users;
 import com.EEIT85.bunnySugar.repository.GameRepository;
+import com.EEIT85.bunnySugar.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class GameService {
@@ -13,17 +16,17 @@ public class GameService {
     private GameRepository gameRepository;
 
     public boolean startGame(Long id) {
-        Users user = gameRepository.findById(id).orElse(null);
-
-        if (user == null || user.getGameTimes() == null || user.getGameTimes() == 0) {
-            return false;
-        } else {
-            int updatedGameTimes = user.getGameTimes() - 1;
-            user.setGameTimes(updatedGameTimes);
-            gameRepository.save(user);
-            return true;
-        }
+       Users user = gameRepository.findById(id).orElse(null);
+      if (user == null || user.getGameTimes() == null || user.getGameTimes() == 0) {
+          return false;
+      } else {
+          int updatedGameTimes = user.getGameTimes() - 1;
+          user.setGameTimes(updatedGameTimes);
+          gameRepository.save(user);
+          return true;
+      }
     }
+
 
     public Integer endGame(Long id, GameDetailsDto result) {
         Users user = gameRepository.findById(id).orElse(null);

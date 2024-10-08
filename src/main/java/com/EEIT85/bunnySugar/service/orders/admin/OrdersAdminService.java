@@ -7,6 +7,7 @@ import com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto;
 import com.EEIT85.bunnySugar.dto.orders.front.OrderDetailsFrontDto;
 import com.EEIT85.bunnySugar.entity.Orders;
 import com.EEIT85.bunnySugar.entity.PaymentDetails;
+import com.EEIT85.bunnySugar.entity.Users;
 import com.EEIT85.bunnySugar.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrdersAdminService {
@@ -92,5 +94,14 @@ public class OrdersAdminService {
         ordersRepository.save(order);
         paymentDetailsRepository.save(paymentDetails);
     }
+
+    //訂單後台刪除訂單
+    public boolean deleteOrderById(Long id) {
+        return ordersRepository.findById(id).map(order -> {
+            ordersRepository.deleteById(id);
+            return true;
+        }).orElse(false);
+    }
+
 
 }

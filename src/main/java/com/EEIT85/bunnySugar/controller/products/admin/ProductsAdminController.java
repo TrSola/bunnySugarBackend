@@ -23,6 +23,15 @@ public class ProductsAdminController {
     @Autowired
     ProductsAdminService productsAdminService;
 
+    @GetMapping("/search")
+    public Page<ProductsAdminSelectDto> searchProducts(
+            @RequestParam(required = false) String search,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productsAdminService.searchProducts(search, pageable);
+    }
+
 
     @GetMapping
     public List<ProductsAdminSelectDto> getAllAdminProducts() {
