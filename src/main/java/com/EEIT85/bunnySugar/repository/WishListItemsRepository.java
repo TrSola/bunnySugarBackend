@@ -21,7 +21,7 @@ public interface WishListItemsRepository extends JpaRepository<WishListItems, Lo
     @Query("SELECT wi FROM WishListItems wi WHERE wi.wishList.users.id = :userId AND wi.products.id = :productId")
     Optional<WishListItems> findByUserIdAndProductId(Long userId, Long productId);
 
-//    // 刪除某用戶收藏清單中的某商品
-//    void deleteByWishListIdAndProductsId(Long wishListId, Long productId);
+    // 刪除某用戶收藏清單中的某商品
+    void deleteByWishListIdAndProductsId(Long wishListId, Long productId);
 
 }

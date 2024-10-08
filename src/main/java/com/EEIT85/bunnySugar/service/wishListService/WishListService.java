@@ -10,12 +10,14 @@ import com.EEIT85.bunnySugar.repository.UserRepository;
 import com.EEIT85.bunnySugar.repository.WishListItemsRepository;
 import com.EEIT85.bunnySugar.repository.WishListRepository;
 import com.EEIT85.bunnySugar.service.user.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.Console;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -81,6 +83,12 @@ public class WishListService {
         return wishListItemsRepository.save(wishListItem);
 
     };
+
+    // 刪除收藏清單中的某商品
+    @Transactional
+    public void removeProductFromWishList(Long wishListId, Long productId) {
+        wishListItemsRepository.deleteByWishListIdAndProductsId(wishListId, productId);
+    }
 
 
 
