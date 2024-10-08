@@ -48,7 +48,7 @@ public class OrdersService {
         user.setGameTimes(user.getGameTimes() + addGameTimes);
         System.out.println(addGameTimes);
         //計算本次累積消費
-        user.setAccumulateSpent(user.getAccumulateSpent() + ordersInsertDto.getTotal());
+        user.setAccumulateSpent(user.getAccumulateSpent() + ordersInsertDto.getPaymentPrice());
         Integer totalSpent = user.getAccumulateSpent();
         if(totalSpent >= 9000) {
             user.setUserVip("鑽石兔");
