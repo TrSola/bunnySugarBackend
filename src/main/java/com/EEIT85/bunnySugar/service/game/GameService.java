@@ -48,7 +48,7 @@ public class GameService {
         }
 
         // 從數據庫中獲取並更新用戶的遊戲次數
-        int updatedGameTimes = user.getGameTimes() - 1;
+        int updatedGameTimes = user.getGameTimes();
 
         // 更新用戶的 bunnyCoin
         int updatedBunnyCoins = user.getBunnyCoin() + result.getEarnedCoins();
@@ -63,6 +63,16 @@ public class GameService {
         gameDetailsDto.setGameTimes(updatedGameTimes); // 這裡的遊戲次數來自數據庫
         gameDetailsDto.setEarnedCoins(result.getEarnedCoins()); // 這裡的金幣來自前端
         return gameDetailsDto;
+    }
+
+    // 抓次數
+    public Integer getGameTimes(Long userId) {
+        // 通過 Repository 查詢 gameTimes
+        Integer gameTimes = gameRepository.findGameTimesByUserId(userId);
+        if (gameTimes == null) {
+            throw new IllegalArgumentException("User not found or no game times available for id: " + userId);
+        }
+        return gameTimes;
     }
 
 }

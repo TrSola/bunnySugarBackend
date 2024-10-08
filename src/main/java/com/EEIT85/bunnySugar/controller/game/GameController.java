@@ -53,6 +53,22 @@ public class GameController {
         }
     }
 
+    @GetMapping("/times")
+    public ResponseEntity<GameDetailsDto> getGameTimes(HttpServletRequest request) {
+        Long userId = (Long) request.getAttribute("userId");
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        try {
+            Integer gameTimes = gameService.getGameTimes(userId);
+            GameDetailsDto gameDetailsDto = new GameDetailsDto();
+            gameDetailsDto.setGameTimes(gameTimes);
+            return ResponseEntity.ok(gameDetailsDto);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
 //    @GetMapping("/start")
 //    public ResponseEntity<String> startGame(HttpServletRequest request) {
 //        Long userId = (Long) request.getAttribute("userId");

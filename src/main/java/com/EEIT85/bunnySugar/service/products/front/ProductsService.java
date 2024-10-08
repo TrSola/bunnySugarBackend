@@ -83,9 +83,8 @@ public class ProductsService {
     public Page<ProductsSelectDto> getProductsByCategoryName(String categoryName, Pageable pageable) {
         Page<Products> productsPage = productsRepository.findProductsByCategoryName(categoryName, pageable);
         if (productsPage.isEmpty()) {
-            throw new ResourceNotFoundException("Category '" + categoryName + "' does not exist.");
+            return Page.empty(pageable);
         }
-
         return productsPage.map(this::convertToDto);
     }
 
@@ -93,9 +92,8 @@ public class ProductsService {
     public Page<ProductsSelectDto> getProductsByFlavor(String flavor, Pageable pageable) {
         Page<Products> productsPage = productsRepository.findProductsByFlavor(flavor, pageable);
         if (productsPage.isEmpty()) {
-            throw new ResourceNotFoundException("Flavor '" + flavor + "' does not exist.");
+            return Page.empty(pageable);
         }
-
         return productsPage.map(this::convertToDto);
     }
 
@@ -103,9 +101,8 @@ public class ProductsService {
     public Page<ProductsSelectDto> searchProductsByNameLike(String keyword, Pageable pageable) {
         Page<Products> productsPage = productsRepository.findByProductNameContaining(keyword, pageable);
         if (productsPage.isEmpty()) {
-            throw new ResourceNotFoundException("Keyword '" + keyword + "' does not exist.");
+            return Page.empty(pageable);  //返回空的Page
         }
-
         return productsPage.map(this::convertToDto);
     }
 }

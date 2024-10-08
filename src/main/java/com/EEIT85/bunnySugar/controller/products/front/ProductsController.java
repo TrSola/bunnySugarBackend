@@ -23,12 +23,11 @@ public class ProductsController {
 
     @GetMapping
     public Page<ProductsSelectDto> getAll(Pageable pageable, @RequestParam(required = false) String sort) {
-        // 如果有排序參數，根據該參數排序
         Pageable sortedPageable = pageable;
         if (sort != null && !sort.isEmpty()) {
             String[] sortParams = sort.split(",");
-            String sortField = sortParams[0];  // 例如 'createdTime'
-            Sort.Direction sortDirection = Sort.Direction.fromString(sortParams[1]);  // 'asc' or 'desc'
+            String sortField = sortParams[0];
+            Sort.Direction sortDirection = Sort.Direction.fromString(sortParams[1]);
             sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(sortDirection, sortField));
         }
 
@@ -40,21 +39,18 @@ public class ProductsController {
         return productsService.getById(id);
     }
 
-    //抓取所有種類名稱
     @GetMapping("/categories")
     public Set<String> getAllCategoryNames() {
         return productsService.getAllCategoryNames();
     }
 
-    // 根據種類名稱抓取對應的風味名稱
     @GetMapping("/categories/flavors")
     public Set<String> getFlavorsByCategoryName(@RequestParam String categoryName, Pageable pageable) {
         return productsService.getFlavorsByCategoryName(categoryName);
     }
 
-    // 種類名稱抓商品
     @GetMapping("/category/{categoryName}")
-    public Page<ProductsSelectDto> getByCategoryName(@PathVariable String categoryName, Pageable pageable,  @RequestParam(required = false) String sort) {
+    public ResponseEntity<Page<ProductsSelectDto>> getByCategoryName(@PathVariable String categoryName, Pageable pageable, @RequestParam(required = false) String sort) {
         Pageable sortedPageable = pageable;
         if (sort != null && !sort.isEmpty()) {
             String[] sortParams = sort.split(",");
@@ -62,12 +58,17 @@ public class ProductsController {
             Sort.Direction sortDirection = Sort.Direction.fromString(sortParams[1]);
             sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(sortDirection, sortField));
         }
-        return productsService.getProductsByCategoryName(categoryName, sortedPageable);
+        Page<ProductsSelectDto> result = productsService.getProductsByCategoryName(categoryName, sortedPageable);
+
+        // 如果没有找到商品，仍然返回200，并返回空结果
+        if (result.isEmpty()) {
+            return new ResponseEntity<>(Page.empty(sortedPageable), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    // 風味名稱抓商品
     @GetMapping("/flavor/{flavor}")
-    public Page<ProductsSelectDto> getByFlavorName(@PathVariable String flavor, Pageable pageable,  @RequestParam(required = false) String sort) {
+    public ResponseEntity<Page<ProductsSelectDto>> getByFlavorName(@PathVariable String flavor, Pageable pageable, @RequestParam(required = false) String sort) {
         Pageable sortedPageable = pageable;
         if (sort != null && !sort.isEmpty()) {
             String[] sortParams = sort.split(",");
@@ -75,12 +76,17 @@ public class ProductsController {
             Sort.Direction sortDirection = Sort.Direction.fromString(sortParams[1]);
             sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(sortDirection, sortField));
         }
-        return productsService.getProductsByFlavor(flavor, sortedPageable);
+        Page<ProductsSelectDto> result = productsService.getProductsByFlavor(flavor, sortedPageable);
+
+        // 如果没有找到商品，返回200并返回空结果
+        if (result.isEmpty()) {
+            return new ResponseEntity<>(Page.empty(sortedPageable), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    // 模糊查詢
     @GetMapping("/search")
-    public ResponseEntity<Page<ProductsSelectDto>> searchProducts(@RequestParam String keyword, Pageable pageable,  @RequestParam(required = false) String sort) {
+    public ResponseEntity<Page<ProductsSelectDto>> searchProducts(@RequestParam String keyword, Pageable pageable, @RequestParam(required = false) String sort) {
         Pageable sortedPageable = pageable;
         if (sort != null && !sort.isEmpty()) {
             String[] sortParams = sort.split(",");
@@ -89,7 +95,11 @@ public class ProductsController {
             sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(sortDirection, sortField));
         }
         Page<ProductsSelectDto> result = productsService.searchProductsByNameLike(keyword, sortedPageable);
+        // 如果没有找到商品，返回200并返回空结果
+        if (result.isEmpty()) {
+            return new ResponseEntity<>(Page.empty(sortedPageable), HttpStatus.OK);
+        }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
 }
+
