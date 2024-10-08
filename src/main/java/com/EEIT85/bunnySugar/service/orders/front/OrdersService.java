@@ -44,9 +44,9 @@ public class OrdersService {
         Users user = userRepository.getReferenceById(userId);
 
         //計算本次消費獲得的coin
-        Integer addGameTimes = ordersInsertDto.getTotal() / 500;
+        Integer addGameTimes = ordersInsertDto.getPaymentPrice() / 500;
         user.setGameTimes(user.getGameTimes() + addGameTimes);
-
+        System.out.println(addGameTimes);
         //計算本次累積消費
         user.setAccumulateSpent(user.getAccumulateSpent() + ordersInsertDto.getTotal());
         Integer totalSpent = user.getAccumulateSpent();
