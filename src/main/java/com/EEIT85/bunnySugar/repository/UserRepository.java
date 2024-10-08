@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<Users, Long> {
@@ -38,7 +39,6 @@ public interface UserRepository extends JpaRepository<Users, Long> {
     @Query("SELECT NEW com.EEIT85.bunnySugar.dto.users.admin.MemberAdminDto(" +
             "u.id, u.name, u.gender, u.email, u.phone, u.birthday, u.userVip) FROM Users u WHERE u.phone LIKE %:phone%")
     Page<MemberAdminDto> findMemberAdminSelectDtoByUserPhone(@Param("phone") String phone, Pageable pageable);
-
 
 }
 
