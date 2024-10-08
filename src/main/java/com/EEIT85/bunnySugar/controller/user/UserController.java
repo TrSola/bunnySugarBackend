@@ -2,6 +2,7 @@ package com.EEIT85.bunnySugar.controller.user;
 
 import com.EEIT85.bunnySugar.dto.users.UsersDetailsDto;
 import com.EEIT85.bunnySugar.dto.users.UsersLoginRequestDto;
+import com.EEIT85.bunnySugar.dto.users.UsersSetPasswordDto;
 import com.EEIT85.bunnySugar.dto.users.UsersVerifyDto;
 import com.EEIT85.bunnySugar.entity.Users;
 import com.EEIT85.bunnySugar.service.user.UserService;
@@ -112,4 +113,35 @@ public class UserController {
 
         return ResponseEntity.ok(response); // 成功時，回傳 200
     }
+
+    @PostMapping("/sentResetPasswordEmail")
+    public Map<String, Object> sentResetPasswordEmail(@RequestBody String email) throws MessagingException {
+        Map<String, Object> response = new HashMap<>();
+        ResponseEntity<?> result = userService.sentResetPasswordEmail(email);
+
+        if (result.getStatusCode() == HttpStatus.OK) {
+            response.put("status", "success");
+            response.put("message", result.getBody());
+        } else {
+            response.put("status", "error");
+            response.put("message", result.getBody());
+        }
+        return response;
+    }
+
+    @PostMapping("/resetPassword")
+    public Map<String, Object> resetPassword(@RequestBody UsersSetPasswordDto usersSetPasswordDto) throws MessagingException {
+        Map<String, Object> response = new HashMap<>();
+        ResponseEntity<?> result = userService.resetPassword(usersSetPasswordDto);
+
+        if (result.getStatusCode() == HttpStatus.OK) {
+            response.put("status", "success");
+            response.put("message", result.getBody());
+        } else {
+            response.put("status", "error");
+            response.put("message", result.getBody());
+        }
+        return response;
+    }
+
 }

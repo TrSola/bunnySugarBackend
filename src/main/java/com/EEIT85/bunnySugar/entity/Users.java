@@ -97,9 +97,9 @@ public class Users {
     private Cart cart;
 
     // OneToOne關聯WishList
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("Users_WishList")
-    private List<WishList> wishList;
+    private WishList wishList;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Orders> orders;
@@ -115,7 +115,7 @@ public class Users {
         this.orders = orders;
     }
 
-    public Users(String userVip, Integer accumulateSpent, String email, String phone, String verifyingToken, String account, String password, String name, String gender, LocalDate birthday, Integer bunnyCoin, Integer active, String forgetToken, String loginMethod, String googleToken, String facebookToken, LocalDateTime createTime, LocalDateTime updateTime, LocalDateTime lastLoginTime, Integer gameTimes, LocalDateTime tokenExpirationTime, Integer detailsCompleted, List<Anniversaries> anniversaries, Cart cart, List<WishList> wishList, List<Orders> orders, String userRole) {
+    public Users(String userVip, Integer accumulateSpent, String email, String phone, String verifyingToken, String account, String password, String name, String gender, LocalDate birthday, Integer bunnyCoin, Integer active, String forgetToken, String loginMethod, String googleToken, String facebookToken, LocalDateTime createTime, LocalDateTime updateTime, LocalDateTime lastLoginTime, Integer gameTimes, LocalDateTime tokenExpirationTime, Integer detailsCompleted, List<Anniversaries> anniversaries, Cart cart, WishList wishList, List<Orders> orders, String userRole) {
         this.userVip = userVip;
         this.accumulateSpent = accumulateSpent;
         this.email = email;
@@ -368,11 +368,11 @@ public class Users {
         this.cart = cart;
     }
 
-    public List<WishList> getWishList() {
+    public WishList getWishList() {
         return wishList;
     }
 
-    public void setWishList(List<WishList> wishList) {
+    public void setWishList(WishList wishList) {
         this.wishList = wishList;
     }
 

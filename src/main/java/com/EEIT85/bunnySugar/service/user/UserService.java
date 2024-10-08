@@ -2,6 +2,7 @@ package com.EEIT85.bunnySugar.service.user;
 
 import com.EEIT85.bunnySugar.dto.users.UsersDetailsDto;
 import com.EEIT85.bunnySugar.dto.users.UsersLoginRequestDto;
+import com.EEIT85.bunnySugar.dto.users.UsersSetPasswordDto;
 import com.EEIT85.bunnySugar.dto.users.UsersVerifyDto;
 import com.EEIT85.bunnySugar.entity.Cart;
 import com.EEIT85.bunnySugar.entity.Users;
@@ -87,10 +88,6 @@ public class UserService {
         return ResponseEntity.ok(user); // 返回保存的使用者物件
     }
 
-
-
-
-
     public boolean verifyUser(UsersVerifyDto userVerifyDto) {
         // 從 Dto 中獲取 email 和驗證碼
         String email = userVerifyDto.getEmail();
@@ -156,12 +153,10 @@ public class UserService {
         }
 
         // 更新願望清單物件的 createTime 和 updateTime
-        List<WishList> wishList = user.getWishList();
+        WishList wishList = user.getWishList();
         if (wishList != null) {
-            for (WishList item : wishList) {
-                item.setCreateTime(user.getUpdateTime());  // 使用用戶的更新時間作為願望清單的創建時間
-                item.setUpdateTime(user.getUpdateTime());  // 同理
-            }
+            wishList.setCreateTime(user.getUpdateTime());  // 使用用戶的更新時間作為願望清單的創建時間
+            wishList.setUpdateTime(user.getUpdateTime());  // 同理
         }
         // 儲存更新後的用戶資料與關聯物件
         userRepository.save(user);
@@ -286,6 +281,52 @@ public class UserService {
             response.put("message", "Google ID Token 驗證失敗: " + e.getMessage());
             return response;
         }
+    }
+
+    public ResponseEntity<?> sentResetPasswordEmail(String email) throws MessagingException {
+        Users user = findByUserEmail(email);
+        if (user == null) {
+            return ResponseEntity.badRequest().body("用戶不存在"); // 如果用戶不存在，返回錯誤訊息
+        }
+
+        // 生成新的驗證碼
+        String newToken = String.format("%06d", (int) (Math.random() * 1000000));
+        user.setVerifyingToken(newToken); // 更新用戶的驗證碼
+        user.setTokenExpirationTime(LocalDateTime.now().plusMinutes(10)); // 設置過期時間
+
+        userRepository.save(user);
+        verificationEmailService.sendVerificationEmail(email, newToken); // 寄送驗證信
+
+        return ResponseEntity.ok("已發送新的驗證碼到您的電子郵件，請確認後再重設密碼");
+    }
+
+    public ResponseEntity<?> resetPassword(UsersSetPasswordDto usersSetPasswordDto) throws MessagingException {
+        String email = usersSetPasswordDto.getEmail();
+        String token = usersSetPasswordDto.getVerifyingToken();
+        String newPassword = usersSetPasswordDto.getPassword();
+
+        Users user = findByUserEmail(email);
+        if (user == null) {
+            return ResponseEntity.badRequest().body("用戶不存在"); // 如果用戶不存在，返回錯誤訊息
+        }
+        if (!user.getVerifyingToken().equals(token)) {
+            return ResponseEntity.badRequest().body("驗證碼不正確"); // 驗證碼不正確，返回錯誤訊息
+        }
+        if (user.getTokenExpirationTime().isBefore(LocalDateTime.now())) {
+            return ResponseEntity.badRequest().body("驗證碼已過期"); // 驗證碼已過期，返回錯誤訊息
+        }
+        // 密碼加密
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(encodedPassword); // 更新用戶密碼
+
+        //刪掉用戶資料中的驗證碼
+        user.setVerifyingToken(null);
+        user.setTokenExpirationTime(null);
+
+        userRepository.save(user);
+
+        return ResponseEntity.ok("密碼重設成功"); // 返回成功訊息
     }
 
 

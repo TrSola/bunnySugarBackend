@@ -25,6 +25,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults()) // 使用 WebConfig 中的 CORS 設定
                 .csrf(csrf -> csrf.disable()) // 禁用 CSRF
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/user/sentResetPasswordEmail").permitAll()
                         .requestMatchers(securityWhiteList.getWhitelistPathsAsArray()).permitAll() // 使用 SecurityWhitelist 中的路徑
                         .anyRequest().authenticated() // 其他請求需要認證
                 )
