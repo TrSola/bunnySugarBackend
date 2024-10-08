@@ -132,18 +132,20 @@ public class UserController {
     }
 
     @PostMapping("/resetPassword")
-    public Map<String, Object> resetPassword(@RequestBody UsersSetPasswordDto usersSetPasswordDto) throws MessagingException {
+    public ResponseEntity<Map<String, Object>> resetPassword(@RequestBody UsersSetPasswordDto usersSetPasswordDto) throws MessagingException {
         Map<String, Object> response = new HashMap<>();
         ResponseEntity<?> result = userService.resetPassword(usersSetPasswordDto);
 
         if (result.getStatusCode() == HttpStatus.OK) {
             response.put("status", "success");
             response.put("message", result.getBody());
+            return ResponseEntity.ok(response); // 直接返回封裝好的 response
         } else {
             response.put("status", "error");
             response.put("message", result.getBody());
+            return ResponseEntity.badRequest().body(response); // 返回 Bad Request 狀態
         }
-        return response;
     }
+
 
 }
