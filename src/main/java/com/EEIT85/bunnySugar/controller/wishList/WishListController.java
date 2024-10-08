@@ -28,6 +28,7 @@ public class WishListController {
 //        return wishListService.getUserWishListPaginated(userId, pageable);
 //    }
 
+    // 查詢收藏清單
     @GetMapping("/wishlist")
     public ResponseEntity<?> getUserWishList(
             @RequestParam Long userId,
@@ -42,5 +43,23 @@ public class WishListController {
 
         return ResponseEntity.ok(wishListPage);
     }
+
+    // 新增收藏
+    @PostMapping("/add")
+    public ResponseEntity<WishList> addProductToWishList(
+            @RequestParam Long userId,
+            @RequestParam Long productId) {
+        WishList wishList = wishListService.addProductToWishList(userId, productId);
+        return ResponseEntity.ok(wishList);
+    }
+
+    @DeleteMapping("/remove")
+    public ResponseEntity<String> removeProductFromWishList(
+            @RequestParam Long userId,
+            @RequestParam Long productId) {
+        wishListService.removeProductFromWishList(userId, productId);
+        return ResponseEntity.ok("Product removed from wish list");
+    }
+
 
 }
