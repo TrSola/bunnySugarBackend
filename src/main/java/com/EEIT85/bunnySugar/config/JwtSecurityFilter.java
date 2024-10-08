@@ -34,6 +34,7 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         // 提取 JWT
+        System.out.println("有到jwtFilter");
         String token = extractToken(request);
         if (token != null && jwtUtil.isTokenValid(token)) {
             Map<String, Object> claims = jwtUtil.parseJwtToken(token);

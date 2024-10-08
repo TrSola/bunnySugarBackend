@@ -283,40 +283,31 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<?> sentResetPasswordEmail(String email) throws MessagingException {
-        Users user = findByUserEmail(email);
-        if (user == null) {
+    public ResponseEntity<?> sentResetPasswordEmail(Users user) throws MessagingException {
+        Users existingUser = findByUserEmail(user.getEmail());
+        if (existingUser == null) {
             return ResponseEntity.badRequest().body("用戶不存在"); // 如果用戶不存在，返回錯誤訊息
         }
 
         // 生成新的驗證碼
         String newToken = String.format("%06d", (int) (Math.random() * 1000000));
-        user.setVerifyingToken(newToken); // 更新用戶的驗證碼
-        user.setTokenExpirationTime(LocalDateTime.now().plusMinutes(10)); // 設置過期時間
+        existingUser.setVerifyingToken(newToken); // 更新用戶的驗證碼
+        existingUser.setTokenExpirationTime(LocalDateTime.now().plusMinutes(10)); // 設置過期時間
 
-        userRepository.save(user);
-        verificationEmailService.sendVerificationEmail(email, newToken); // 寄送驗證信
+        userRepository.save(existingUser);
+        verificationEmailService.sendVerificationEmail(existingUser.getEmail(), newToken); // 寄送驗證信
 
         return ResponseEntity.ok("已發送新的驗證碼到您的電子郵件，請確認後再重設密碼");
     }
 
     public ResponseEntity<?> resetPassword(UsersSetPasswordDto usersSetPasswordDto) throws MessagingException {
         String email = usersSetPasswordDto.getEmail();
-        String token = usersSetPasswordDto.getVerifyingToken();
         String newPassword = usersSetPasswordDto.getPassword();
 
         Users user = findByUserEmail(email);
-        if (user == null) {
-            return ResponseEntity.badRequest().body("用戶不存在"); // 如果用戶不存在，返回錯誤訊息
-        }
-        if (!user.getVerifyingToken().equals(token)) {
-            return ResponseEntity.badRequest().body("驗證碼不正確"); // 驗證碼不正確，返回錯誤訊息
-        }
-        if (user.getTokenExpirationTime().isBefore(LocalDateTime.now())) {
-            return ResponseEntity.badRequest().body("驗證碼已過期"); // 驗證碼已過期，返回錯誤訊息
-        }
         // 密碼加密
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
         String encodedPassword = passwordEncoder.encode(newPassword);
         user.setPassword(encodedPassword); // 更新用戶密碼
 

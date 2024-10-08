@@ -49,19 +49,21 @@ public class UserController {
     }
 
     @PostMapping("/verify")
-    public Map<String, Object> verifyUser(@RequestBody UsersVerifyDto userVerifyDto) {
+    public ResponseEntity<Map<String, Object>> verifyUser(@RequestBody UsersVerifyDto userVerifyDto) {
         Map<String, Object> response = new HashMap<>();
         boolean isVerified = userService.verifyUser(userVerifyDto);
 
         if (isVerified) {
             response.put("status", "success");
             response.put("message", "驗證成功，請輸入您的會員資料！");
+            return ResponseEntity.ok(response);  // 驗證成功，返回 200 OK
         } else {
             response.put("status", "error");
             response.put("message", "驗證失敗或驗證碼已過期！");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);  // 驗證失敗，返回 400 Bad Request
         }
-        return response;
     }
+
 
     @PostMapping("/completeDetails")
     public Map<String, Object> completeDetails(@RequestBody UsersDetailsDto usersDetailsDto) {
@@ -115,9 +117,9 @@ public class UserController {
     }
 
     @PostMapping("/sentResetPasswordEmail")
-    public Map<String, Object> sentResetPasswordEmail(@RequestBody String email) throws MessagingException {
+    public Map<String, Object> sentResetPasswordEmail(@RequestBody Users user) throws MessagingException {
         Map<String, Object> response = new HashMap<>();
-        ResponseEntity<?> result = userService.sentResetPasswordEmail(email);
+        ResponseEntity<?> result = userService.sentResetPasswordEmail(user);
 
         if (result.getStatusCode() == HttpStatus.OK) {
             response.put("status", "success");
