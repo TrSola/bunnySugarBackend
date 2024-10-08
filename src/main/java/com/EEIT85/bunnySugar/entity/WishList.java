@@ -1,10 +1,13 @@
 package com.EEIT85.bunnySugar.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @DynamicUpdate
 @Entity
@@ -15,15 +18,14 @@ public class WishList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     @JsonBackReference("Users_WishList")
     @JoinColumn(name = "users_id", nullable = false)
     private Users users;
 
-    @ManyToOne
-    @JsonBackReference("Products_WishList")
-    @JoinColumn(name = "products_id", nullable = false)
-    private  Products products;
+    @OneToMany(mappedBy = "wishList", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("WishList_WishListItems")
+    private Set<WishListItems> wishListItems = new HashSet<>();
 
     @Column(nullable = false, name = "create_time")
     private LocalDateTime createTime;
@@ -34,9 +36,23 @@ public class WishList {
     public WishList() {
     }
 
+    public Set<WishListItems> getWishListItems() {
+        return wishListItems;
+    }
+
+    public WishList(Users users, Set<WishListItems> wishListItems, LocalDateTime createTime, LocalDateTime updateTime) {
+        this.users = users;
+        this.wishListItems = wishListItems;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+    }
+
+    public void setWishListItems(Set<WishListItems> wishListItems) {
+        this.wishListItems = wishListItems;
+    }
+
     public WishList(Users users, Products products, LocalDateTime createTime, LocalDateTime updateTime) {
         this.users = users;
-        this.products = products;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
@@ -46,14 +62,6 @@ public class WishList {
         this.users = users;
         this.createTime = createTime;
         this.updateTime = updateTime;
-    }
-
-    public Products getProducts() {
-        return products;
-    }
-
-    public void setProducts(Products products) {
-        this.products = products;
     }
 
     public Long getId() {

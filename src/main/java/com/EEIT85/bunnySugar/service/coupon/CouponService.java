@@ -50,4 +50,8 @@ public class CouponService {
     public Page<Coupon> getCouponsPaginated(Pageable pageable) {
         return couponRepository.findAll(pageable);
     }
+
+    public Page<Coupon> searchCoupons(String search, Pageable pageable) {
+        return couponRepository.searchByCouponCode(search, pageable);
+    }
 }

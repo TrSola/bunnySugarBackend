@@ -43,7 +43,7 @@ public class Products {
 
     @OneToMany(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval =
             true)
-    private List<WishList> wishList;
+    private List<WishListItems> wishListItems;
 
     @OneToMany(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval =
             true)
@@ -70,10 +70,10 @@ public class Products {
     public Products() {
     }
 
-    public Products(Categories categories, ProductDetails productDetails, List<WishList> wishList, List<CartItems> cartItems, List<OrderDetails> orderDetails, String productName, LocalDateTime createTime, LocalDateTime updateTime, Integer stocks) {
+    public Products(Categories categories, ProductDetails productDetails, List<WishList> wishList, List<CartItems> cartItems, List<OrderDetails> orderDetails, String productName, LocalDateTime createTime, LocalDateTime updateTime, Integer stocks, List<WishListItems> wishListItems) {
         this.categories = categories;
         this.productDetails = productDetails;
-        this.wishList = wishList;
+        this.wishListItems = wishListItems;
         this.cartItems = cartItems;
         this.orderDetails = orderDetails;
         this.productName = productName;
@@ -108,13 +108,9 @@ public class Products {
         this.id = id;
     }
 
-    public List<WishList> getWishList() {
-        return wishList;
-    }
+    public List<WishListItems> getWishListItems() { return wishListItems; }
 
-    public void setWishList(List<WishList> wishList) {
-        this.wishList = wishList;
-    }
+    public void setWishListItems(List<WishListItems> wishListItems) { this.wishListItems = wishListItems;}
 
     public String getProductName() {
         return productName;

@@ -13,10 +13,10 @@ import java.util.Optional;
 @Repository
 public interface WishListRepository extends JpaRepository<WishList, Long> {
 
-    // 分頁方式查詢
+    // 分頁方式查詢 => 查詢某用戶的收藏清單
     Page<WishList> findByUsersId(Long userId, Pageable pageable);
 
     // 查詢某用戶是否已收藏某商品
-    Optional<WishList> findByUsersIdAndProductsId(Long userId, Long productId);//
+
 
 }
