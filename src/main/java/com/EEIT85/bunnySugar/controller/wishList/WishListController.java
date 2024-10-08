@@ -45,21 +45,21 @@ public class WishListController {
     }
 
     // 新增收藏
-    @PostMapping("/add")
-    public ResponseEntity<WishList> addProductToWishList(
-            @RequestParam Long userId,
-            @RequestParam Long productId) {
-        WishList wishList = wishListService.addProductToWishList(userId, productId);
-        return ResponseEntity.ok(wishList);
-    }
-
-    @DeleteMapping("/remove")
-    public ResponseEntity<String> removeProductFromWishList(
-            @RequestParam Long userId,
-            @RequestParam Long productId) {
-        wishListService.removeProductFromWishList(userId, productId);
-        return ResponseEntity.ok("Product removed from wish list");
-    }
+//    @PostMapping("/add")
+//    public ResponseEntity<WishList> addProductToWishList(
+//            @RequestParam Long userId,
+//            @RequestParam Long productId) {
+//        WishList wishList = wishListService.addProductToWishList(userId, productId);
+//        return ResponseEntity.ok(wishList);
+//    }
+//
+//    @DeleteMapping("/remove")
+//    public ResponseEntity<String> removeProductFromWishList(
+//            @RequestParam Long userId,
+//            @RequestParam Long productId) {
+//        wishListService.removeProductFromWishList(userId, productId);
+//        return ResponseEntity.ok("Product removed from wish list");
+//    }
 
 
 }

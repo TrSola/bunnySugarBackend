@@ -36,6 +36,21 @@ public class WishList {
     public WishList() {
     }
 
+    public Set<WishListItems> getWishListItems() {
+        return wishListItems;
+    }
+
+    public WishList(Users users, Set<WishListItems> wishListItems, LocalDateTime createTime, LocalDateTime updateTime) {
+        this.users = users;
+        this.wishListItems = wishListItems;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+    }
+
+    public void setWishListItems(Set<WishListItems> wishListItems) {
+        this.wishListItems = wishListItems;
+    }
+
     public WishList(Users users, Products products, LocalDateTime createTime, LocalDateTime updateTime) {
         this.users = users;
         this.createTime = createTime;
@@ -48,7 +63,6 @@ public class WishList {
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
-
 
     public Long getId() {
         return id;
