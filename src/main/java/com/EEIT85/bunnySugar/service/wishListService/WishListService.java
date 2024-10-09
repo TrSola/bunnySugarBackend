@@ -1,5 +1,6 @@
 package com.EEIT85.bunnySugar.service.wishListService;
 
+import com.EEIT85.bunnySugar.dto.wishList.WishListItemDto;
 import com.EEIT85.bunnySugar.entity.Products;
 import com.EEIT85.bunnySugar.entity.Users;
 import com.EEIT85.bunnySugar.entity.WishList;
@@ -44,10 +45,24 @@ public class WishListService {
 //    };
 
     // 分頁查詢某用戶的收藏商品
-    public Page<WishListItems> getWishListItemsByUser(Long userId, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return wishListItemsRepository.findByUserId(userId, pageable);
-    }
+//    public Page<WishListItems> getWishListItemsByUser(Long userId, int page, int size) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        return wishListItemsRepository.findByUserId(userId, pageable);
+//    }
+
+    // 使用Dto
+//    public Page<WishListItemDto> getWishListItemsByUser(Long userId, int page, int size) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        return
+//    }
+
+
+
+
+
+
+
+
 
     // 新增商品到收藏清單
     public WishListItems addProductToWishList (Long userId, Long productId) {
