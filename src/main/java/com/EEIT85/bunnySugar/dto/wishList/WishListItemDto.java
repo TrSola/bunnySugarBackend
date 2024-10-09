@@ -7,11 +7,11 @@ public class WishListItemDto {
     private String productName;
     private Integer price;
 
-    public WishListItemDto(Integer price, String productName, String img1, Long productId) {
-        this.price = price;
-        this.productName = productName;
-        this.img1 = img1;
+    public WishListItemDto(Long productId, String img1, String productName, Integer price) {
         this.productId = productId;
+        this.img1 = img1;
+        this.productName = productName;
+        this.price = price;
     }
 
     public Long getProductId() {

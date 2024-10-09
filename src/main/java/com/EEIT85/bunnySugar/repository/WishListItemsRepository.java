@@ -27,15 +27,24 @@ public interface WishListItemsRepository extends JpaRepository<WishListItems, Lo
 
 
     // 查詢某用戶收藏清單中的所有商品項目
-    @Query("SELECT new com.EEIT85.bunnySugar.dto.wishList.WishListItemDto(wi.products.id," +
-            "wi.products.img1, wi.products.productName, wi.products.price)" +
-            "FROM WishListItems wi WHERE wi.wishList.users.id = :userId")
-    Page<WishListItemDto> findByUserId(Long userId, Pageable pageable);
+//    @Query("SELECT new com.EEIT85.bunnySugar.dto.wishList.WishListItemDto(wi.products.id," +
+//            "wi.products.img1, wi.products.productName, wi.products.price)" +
+//            "FROM WishListItems wi WHERE wi.wishList.users.id = :userId")
+//    Page<WishListItemDto> findByUserId(Long userId, Pageable pageable);
 
     // 查詢某用戶的收藏清單中是否已經包含某商品
-    @Query("SELECT wi FROM WishListItems wi WHERE wi.wishList.users.id = :userId AND" +
-            "wi.products.id = :productId")
-    Optional<WishListItems> findByUserIdAndProductId(Long userId, Long productId);
+//    @Query("SELECT wi FROM WishListItems wi WHERE wi.wishList.users.id = :userId AND" +
+//            "wi.products.id = :productId")
+//    Optional<WishListItems> findByUserIdAndProductId(Long userId, Long productId);
+
+    // 查詢某用戶收藏清單中的所有商品項目，並從 products 和 productDetails 表中提取所需數據
+    @Query("SELECT new com.EEIT85.bunnySugar.dto.wishList.WishListItemDto( " +
+            "p.id, pd.img1, p.productName, pd.price) " +
+            "FROM WishListItems wi " +
+            "JOIN wi.products p " +
+            "JOIN p.productDetails pd " +
+            "WHERE wi.wishList.users.id = :userId")
+    List<WishListItemDto> findWishListItemsByUserId(Long userId);
 
 
 }

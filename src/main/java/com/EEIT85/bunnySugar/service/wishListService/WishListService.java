@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.Console;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +58,32 @@ public class WishListService {
 //    }
 
 
+    // 查詢用戶的收藏清單
+//    public WishListItemDto getWishListByUserId(Long userId) {
+//
+//        WishList wishList = wishListRepository.findByUsersId(userId)
+//                .orElseThrow(() -> new ResourceNotFoundException("用戶的收藏清單不存在"));
+//
+//        // 將 WishListItems 轉換為 WishListItemDto
+////        List<WishListItemDto> wishListItems = new ArrayList<>();
+////        for (WishListItems item : wishList.getWishListItems()) {
+////            WishListItemDto wishListItemDto = new WishListItemDto(
+////                    item.getProducts().getId(),
+////                    item.getProducts().getProductDetails().getImg1(),
+////                    item.getProducts().getProductName(),
+////                    item.getProducts().getProductDetails().getPrice()
+////            );
+////        }
+//
+//    };
+
+    // 查找用戶的收藏清單
+    public List<WishListItemDto> getWishListItemsByUserId(Long userId) {
+        return wishListItemsRepository.findWishListItemsByUserId(userId);
+    }
+
+
+
 
 
 
@@ -65,45 +92,45 @@ public class WishListService {
 
 
     // 新增商品到收藏清單
-    public WishListItems addProductToWishList (Long userId, Long productId) {
-
-        // 查找用戶是否存在
-        Users user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
-
-        // 查找商品是否存在
-        Products product = productsRepository.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Product Not Found"));
-
-        // 查找用戶的收藏清單是否存在，沒有的話創建一個新的
-        WishList wishList = wishListRepository.findByUsersId(userId)
-                .orElseGet(() -> {
-                    WishList newWishList = new WishList();
-                    newWishList.setUsers(user);
-                    newWishList.setCreateTime(LocalDateTime.now());
-                    newWishList.setUpdateTime(LocalDateTime.now());
-                    return wishListRepository.save(newWishList);
-                });
-
-        // 檢查商品是否已經存在於該用戶的收藏清單中
-        boolean productExistsInWishList = wishListItemsRepository
-                .findByUserIdAndProductId(wishList.getId(), productId).isPresent();
-
-        if (productExistsInWishList) {
-            throw new RuntimeException("Product is already in the wish list");
-        }
-
-        // 新增商品到收藏清單中
-        WishListItems wishListItem = new WishListItems(LocalDateTime.now(), LocalDateTime.now(), product, wishList);
-        return wishListItemsRepository.save(wishListItem);
-
-    };
+//    public WishListItems addProductToWishList (Long userId, Long productId) {
+//
+//        // 查找用戶是否存在
+//        Users user = userRepository.findById(userId)
+//                .orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
+//
+//        // 查找商品是否存在
+//        Products product = productsRepository.findById(productId)
+//                .orElseThrow(() -> new ResourceNotFoundException("Product Not Found"));
+//
+//        // 查找用戶的收藏清單是否存在，沒有的話創建一個新的
+//        WishList wishList = wishListRepository.findByUsersId(userId)
+//                .orElseGet(() -> {
+//                    WishList newWishList = new WishList();
+//                    newWishList.setUsers(user);
+//                    newWishList.setCreateTime(LocalDateTime.now());
+//                    newWishList.setUpdateTime(LocalDateTime.now());
+//                    return wishListRepository.save(newWishList);
+//                });
+//
+//        // 檢查商品是否已經存在於該用戶的收藏清單中
+//        boolean productExistsInWishList = wishListItemsRepository
+//                .findByUserIdAndProductId(wishList.getId(), productId).isPresent();
+//
+//        if (productExistsInWishList) {
+//            throw new RuntimeException("Product is already in the wish list");
+//        }
+//
+//        // 新增商品到收藏清單中
+//        WishListItems wishListItem = new WishListItems(LocalDateTime.now(), LocalDateTime.now(), product, wishList);
+//        return wishListItemsRepository.save(wishListItem);
+//
+//    };
 
     // 刪除收藏清單中的某商品
-    @Transactional
-    public void removeProductFromWishList(Long wishListId, Long productId) {
-        wishListItemsRepository.deleteByWishListIdAndProductsId(wishListId, productId);
-    }
+//    @Transactional
+//    public void removeProductFromWishList(Long wishListId, Long productId) {
+//        wishListItemsRepository.deleteByWishListIdAndProductsId(wishListId, productId);
+//    }
 
 
 
