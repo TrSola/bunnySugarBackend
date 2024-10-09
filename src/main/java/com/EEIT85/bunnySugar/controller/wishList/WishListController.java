@@ -37,18 +37,6 @@ public class WishListController {
         return new ResponseEntity<>(wishListItem, HttpStatus.CREATED);
     }
 
-//    @DeleteMapping("/{wishListId}/products/{productId}")
-//    public ResponseEntity<String> removeProductFromWishList(
-//            @PathVariable Long wishListId,
-//            @PathVariable Long productId) {
-//        try {
-//            wishListService.removeProductFromWishList(wishListId, productId);
-//            return ResponseEntity.ok("商品已從收藏清單中刪除");
-//        } catch (Exception e) {
-//            return ResponseEntity.status(404).body("商品或收藏清單未找到");
-//        }
-//    }
-
     // 刪除收藏清單中的某商品
     @DeleteMapping("/{wishListId}/products/{productId}")
     public ResponseEntity<Void> removeProductFromWishList(
@@ -57,7 +45,5 @@ public class WishListController {
         wishListService.removeProductFromWishList(wishListId, productId);
         return ResponseEntity.noContent().build();
     }
-
-
 
 }
