@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -124,16 +125,16 @@ public class ProductsAdminService {
         if (dto.getEnable() != null) {
             details.setEnable(dto.getEnable());
         }
-        if (dto.getImg1() != null) {
+        if (!Objects.equals(dto.getImg1(), "")) {
             details.setImg1(dto.getImg1());
         }
-        if (dto.getImg2() != null) {
+        if (!Objects.equals(dto.getImg2(), "")) {
             details.setImg2(dto.getImg2());
         }
-        if (dto.getImg3() != null) {
+        if (!Objects.equals(dto.getImg3(), "")) {
             details.setImg3(dto.getImg3());
         }
-        if (dto.getImg4() != null) {
+        if (!Objects.equals(dto.getImg4(), "")) {
             details.setImg4(dto.getImg4());
         }
         details.setUpdateTime(LocalDateTime.now());
