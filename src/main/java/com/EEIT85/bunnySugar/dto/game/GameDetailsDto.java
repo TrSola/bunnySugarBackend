@@ -3,6 +3,7 @@ package com.EEIT85.bunnySugar.dto.game;
 public class GameDetailsDto {
     private Integer earnedCoins;
     private Integer gameTimes;
+    private Integer bunnyCoins;
 
     public Integer getEarnedCoins() {
         return earnedCoins;
@@ -18,6 +19,14 @@ public class GameDetailsDto {
 
     public void setGameTimes(Integer gameTimes) {
         this.gameTimes = gameTimes;
+    }
+
+    public Integer getBunnyCoins() {
+        return bunnyCoins;
+    }
+
+    public void setBunnyCoins(Integer bunnyCoins) {
+        this.bunnyCoins = bunnyCoins;
     }
 }
 

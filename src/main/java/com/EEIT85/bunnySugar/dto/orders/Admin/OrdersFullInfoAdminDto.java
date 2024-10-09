@@ -23,8 +23,9 @@ public class OrdersFullInfoAdminDto {
     private String couponName;
     private Integer usedBunnyCoins;
     private LocalDateTime pickupTime;
+    private Integer gameTimes;
 
-    public OrdersFullInfoAdminDto(Long orderId, String orderNumber, String userName, String userPhone, String userEmail, LocalDateTime createTime, String paymentStatus, String pickupStatus, Integer paidPrice, String paymentMethod, LocalDateTime paymentDate, Integer total, String couponName, Integer usedBunnyCoins, LocalDateTime pickupTime) {
+    public OrdersFullInfoAdminDto(Long orderId, String orderNumber, String userName, String userPhone, String userEmail, LocalDateTime createTime, String paymentStatus, String pickupStatus, Integer paidPrice, String paymentMethod, LocalDateTime paymentDate, Integer total, String couponName, Integer usedBunnyCoins, LocalDateTime pickupTime, Integer gameTimes) {
         this.orderId = orderId;
         this.userName = userName;
         this.userPhone = userPhone;
@@ -40,6 +41,8 @@ public class OrdersFullInfoAdminDto {
         this.couponName = couponName;
         this.usedBunnyCoins = usedBunnyCoins;
         this.pickupTime = pickupTime;
+        this.gameTimes = gameTimes;
+
     }
 
     public Long getOrderId() {
@@ -170,6 +173,14 @@ public class OrdersFullInfoAdminDto {
         this.pickupTime = pickupTime;
     }
 
+
+    public Integer getGameTimes() {
+        return gameTimes;
+    }
+
+    public void setGameTimes(Integer gameTimes) {
+        this.gameTimes = gameTimes;
+    }
 }
 
 

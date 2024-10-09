@@ -71,7 +71,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
     // 訂單後台編輯，跳出根據orderNumber查詢訂單的詳細資
     @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.Admin.OrdersFullInfoAdminDto(o.id, o.orderNumber, u.name, u.phone, u.email, o.createTime, " +
             "pd.paymentStatus, o.pickupStatus, pd.paidPrice, pd.paymentMethod, pd.paymentDate, o.total, " +
-            "o.couponName, o.usedBunnyCoins, o.pickupTime) " +
+            "o.couponName, o.usedBunnyCoins, o.pickupTime, u.gameTimes) " +
             "FROM Orders o " +
             "JOIN o.user u " +
             "JOIN o.paymentDetails pd " +

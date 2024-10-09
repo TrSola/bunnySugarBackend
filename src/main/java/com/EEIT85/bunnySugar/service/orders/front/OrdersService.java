@@ -114,28 +114,15 @@ public class OrdersService {
 
     private static final Logger logger = LoggerFactory.getLogger(OrdersService.class);
     public OrdersFrontDto getOrderByOrderNumber(String orderNumber) {
-        logger.info("開始查詢訂單號: {}", orderNumber);
-
         OrdersFrontDto ordersFrontDto = ordersRepository.findFrontOrderByOrderNumber(orderNumber);
         if (ordersFrontDto == null) {
-            logger.error("未找到訂單號為 {} 的訂單", orderNumber);
             throw new IllegalArgumentException("未找到該訂單");
         }
-
-        logger.info("成功查詢到訂單: {}", ordersFrontDto);
-
         List<OrderDetailsFrontDto> orderDetailsFrontDtoList = ordersRepository.findOrderDetailsByOrderNumber(orderNumber);
-        logger.info("訂單詳細資料: {}", orderDetailsFrontDtoList);
-
         if (orderDetailsFrontDtoList.isEmpty()) {
             logger.warn("訂單 {} 沒有詳細資料", orderNumber);
         }
-
         ordersFrontDto.setOrderDetails(orderDetailsFrontDtoList);
-
-
-        logger.info("完成訂單查詢，返回結果: {}", ordersFrontDto);
-
         return ordersFrontDto;
     }
 }

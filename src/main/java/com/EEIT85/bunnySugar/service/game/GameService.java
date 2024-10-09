@@ -62,6 +62,7 @@ public class GameService {
         GameDetailsDto gameDetailsDto = new GameDetailsDto();
         gameDetailsDto.setGameTimes(updatedGameTimes); // 這裡的遊戲次數來自數據庫
         gameDetailsDto.setEarnedCoins(result.getEarnedCoins()); // 這裡的金幣來自前端
+        gameDetailsDto.setBunnyCoins(updatedBunnyCoins);
         return gameDetailsDto;
     }
 
