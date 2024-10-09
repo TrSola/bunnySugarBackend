@@ -15,12 +15,6 @@ import java.util.Optional;
 @Repository
 public interface WishListRepository extends JpaRepository<WishList, Long> {
 
-    // 分頁方式查詢 => 查詢某用戶的收藏清單，返回 WishListSelectDto
-//    @Query("SELECT new com.EEIT85.bunnySugar.dto.wishList.WishListDto(w.id, w.createTime, w.updateTime)")
-//    Page<WishListSelectDto> findByUsersId(Long userId, Pageable pageable);
-//
-//    Optional<WishList> findByUsersId(Long userId);
-
     // 查詢某用戶的收藏清單
     Page<WishList> findByUsersId(Long userId, Pageable pageable);
 

@@ -5,11 +5,11 @@ import java.util.List;
 public class WishListInsertDto {
 
     private Long userId;
-    private List<Long> productIds;
+    private Long productId;
 
-    public WishListInsertDto(Long userId, List<Long> productIds) {
+    public WishListInsertDto(Long userId, Long productId) {
         this.userId = userId;
-        this.productIds = productIds;
+        this.productId = productId;
     }
 
     public Long getUserId() {
@@ -20,11 +20,11 @@ public class WishListInsertDto {
         this.userId = userId;
     }
 
-    public List<Long> getProductIds() {
-        return productIds;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setProductIds(List<Long> productIds) {
-        this.productIds = productIds;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 }
