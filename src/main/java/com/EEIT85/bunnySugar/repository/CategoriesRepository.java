@@ -22,7 +22,7 @@ public interface CategoriesRepository extends JpaRepository<Categories,
     @Query("SELECT DISTINCT c.categoryName FROM Categories c JOIN c.products p JOIN p.productDetails pd WHERE pd.enable = true")
     List<String> findAllEnabledCategoryNames();
 
-    @Query("SELECT c.flavor FROM Categories c WHERE c.categoryName = :categoryName")
+    @Query("SELECT DISTINCT c.flavor FROM Categories c JOIN c.products p JOIN p.productDetails pd WHERE pd.enable = true AND c.categoryName = :categoryName")
     List<String> findFlavorsByCategoryName(@Param("categoryName") String categoryName);
 
 }
