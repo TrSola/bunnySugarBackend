@@ -1,13 +1,11 @@
 package com.EEIT85.bunnySugar.service.orders.admin;
 
-import com.EEIT85.bunnySugar.dto.orders.Admin.OrderDetailsAdminDto;
-import com.EEIT85.bunnySugar.dto.orders.Admin.OrdersAdminUpdateDto;
-import com.EEIT85.bunnySugar.dto.orders.Admin.OrdersFullInfoAdminDto;
-import com.EEIT85.bunnySugar.dto.orders.Admin.OrdersInfoAdminDto;
+import com.EEIT85.bunnySugar.dto.orders.admin.OrdersAdminUpdateDto;
+import com.EEIT85.bunnySugar.dto.orders.admin.OrdersFullInfoAdminDto;
+import com.EEIT85.bunnySugar.dto.orders.admin.OrdersInfoAdminDto;
 import com.EEIT85.bunnySugar.dto.orders.front.OrderDetailsFrontDto;
 import com.EEIT85.bunnySugar.entity.Orders;
 import com.EEIT85.bunnySugar.entity.PaymentDetails;
-import com.EEIT85.bunnySugar.entity.Users;
 import com.EEIT85.bunnySugar.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class OrdersAdminService {

@@ -1,4 +1,4 @@
-package com.EEIT85.bunnySugar.dto.orders.Admin;
+package com.EEIT85.bunnySugar.dto.orders.admin;
 
 import com.EEIT85.bunnySugar.dto.orders.front.OrderDetailsFrontDto;
 

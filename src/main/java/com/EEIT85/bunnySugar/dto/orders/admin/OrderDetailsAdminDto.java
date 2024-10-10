@@ -1,6 +1,4 @@
-package com.EEIT85.bunnySugar.dto.orders.Admin;
-
-import java.time.LocalDateTime;
+package com.EEIT85.bunnySugar.dto.orders.admin;
 
 public class OrderDetailsAdminDto {
     private String productName; // 產品名稱
