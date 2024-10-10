@@ -42,10 +42,10 @@ public class AnniversariesService {
 
 
 
-    public void sendAnniversaryEmail(Long id, String email,
-                                     LocalDate anniversaryDate,
-                                     String anniversaryName,
-                                     Integer yearDifference) throws MessagingException {
+    public String sendAnniversaryEmail(Long id, String email,
+                                       LocalDate anniversaryDate,
+                                       String anniversaryName,
+                                       Integer yearDifference) throws MessagingException {
 
         // 創建 MimeMessage 物件來準備電子郵件
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -81,6 +81,8 @@ public class AnniversariesService {
         AnniversariesUpdateDto anniversariesUpdateDto = new AnniversariesUpdateDto();
         anniversariesUpdateDto.setMailSent(true);
         updateAnniversaries(id, anniversariesUpdateDto);
+
+        return "信件已寄出";
     }
 
 
@@ -90,7 +92,7 @@ public class AnniversariesService {
 //        calculateDateDifference(anniversaryDate);
 //    }
 
-    public void calculateDateDifference(AnniversariesCheckDto anniversariesCheckDto) throws MessagingException {
+    public String calculateDateDifference(AnniversariesCheckDto anniversariesCheckDto) throws MessagingException {
         System.out.println(anniversariesCheckDto);
         LocalDate anniversaryDate = anniversariesCheckDto.getAnniversaryDate();
         LocalDate nowDate = LocalDate.now();  // 取得今天的日期
@@ -106,9 +108,12 @@ public class AnniversariesService {
 
         // 檢查紀念日是否是今天
         if (nowMonthDay.equals(anniversaryMonthDay)) {
-            sendAnniversaryEmail(id, email, anniversaryDate,
+            return sendAnniversaryEmail(id, email, anniversaryDate,
                     anniversaryName, yearDifference);
+        }else {
+            return "今天不是紀念日";
         }
+
     }
 
 

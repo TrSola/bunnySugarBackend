@@ -25,10 +25,10 @@ public class anniversariesController {
     AnniversariesService anniversariesService;
 
     @PostMapping("/check")
-    public ResponseEntity<String> checkAnniversaries(HttpServletRequest request,
+    public String checkAnniversaries(HttpServletRequest request,
                                                      @RequestBody AnniversariesCheckDto anniversariesCheckDto) throws MessagingException {
-        anniversariesService.calculateDateDifference(anniversariesCheckDto);
-        return ResponseEntity.ok("成功新增");
+        return anniversariesService.calculateDateDifference(anniversariesCheckDto);
+
     }
 
     @GetMapping("/all")
