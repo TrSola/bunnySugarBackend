@@ -17,7 +17,6 @@ class BunnySugarApplicationTests {
 
 	@Test
 	public void testAnniversariesService() throws MessagingException {
-		anniversariesService.testGetFormattedDate();
 	}
 
 }

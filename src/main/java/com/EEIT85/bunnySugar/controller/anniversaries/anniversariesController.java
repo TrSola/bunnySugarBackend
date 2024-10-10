@@ -1,10 +1,13 @@
 package com.EEIT85.bunnySugar.controller.anniversaries;
 
+import com.EEIT85.bunnySugar.dto.anniversaries.AnniversariesCheckDto;
 import com.EEIT85.bunnySugar.dto.anniversaries.AnniversariesInsertDto;
 import com.EEIT85.bunnySugar.dto.anniversaries.AnniversariesSelectDto;
 //import com.EEIT85.bunnySugar.dto.anniversaries.AnniversariesUpdateDto;
+import com.EEIT85.bunnySugar.dto.anniversaries.AnniversariesUpdateDto;
 import com.EEIT85.bunnySugar.entity.Anniversaries;
 import com.EEIT85.bunnySugar.service.anniversaries.AnniversariesService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,11 +24,18 @@ public class anniversariesController {
     @Autowired
     AnniversariesService anniversariesService;
 
-//    @GetMapping
-//    public List<AnniversariesSelectDto> getAllById(HttpServletRequest request) {
-//        Long userId = (Long) request.getAttribute("userId");
-//        return anniversariesService.getAllById(userId);
-//    }
+    @PostMapping("/check")
+    public ResponseEntity<String> checkAnniversaries(HttpServletRequest request,
+                                                     @RequestBody AnniversariesCheckDto anniversariesCheckDto) throws MessagingException {
+        anniversariesService.calculateDateDifference(anniversariesCheckDto);
+        return ResponseEntity.ok("成功新增");
+    }
+
+    @GetMapping("/all")
+    public List<AnniversariesSelectDto> getAllById(HttpServletRequest request) {
+        Long userId = (Long) request.getAttribute("userId");
+        return anniversariesService.getAllById(userId);
+    }
 
     @GetMapping
     public Page<Anniversaries> getAnniversariesPage(
@@ -52,12 +62,10 @@ public class anniversariesController {
         return ResponseEntity.ok("成功刪除");
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<String> updateAnniversaries(HttpServletRequest request, @PathVariable Long id ,
-//                                                      @RequestBody AnniversariesUpdateDto anniversariesUpdateDto) {
-//
-//        Long userId = (Long) request.getAttribute("userId");
-//        anniversariesService.updateAnniversaries(userId, anniversariesUpdateDto);
-//        return ResponseEntity.ok("成功更新");
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateAnniversaries(HttpServletRequest request, @PathVariable Long id ,
+                                                      @RequestBody AnniversariesUpdateDto anniversariesUpdateDto) {
+        anniversariesService.updateAnniversaries(id, anniversariesUpdateDto);
+        return ResponseEntity.ok("成功更新");
+    }
 }
