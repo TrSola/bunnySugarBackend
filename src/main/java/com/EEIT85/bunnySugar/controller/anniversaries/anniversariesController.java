@@ -48,8 +48,7 @@ public class anniversariesController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteAnniversaries(HttpServletRequest request, @PathVariable Long id) {
-        Long userId = (Long) request.getAttribute("userId");
-        anniversariesService.deleteAnniversaries(userId);
+        anniversariesService.deleteAnniversaries(id);
         return ResponseEntity.ok("成功刪除");
     }
 
