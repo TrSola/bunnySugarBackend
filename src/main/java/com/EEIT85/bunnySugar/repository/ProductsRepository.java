@@ -16,17 +16,17 @@ import java.util.List;
 public interface ProductsRepository extends JpaRepository<Products,
         Long> {
     // 透過產品名稱進行模糊查詢
+    @Query("SELECT p FROM Products p JOIN p.productDetails pd WHERE pd.enable = true AND p.productName LIKE %:productName%")
     Page<Products> findByProductNameContaining(String productName, Pageable pageable);
 
-//    @Query("SELECT p.id FROM Product p WHERE p.productName = :productName")
-//    Long findIdByProductName(@Param("productName") String productName);
+
 
     Products findByProductName(String productName);
 
-    @Query("SELECT p FROM Products p JOIN p.categories c WHERE c.categoryName = :categoryName")
+    @Query("SELECT p FROM Products p JOIN p.productDetails pd JOIN p.categories c WHERE pd.enable = true AND c.categoryName = :categoryName")
     Page<Products> findProductsByCategoryName(@Param("categoryName") String categoryName, Pageable pageable);
 
-    @Query("SELECT p FROM Products p JOIN p.categories c WHERE c.flavor = :flavor")
+    @Query("SELECT p FROM Products p JOIN p.categories c JOIN p.productDetails pd WHERE pd.enable = true AND c.flavor = :flavor")
     Page<Products> findProductsByFlavor(@Param("flavor") String flavor, Pageable pageable);
 
     @Query("SELECT NEW com.EEIT85.bunnySugar.dto.products.ProductsAdminSelectDto" +

@@ -60,10 +60,9 @@ public class ProductsService {
 
     // 獲取所有的 category 名稱
     public Set<String> getAllCategoryNames() {
-        // Fetch all category names and return as a Set to remove duplicates
-        List<String> categoryNames = categoriesRepository.findAllCategoryNames();
+        List<String> categoryNames = categoriesRepository.findAllEnabledCategoryNames();
         if (categoryNames.isEmpty()) {
-            throw new ResourceNotFoundException("No categories found.");
+            throw new ResourceNotFoundException("沒有此種類");
         }
         // 有序不重複
         return new LinkedHashSet<>(categoryNames);
@@ -73,7 +72,7 @@ public class ProductsService {
     public Set<String> getFlavorsByCategoryName(String categoryName) {
         List<String> flavors = categoriesRepository.findFlavorsByCategoryName(categoryName);
         if (flavors.isEmpty()) {
-            throw new ResourceNotFoundException("No flavors found for the given category.");
+            throw new ResourceNotFoundException("沒有找到相對應風味的商品");
         }
         // 有序不重複
         return new LinkedHashSet<>(flavors);
@@ -88,7 +87,7 @@ public class ProductsService {
         return productsPage.map(this::convertToDto);
     }
 
-    // 根據flavor名稱查詢
+    // 根據flavor名稱查詢商品
     public Page<ProductsSelectDto> getProductsByFlavor(String flavor, Pageable pageable) {
         Page<Products> productsPage = productsRepository.findProductsByFlavor(flavor, pageable);
         if (productsPage.isEmpty()) {
