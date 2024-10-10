@@ -4,9 +4,9 @@ import java.time.LocalDate;
 
 public class AnniversariesSelectDto extends AnniversariesBaseDto{
     private final Long id;
-    public AnniversariesSelectDto(Long id, String anniversaryName,
-                                  LocalDate anniversaryDate, Long usersId) {
-        super(anniversaryName, anniversaryDate, usersId);
+
+    public AnniversariesSelectDto(LocalDate anniversaryDate, String anniversaryName, Long id) {
+        super(anniversaryDate, anniversaryName);
         this.id = id;
     }
 

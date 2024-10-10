@@ -7,15 +7,12 @@ public abstract class AnniversariesBaseDto {
 
     private String anniversaryName;
     private LocalDate anniversaryDate;
-    private Long usersId;
-
     public AnniversariesBaseDto() {
     }
 
-    public AnniversariesBaseDto(String anniversaryName, LocalDate anniversaryDate, Long usersId) {
-        this.anniversaryName = anniversaryName;
+    public AnniversariesBaseDto(LocalDate anniversaryDate, String anniversaryName) {
         this.anniversaryDate = anniversaryDate;
-        this.usersId = usersId;
+        this.anniversaryName = anniversaryName;
     }
 
     public String getAnniversaryName() {
@@ -34,11 +31,4 @@ public abstract class AnniversariesBaseDto {
         this.anniversaryDate = anniversaryDate;
     }
 
-    public Long getUsersId() {
-        return usersId;
-    }
-
-    public void setUsersId(Long usersId) {
-        this.usersId = usersId;
-    }
 }

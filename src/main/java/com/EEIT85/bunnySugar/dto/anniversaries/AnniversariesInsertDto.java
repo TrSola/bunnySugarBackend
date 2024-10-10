@@ -8,11 +8,11 @@ public class AnniversariesInsertDto extends AnniversariesBaseDto{
     private LocalDateTime updateTime;
     private Boolean mailSent;
 
-    public AnniversariesInsertDto(String anniversaryName, LocalDate anniversaryDate, Long usersId, Boolean mailSent, LocalDateTime updateTime, LocalDateTime createTime) {
-        super(anniversaryName, anniversaryDate, usersId);
-        this.mailSent = mailSent;
-        this.updateTime = updateTime;
+    public AnniversariesInsertDto(LocalDate anniversaryDate, String anniversaryName, LocalDateTime createTime, LocalDateTime updateTime, Boolean mailSent) {
+        super(anniversaryDate, anniversaryName);
         this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.mailSent = mailSent;
     }
 
     public LocalDateTime getCreateTime() {
