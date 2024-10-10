@@ -3,6 +3,8 @@ package com.EEIT85.bunnySugar.repository;
 import com.EEIT85.bunnySugar.dto.anniversaries.AnniversariesInsertDto;
 import com.EEIT85.bunnySugar.dto.anniversaries.AnniversariesSelectDto;
 import com.EEIT85.bunnySugar.entity.Anniversaries;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -29,6 +31,8 @@ public interface AnniversariesRepository extends JpaRepository<Anniversaries, Lo
 
 
     List<Anniversaries> findByUsersId(Long userId);
+
+    Page<Anniversaries> findByUsersId(Long userId, Pageable pageable);
 
     Optional<Anniversaries> findByIdAndUsersId(Long id, Long usersId);
 }

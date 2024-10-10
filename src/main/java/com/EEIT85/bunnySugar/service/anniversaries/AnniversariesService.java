@@ -10,6 +10,8 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -112,12 +114,12 @@ public class AnniversariesService {
     }
 
 
-    public List<AnniversariesSelectDto> getAllById(Long userId) {
-        List<Anniversaries> result = anniversariesRepository.findByUsersId(userId);
-        return result.stream()
-                .map(this::mapToDto)
-                .collect(Collectors.toList());
-    }
+//    public List<AnniversariesSelectDto> getAllById(Long userId) {
+//        List<Anniversaries> result = anniversariesRepository.findByUsersId(userId);
+//        return result.stream()
+//                .map(this::mapToDto)
+//                .collect(Collectors.toList());
+//    }
 
     private AnniversariesSelectDto mapToDto(Anniversaries anniversaries) {
         return new AnniversariesSelectDto(anniversaries.getId(),
@@ -149,5 +151,9 @@ public class AnniversariesService {
         } else {
             throw new EntityNotFoundException("紀念日未找到");
         }
+    }
+
+    public Page<Anniversaries> getAnniversariesPaginated(Long userId, Pageable pageable) {
+        return anniversariesRepository.findByUsersId(userId, pageable);
     }
 }
