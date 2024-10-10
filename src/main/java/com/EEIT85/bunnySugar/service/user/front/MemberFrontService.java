@@ -17,6 +17,9 @@ public class MemberFrontService {
     @Autowired
     private UserRepository userRepository;
 
+    public Optional<Users> getMemberInfoById(Long userId) {
+        return userRepository.findById(userId);
+    }
 
     // 根據 ID查詢會員資料
     public MemberFrontDto getMemberById(Long id) {

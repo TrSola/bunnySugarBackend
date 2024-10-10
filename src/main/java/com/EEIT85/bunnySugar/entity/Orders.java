@@ -21,6 +21,7 @@ public class Orders {
     @JsonManagedReference("Orders_PaymentDetails")
     private PaymentDetails paymentDetails;
 
+    @JsonBackReference("Users_Orders")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id", nullable = false)
     private Users user;

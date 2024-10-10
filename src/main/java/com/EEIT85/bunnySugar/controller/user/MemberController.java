@@ -4,7 +4,6 @@ import com.EEIT85.bunnySugar.dto.users.front.MemberFrontDto;
 import com.EEIT85.bunnySugar.dto.users.front.MemberFrontUpdateDto;
 import com.EEIT85.bunnySugar.entity.Users;
 import com.EEIT85.bunnySugar.repository.UserRepository;
-import com.EEIT85.bunnySugar.service.user.UserService;
 import com.EEIT85.bunnySugar.service.user.front.MemberFrontService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springdoc.core.converters.ResponseSupportConverter;
@@ -35,6 +34,14 @@ public class MemberController {
         res.put("status", "success");
         res.put("message", "JWT驗證成功，會員資料...");
         return res;
+    }
+
+    // 用ID查詢會員所有資訊
+    @GetMapping("/info")
+    public Optional<Users> getMemberInfoById(HttpServletRequest request) {
+        Long userId = (Long) request.getAttribute("userId");
+        System.out.println(userId);
+        return memberFrontService.getMemberInfoById(userId);
     }
 
     // 用ID查詢會員資料

@@ -101,6 +101,7 @@ public class Users {
     @JsonManagedReference("Users_WishList")
     private WishList wishList;
 
+    @JsonManagedReference("Users_Orders")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Orders> orders;
 
