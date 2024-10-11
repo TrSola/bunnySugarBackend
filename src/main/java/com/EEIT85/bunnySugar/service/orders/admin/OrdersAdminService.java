@@ -10,7 +10,9 @@ import com.EEIT85.bunnySugar.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +27,10 @@ public class OrdersAdminService {
 
     // 訂單後台查詢全部訂單基本資訊，(不含商品細節)
     public Page<OrdersInfoAdminDto> getAllOrdersInfo(Pageable pageable) {
-        Page<OrdersInfoAdminDto> ordersPage = ordersRepository.findAllOrdersInfo(pageable);
+        // 將查詢訂單的順序改為依據 createTime 降序排列
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+                Sort.by(Sort.Direction.DESC, "createTime"));
+        Page<OrdersInfoAdminDto> ordersPage = ordersRepository.findAllOrdersInfo(sortedPageable);
         // 查詢訂單的商品細節
         ordersPage.forEach(order -> {
             List<OrderDetailsFrontDto> orderDetails = ordersRepository.findOrderDetailsByOrderNumber(order.getOrderNumber());
@@ -36,7 +41,9 @@ public class OrdersAdminService {
 
     // 訂單編號與電話號碼查詢訂單(不含商品細節)
     public Page<OrdersInfoAdminDto> searchOrders(String search, Pageable pageable) {
-        Page<OrdersInfoAdminDto> ordersPage = ordersRepository.findOrdersInfoByOrderNumberOrUserPhone(search, pageable);
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+                Sort.by(Sort.Direction.DESC, "createTime"));
+        Page<OrdersInfoAdminDto> ordersPage = ordersRepository.findOrdersInfoByOrderNumberOrUserPhone(search, sortedPageable);
         // 查詢訂單的商品細節
         ordersPage.forEach(order -> {
             List<OrderDetailsFrontDto> orderDetails = ordersRepository.findOrderDetailsByOrderNumber(order.getOrderNumber());
@@ -45,22 +52,22 @@ public class OrdersAdminService {
         return ordersPage;
     }
 
-    // 訂單後台根據會員電話查詢訂單(不含商品細節)
-    public Page<OrdersInfoAdminDto> getOrdersByUserPhone(String phone, Pageable pageable) {
-        Page<OrdersInfoAdminDto> ordersPage = ordersRepository.findOrdersInfoByUserPhone(phone, pageable);
-        // 查詢訂單的商品細節
-        ordersPage.forEach(order -> {
-            List<OrderDetailsFrontDto> orderDetails = ordersRepository.findOrderDetailsByOrderNumber(order.getOrderNumber());
-            order.setOrderDetails(orderDetails);
-        });
-        return ordersPage;
-    }
-
-    // 訂單後台根據orderNumber查詢訂單(不含商品細節)
-    public OrdersInfoAdminDto getOrdersByOrderNumber(String orderNumber) {
-        OrdersInfoAdminDto orderInfo = ordersRepository.findOrdersInfoByOrderNumber(orderNumber);
-        return orderInfo;
-    }
+//    // 訂單後台根據會員電話查詢訂單(不含商品細節)
+//    public Page<OrdersInfoAdminDto> getOrdersByUserPhone(String phone, Pageable pageable) {
+//        Page<OrdersInfoAdminDto> ordersPage = ordersRepository.findOrdersInfoByUserPhone(phone, pageable);
+//        // 查詢訂單的商品細節
+//        ordersPage.forEach(order -> {
+//            List<OrderDetailsFrontDto> orderDetails = ordersRepository.findOrderDetailsByOrderNumber(order.getOrderNumber());
+//            order.setOrderDetails(orderDetails);
+//        });
+//        return ordersPage;
+//    }
+//
+//    // 訂單後台根據orderNumber查詢訂單(不含商品細節)
+//    public OrdersInfoAdminDto getOrdersByOrderNumber(String orderNumber) {
+//        OrdersInfoAdminDto orderInfo = ordersRepository.findOrdersInfoByOrderNumber(orderNumber);
+//        return orderInfo;
+//    }
 
     // 訂單後台編輯，跳出根據orderNumber查詢訂單的詳細資
     public OrdersFullInfoAdminDto getOrderFullInfoByOrderNumber(String orderNumber) {
