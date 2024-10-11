@@ -21,22 +21,17 @@ public class GameService {
         GameDetailsDto gameDetailsDto = new GameDetailsDto();
 
         // 檢查用戶的遊戲次數是否有效
-        if (user.getGameTimes() == null || user.getGameTimes() == 0) {
-            gameDetailsDto.setGameTimes(0);
+        if (user.getGameTimes() == null || user.getGameTimes() <= 0) {
+            gameDetailsDto.setGameTimes(0);  // 次數為 0，不能開始遊戲
             return gameDetailsDto;
         } else {
-            // 減少遊戲次數
-            int updatedGameTimes = user.getGameTimes() - 1;
-            user.setGameTimes(updatedGameTimes);
-            gameRepository.save(user);
-
-            // 返回遊戲次數
-            gameDetailsDto.setGameTimes(updatedGameTimes);
+            // 不在這裡扣減遊戲次數，等待遊戲結束時再扣減
+            gameDetailsDto.setGameTimes(user.getGameTimes()); // 返回當前遊戲次數
             return gameDetailsDto;
         }
     }
 
-    // 結束遊戲邏輯
+    // 結束遊戲邏輯（在遊戲結束時扣減次數）
     public GameDetailsDto endGame(Long id, GameDetailsDto result) {
         // 查找用戶
         Users user = gameRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found for id: " + id));
@@ -47,8 +42,8 @@ public class GameService {
             return null;
         }
 
-        // 從數據庫中獲取並更新用戶的遊戲次數
-        int updatedGameTimes = user.getGameTimes();
+        // 減少遊戲次數
+        int updatedGameTimes = user.getGameTimes() - 1;
 
         // 更新用戶的 bunnyCoin
         int updatedBunnyCoins = user.getBunnyCoin() + result.getEarnedCoins();
@@ -60,11 +55,12 @@ public class GameService {
 
         // 返回更新後的 GameDetailsDto
         GameDetailsDto gameDetailsDto = new GameDetailsDto();
-        gameDetailsDto.setGameTimes(updatedGameTimes); // 這裡的遊戲次數來自數據庫
-        gameDetailsDto.setEarnedCoins(result.getEarnedCoins()); // 這裡的金幣來自前端
-        gameDetailsDto.setBunnyCoins(updatedBunnyCoins);
+        gameDetailsDto.setGameTimes(updatedGameTimes); // 更新後的遊戲次數
+        gameDetailsDto.setEarnedCoins(result.getEarnedCoins()); // 前端傳來的獲得金幣數量
+        gameDetailsDto.setBunnyCoins(updatedBunnyCoins); // 更新後的 BunnyCoin
         return gameDetailsDto;
     }
+
 
     // 抓次數
     public Integer getGameTimes(Long userId) {

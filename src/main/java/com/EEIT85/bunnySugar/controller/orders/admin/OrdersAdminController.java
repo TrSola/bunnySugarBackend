@@ -24,7 +24,7 @@ public class OrdersAdminController {
 
     private static final Logger logger = LoggerFactory.getLogger(OrdersAdminController.class);
 
-    // 查所有會員的所有訂單或是電話號碼查詢
+    // 查所有會員的所有訂單或是電話號碼/訂單編號查詢
     @GetMapping
     public ResponseEntity<Page<OrdersInfoAdminDto>> getAllOrders(
             HttpServletRequest request,
