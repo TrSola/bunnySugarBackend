@@ -44,7 +44,7 @@ public class ProductsService {
 
     // 取回所有產品，並將其轉換為 DTO
     public Page<ProductsSelectDto> getAll(Pageable pageable) {
-        Page<Products> productsPage = productsRepository.findAll(pageable);
+        Page<Products> productsPage = productsRepository.findAllEnabledProducts(pageable);
         return productsPage.map(this::convertToDto);
     }
 

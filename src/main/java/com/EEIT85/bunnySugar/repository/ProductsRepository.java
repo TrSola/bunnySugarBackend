@@ -19,7 +19,8 @@ public interface ProductsRepository extends JpaRepository<Products,
     @Query("SELECT p FROM Products p JOIN p.productDetails pd WHERE pd.enable = true AND p.productName LIKE %:productName%")
     Page<Products> findByProductNameContaining(String productName, Pageable pageable);
 
-
+    @Query("SELECT p FROM Products p JOIN p.productDetails pd WHERE pd.enable = true")
+    Page<Products> findAllEnabledProducts(Pageable pageable);
 
     Products findByProductName(String productName);
 
