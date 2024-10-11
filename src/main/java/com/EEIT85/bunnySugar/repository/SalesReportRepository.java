@@ -10,29 +10,30 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface SalesReportRepository extends JpaRepository<Orders, Long> {
+
     // 所有商品數據
-    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.admin.SalesReportDto(p.productName, SUM(od.quantity), SUM(od.price)) " +
+    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.admin.SalesReportDto(p.id, p.productName, SUM(od.quantity), SUM(od.price), SUM(od.price * od.quantity)) " +
             "FROM OrderDetails od " +
             "JOIN od.products p " +
-            "GROUP BY p.productName")
+            "GROUP BY p.id, p.productName")
     List<SalesReportDto> findSalesReport();
 
     // 指定商品銷售數據
-    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.admin.SalesReportDto(p.productName, SUM(od.quantity), SUM(od.price)) " +
+    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.admin.SalesReportDto(p.id, p.productName, SUM(od.quantity), SUM(od.price), SUM(od.price * od.quantity)) " +
             "FROM OrderDetails od " +
             "JOIN od.products p " +
             "WHERE p.productName = :productName " +
-            "GROUP BY p.productName")
+            "GROUP BY p.id, p.productName")
     List<SalesReportDto> findSalesReportByProductName(@Param("productName") String productName);
 
     // 特定區間的銷售狀況
-    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.admin.SalesReportDto(p.productName, SUM(od.quantity), SUM(od.price)) " +
+    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.admin.SalesReportDto(p.id, p.productName, SUM(od.quantity), SUM(od.price), SUM(od.price * od.quantity)) " +
             "FROM OrderDetails od " +
             "JOIN od.products p " +
             "JOIN od.orders o " +
             "WHERE o.createTime BETWEEN :startTime AND :endTime " +
-            "GROUP BY p.productName")
+            "GROUP BY p.id, p.productName")
     List<SalesReportDto> findSalesReportByTimeRange(@Param("startTime") LocalDateTime startTime,
                                                     @Param("endTime") LocalDateTime endTime);
-
 }
+

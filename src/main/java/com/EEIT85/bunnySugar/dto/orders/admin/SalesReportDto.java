@@ -1,17 +1,29 @@
 package com.EEIT85.bunnySugar.dto.orders.admin;
 
 public class SalesReportDto {
+    private Long productId;
     private String productName;
-    private Long productQuantity;
-    private Long productPrice;
+    private Long sumPrice;
+    private Long sumQuantity;
+    private Long totalRevenue;
 
     public SalesReportDto() {
     }
 
-    public SalesReportDto(String productName, Long productQuantity, Long productPrice) {
+    public SalesReportDto(Long productId, String productName, Long sumPrice, Long sumQuantity, Long totalRevenue) {
+        this.productId = productId;
         this.productName = productName;
-        this.productQuantity = productQuantity;
-        this.productPrice = productPrice;
+        this.sumPrice = sumPrice;
+        this.sumQuantity = sumQuantity;
+        this.totalRevenue = totalRevenue;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public String getProductName() {
@@ -22,19 +34,27 @@ public class SalesReportDto {
         this.productName = productName;
     }
 
-    public Long getProductPrice() {
-        return productPrice;
+    public Long getSumPrice() {
+        return sumPrice;
     }
 
-    public void setProductPrice(Long productPrice) {
-        this.productPrice = productPrice;
+    public void setSumPrice(Long sumPrice) {
+        this.sumPrice = sumPrice;
     }
 
-    public Long getProductQuantity() {
-        return productQuantity;
+    public Long getSumQuantity() {
+        return sumQuantity;
     }
 
-    public void setProductQuantity(Long productQuantity) {
-        this.productQuantity = productQuantity;
+    public void setSumQuantity(Long sumQuantity) {
+        this.sumQuantity = sumQuantity;
+    }
+
+    public Long getTotalRevenue() {
+        return totalRevenue;
+    }
+
+    public void setTotalRevenue(Long totalRevenue) {
+        this.totalRevenue = totalRevenue;
     }
 }
