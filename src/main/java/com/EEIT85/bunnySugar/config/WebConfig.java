@@ -39,6 +39,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor) // 註冊 LoginInterceptor 攔截器
                 .addPathPatterns("/api/**") // 指定需要攔截的路徑
-                .excludePathPatterns(securityWhiteList.getWhitelistPaths()); // 使用 SecurityWhiteList 提供的白名單路徑
+                .excludePathPatterns(securityWhiteList.getWhitelistPaths().toArray(new String[0])); // 使用 SecurityWhiteList 提供的白名單路徑
     }
 }

@@ -19,6 +19,7 @@ public class SecurityWhiteList {
             "/user/googleLogin",
             "/user/resetPassword",
             "/user/sentResetPasswordEmail",
+            "/ws/**",
             // 靜態資源路徑白名單   // 這邊之後邊用邊調整
             "/test.html",
             "/public/**",

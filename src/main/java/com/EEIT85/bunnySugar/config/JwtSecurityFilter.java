@@ -33,6 +33,18 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain) throws ServletException, IOException {
 
+        // 檢查請求是否是 WebSocket 端點
+        String requestURI = request.getRequestURI();
+        if (requestURI.startsWith("/ws")) {
+            // 為 WebSocket 請求創建一個空的身份驗證
+            SecurityContextHolder.getContext().setAuthentication(
+                    new UsernamePasswordAuthenticationToken(null, null, List.of())
+            );
+            // 直接通過，不進行 JWT 驗證
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         // 提取 JWT
         System.out.println("有到jwtFilter");
         String token = extractToken(request);
