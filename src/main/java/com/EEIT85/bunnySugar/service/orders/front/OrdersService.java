@@ -11,7 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -108,7 +110,10 @@ public class OrdersService {
 
     // 查詢指定userId的訂單，並返回分頁的訂單資訊
     public Page<OrdersInfoDto> getAllOrdersByUserId(Long userId, Pageable pageable) {
-        return ordersRepository.findAllOrdersByUserId(userId, pageable);
+        // 將查詢訂單的順序改為依據 createTime 降序排列
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+                Sort.by(Sort.Direction.DESC, "createTime"));
+        return ordersRepository.findAllOrdersByUserId(userId, sortedPageable);
     }
 
 
