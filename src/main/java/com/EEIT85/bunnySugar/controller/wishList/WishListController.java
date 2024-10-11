@@ -50,4 +50,14 @@ public class WishListController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
+    @DeleteMapping("/delete/{userId}/{productId}")
+    public ResponseEntity<Void> deleteProductFromWishList(
+            @PathVariable Long userId,
+            @PathVariable Long productId) {
+
+        wishListService.deleteProductFromWishList(userId, productId);
+
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -78,4 +78,21 @@ public class WishListService {
             throw new ResourceNotFoundException("Wish List not found for user ID: " + wishListInsertDto.getUserId());
         }
     }
+
+    @Transactional
+    public void deleteProductFromWishList(Long userId, Long productId) {
+
+        // 根據用戶ID查詢收藏清單
+        Optional<WishList> wishListOptional = wishListRepository.findByUsersId(userId);
+
+        if (wishListOptional.isPresent()) {
+            WishList wishList = wishListOptional.get();
+
+            // 刪除商品
+            wishListItemsRepository.deleteByWishListIdAndProductsId(wishList.getId(), productId);
+        } else {
+            throw new ResourceNotFoundException("Wish List not found for user ID: " + userId);
+        }
+
+    }
 }
