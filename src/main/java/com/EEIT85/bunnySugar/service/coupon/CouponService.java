@@ -50,7 +50,7 @@ public class CouponService {
     }
 
     public List<Coupon> getCoupons() {
-        return couponRepository.findAll();
+        return couponRepository.findAllWithEnable();
     }
 
     public Page<Coupon> getCouponsPaginated(Pageable pageable) {

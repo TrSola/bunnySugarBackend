@@ -55,11 +55,12 @@ public class CartService {
         Optional<CartItems> existingCartItem =
                 cartItemsRepository.findByProductsIdAndCartId(products.getId(),
                         cart.getId());
-        System.out.println(existingCartItem);
         //如果有，修改後存入 若沒有．新建一個購物清單實體 準備存入資料庫
         if (existingCartItem.isPresent()) {
             CartItems cartItem = existingCartItem.get();
-            cartItem.setQuantity(cartItem.getQuantity() + cartInsertDto.getQuantity());
+            if (cartItem.getProducts().getStocks() >= cartItem.getQuantity() + cartInsertDto.getQuantity()) {
+                cartItem.setQuantity(cartItem.getQuantity() + cartInsertDto.getQuantity());
+            }
             cartItem.setPrice(cartInsertDto.getPrice()); // 更新價格，如果需要的話
             cartItem.setUpdateTime(LocalDateTime.now());
             cartItemsRepository.save(cartItem);
