@@ -5,18 +5,26 @@ public class SalesReportDto {
     private String productName;
     private Long sumPrice;
     private Long sumQuantity;
-    private Long totalRevenue;
+    private Long  totalRevenue;
 
     public SalesReportDto() {
     }
 
-    public SalesReportDto(Long productId, String productName, Long sumPrice, Long sumQuantity, Long totalRevenue) {
+    public SalesReportDto(Long productId, String productName, Long sumPrice, Long sumQuantity) {
+        this.productId = productId;
+        this.productName = productName;
+        this.sumPrice = sumPrice;
+        this.sumQuantity = sumQuantity;
+    }
+
+    public SalesReportDto(Long productId, String productName, Long sumPrice, Long sumQuantity, Long  totalRevenue) {
         this.productId = productId;
         this.productName = productName;
         this.sumPrice = sumPrice;
         this.sumQuantity = sumQuantity;
         this.totalRevenue = totalRevenue;
     }
+
 
     public Long getProductId() {
         return productId;
@@ -50,11 +58,11 @@ public class SalesReportDto {
         this.sumQuantity = sumQuantity;
     }
 
-    public Long getTotalRevenue() {
+    public Long  getTotalRevenue() {
         return totalRevenue;
     }
 
-    public void setTotalRevenue(Long totalRevenue) {
+    public void setTotalRevenue(Long  totalRevenue) {
         this.totalRevenue = totalRevenue;
     }
 }

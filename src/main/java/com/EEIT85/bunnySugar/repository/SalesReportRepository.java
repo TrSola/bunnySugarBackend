@@ -12,28 +12,25 @@ import java.util.List;
 public interface SalesReportRepository extends JpaRepository<Orders, Long> {
 
     // 所有商品數據
-    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.admin.SalesReportDto(p.id, p.productName, SUM(od.quantity), SUM(od.price), SUM(od.price * od.quantity)) " +
+    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.admin.SalesReportDto(p.id, p.productName, SUM(od.price), SUM(od.quantity), " +
+            "CAST((SELECT SUM(od2.price * od2.quantity) FROM OrderDetails od2) AS long)) " +
             "FROM OrderDetails od " +
             "JOIN od.products p " +
             "GROUP BY p.id, p.productName")
     List<SalesReportDto> findSalesReport();
 
-    // 指定商品銷售數據
-    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.admin.SalesReportDto(p.id, p.productName, SUM(od.quantity), SUM(od.price), SUM(od.price * od.quantity)) " +
-            "FROM OrderDetails od " +
-            "JOIN od.products p " +
-            "WHERE p.productName = :productName " +
-            "GROUP BY p.id, p.productName")
-    List<SalesReportDto> findSalesReportByProductName(@Param("productName") String productName);
-
     // 特定區間的銷售狀況
-    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.admin.SalesReportDto(p.id, p.productName, SUM(od.quantity), SUM(od.price), SUM(od.price * od.quantity)) " +
+    @Query("SELECT new com.EEIT85.bunnySugar.dto.orders.admin.SalesReportDto(p.id, p.productName, SUM(od.quantity), SUM(od.price), " +
+            "CAST((SELECT SUM(od2.price * od2.quantity) FROM OrderDetails od2 JOIN od2.orders o2 WHERE o2.createTime BETWEEN :startTime AND :endTime) AS long)) " +
             "FROM OrderDetails od " +
             "JOIN od.products p " +
             "JOIN od.orders o " +
             "WHERE o.createTime BETWEEN :startTime AND :endTime " +
             "GROUP BY p.id, p.productName")
     List<SalesReportDto> findSalesReportByTimeRange(@Param("startTime") LocalDateTime startTime,
-                                                    @Param("endTime") LocalDateTime endTime);
+                                                                    @Param("endTime") LocalDateTime endTime);
+
+
+
 }
 
