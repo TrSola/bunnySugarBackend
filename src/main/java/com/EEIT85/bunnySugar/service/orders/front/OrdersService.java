@@ -44,11 +44,11 @@ public class OrdersService {
 
         //找出目前的使用者並將使用者資訊存入訂單
         Users user = userRepository.getReferenceById(userId);
+        user.setBunnyCoin(user.getBunnyCoin() - ordersInsertDto.getUsedBunnyCoins());
 
         //計算本次消費獲得的coin
         Integer addGameTimes = ordersInsertDto.getPaymentPrice() / 500;
         user.setGameTimes(user.getGameTimes() + addGameTimes);
-        System.out.println(addGameTimes);
         //計算本次累積消費
         user.setAccumulateSpent(user.getAccumulateSpent() + ordersInsertDto.getPaymentPrice());
         Integer totalSpent = user.getAccumulateSpent();
