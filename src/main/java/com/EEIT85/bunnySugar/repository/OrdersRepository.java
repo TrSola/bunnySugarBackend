@@ -1,6 +1,5 @@
 package com.EEIT85.bunnySugar.repository;
 
-import com.EEIT85.bunnySugar.dto.orders.admin.SalesReportDto;
 import com.EEIT85.bunnySugar.dto.orders.front.OrderDetailsFrontDto;
 import com.EEIT85.bunnySugar.dto.orders.front.OrdersFrontDto;
 import com.EEIT85.bunnySugar.dto.orders.front.OrdersInfoDto;
