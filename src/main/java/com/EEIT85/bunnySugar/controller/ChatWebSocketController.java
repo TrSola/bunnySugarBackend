@@ -1,47 +1,24 @@
 package com.EEIT85.bunnySugar.controller;
 
-import com.EEIT85.bunnySugar.dto.ChatMessage; // 引用 DTO
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.EEIT85.bunnySugar.dto.ChatMessageDto;
+import com.EEIT85.bunnySugar.service.ChatService; // 引用 Service
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 @CrossOrigin
 public class ChatWebSocketController {
 
-    private static final Logger logger = LoggerFactory.getLogger(ChatWebSocketController.class);
-    private final SimpMessagingTemplate messagingTemplate;
-
-    // 儲存用戶的 WebSocket 會話
-    private final Map<String, String> userSessions = new HashMap<>();
-
-    public ChatWebSocketController(SimpMessagingTemplate messagingTemplate) {
-        this.messagingTemplate = messagingTemplate;
-    }
+    @Autowired
+    private ChatService chatService; // 注入 Service
 
     @MessageMapping("/send") // 當接收到 /app/send 的訊息時
-    public void sendMessage(@Payload ChatMessage chatMessage) {
-        // 打印接收到的訊息到控制台
-        logger.info("Received message: " + chatMessage.getContent() + " from recipient: " + chatMessage.getRecipientId());
-
-        // 根據用戶ID發送訊息
-        String recipientId = chatMessage.getRecipientId(); // 從訊息中獲取接收者ID
-        messagingTemplate.convertAndSendToUser(recipientId, "/topic/messages", chatMessage); // 傳送整個 ChatMessage 物件
+    public void sendMessage(@Payload ChatMessageDto chatMessage) {
+        chatService.receiveMessage(chatMessage); // 將訊息發送到 Service 處理
     }
 
-    // 用於管理用戶會話
-    public void registerUser(String userId, String sessionId) {
-        userSessions.put(userId, sessionId);
-    }
-
-    public void unregisterUser(String userId) {
-        userSessions.remove(userId);
-    }
+    // 用戶註冊和取消註冊的邏輯可以考慮放到 Service 中
 }

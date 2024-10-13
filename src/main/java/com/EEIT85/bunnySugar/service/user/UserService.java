@@ -187,7 +187,7 @@ public class UserService {
 
         // 檢查用戶身分
         String role = loginedUser.getUserRole();
-
+        String account = loginedUser.getAccount();
         // 生成 JWT token
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", loginedUser.getId());
@@ -208,6 +208,7 @@ public class UserService {
         }
 
         response.put("status", "success");
+        response.put("account", account);
         response.put("token", token);
         response.put("user", role);
         return response;
