@@ -1,68 +1,33 @@
 package com.EEIT85.bunnySugar.dto.orders.admin;
 
+import java.util.List;
+
 public class SalesReportDto {
-    private Long productId;
-    private String productName;
-    private Long sumPrice;
-    private Long sumQuantity;
-    private Long  totalRevenue;
+    private List<ProductSalesDto> productSalesDto; // 每個產品的銷售數據
+    private Double totalRevenue;               // 所有產品的總營業額
 
     public SalesReportDto() {
     }
 
-    public SalesReportDto(Long productId, String productName, Long sumPrice, Long sumQuantity) {
-        this.productId = productId;
-        this.productName = productName;
-        this.sumPrice = sumPrice;
-        this.sumQuantity = sumQuantity;
-    }
-
-    public SalesReportDto(Long productId, String productName, Long sumPrice, Long sumQuantity, Long  totalRevenue) {
-        this.productId = productId;
-        this.productName = productName;
-        this.sumPrice = sumPrice;
-        this.sumQuantity = sumQuantity;
+    public SalesReportDto(List<ProductSalesDto> productSalesDto, Double totalRevenue) {
+        this.productSalesDto = productSalesDto;
         this.totalRevenue = totalRevenue;
     }
 
-
-    public Long getProductId() {
-        return productId;
+    public List<ProductSalesDto> getProductSalesDto() {
+        return productSalesDto;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setProductSalesDto(List<ProductSalesDto> productSalesDto) {
+        this.productSalesDto = productSalesDto;
     }
 
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public Long getSumPrice() {
-        return sumPrice;
-    }
-
-    public void setSumPrice(Long sumPrice) {
-        this.sumPrice = sumPrice;
-    }
-
-    public Long getSumQuantity() {
-        return sumQuantity;
-    }
-
-    public void setSumQuantity(Long sumQuantity) {
-        this.sumQuantity = sumQuantity;
-    }
-
-    public Long  getTotalRevenue() {
+    public Double getTotalRevenue() {
         return totalRevenue;
     }
 
-    public void setTotalRevenue(Long  totalRevenue) {
+    public void setTotalRevenue(Double totalRevenue) {
         this.totalRevenue = totalRevenue;
     }
 }
+
