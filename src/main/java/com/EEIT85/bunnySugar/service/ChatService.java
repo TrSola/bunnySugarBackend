@@ -20,7 +20,7 @@ public class ChatService {
     private JwtUtil jwtUtil;
 
     @Autowired
-    private ChatMessageRepository chatMessageRepository; // 引入 repository
+    private ChatMessageRepository chatMessageRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(ChatService.class);
     private final SimpMessagingTemplate messagingTemplate;
@@ -31,48 +31,34 @@ public class ChatService {
 
     // 接收用戶傳過來的訊息
     public void receiveMessage(ChatMessageDto chatMessageDto) {
-        // 打印接收到的訊息到控制台
-        Map<String, Object> claims = jwtUtil.parseJwtToken(chatMessageDto.getSenderId());
-        String senderId = claims.get("account").toString(); // 獲取用戶的帳號
+        Map<String, Object> claims = jwtUtil.parseJwtToken(chatMessageDto.getJwt());
+        String senderId = claims.get("account").toString();
         logger.info("Received message: " + chatMessageDto.getContent() + " from account: " + senderId);
 
         // 將 DTO 轉換為 Entity
         ChatMessage messageEntity = new ChatMessage();
         messageEntity.setContent(chatMessageDto.getContent());
-        messageEntity.setSenderId(senderId); // 設置發送者ID
-        messageEntity.setRecipientId("ADMIN"); // 設置接收者ID為 ADMIN
-        messageEntity.setTimestamp(LocalDateTime.now()); // 設定當前時間戳
+        messageEntity.setSenderId(senderId);
+        messageEntity.setRecipientId("ADMIN");
+        messageEntity.setTimestamp(LocalDateTime.now());
 
         // 儲存訊息到資料庫
-        chatMessageRepository.save(messageEntity); // 儲存到資料表
+        chatMessageRepository.save(messageEntity);
 
         // 回覆給客服
         sendMessageToAdmin(messageEntity);
-
-        // 發送訊息給特定用戶
-        String recipientId = "istoo1028"; // 目標用戶的 ID
-        String messageContent = "您好，這是客服發送的測試訊息。"; // 要發送的訊息內容
-
-        ChatMessage messageEntity22 = new ChatMessage();
-        messageEntity.setContent(messageContent);
-        messageEntity.setSenderId("ADMIN"); // 設置發送者ID為客服
-        messageEntity.setRecipientId(recipientId); // 設置接收者ID
-        messageEntity.setTimestamp(LocalDateTime.now()); // 設定當前時間戳
-
-// 發送訊息到特定用戶
-        messagingTemplate.convertAndSendToUser(recipientId, "/topic/messages", messageEntity22);
     }
 
     // 傳送訊息給用戶
-    public void sendMessageToUser(String recipientId, String content) {
+    public void sendMessageToUser(String content, String recipientId) {
         ChatMessage messageEntity = new ChatMessage();
         messageEntity.setContent(content);
-        messageEntity.setSenderId("ADMIN"); // 設置客服的ID
-        messageEntity.setRecipientId(recipientId); // 設置用戶ID
-        messageEntity.setTimestamp(LocalDateTime.now()); // 設定當前時間戳
+        messageEntity.setSenderId("ADMIN");
+        messageEntity.setRecipientId(recipientId);
+        messageEntity.setTimestamp(LocalDateTime.now());
 
         // 儲存訊息到資料庫
-        chatMessageRepository.save(messageEntity); // 儲存到資料表
+        chatMessageRepository.save(messageEntity);
 
         // 發送訊息給用戶
         messagingTemplate.convertAndSendToUser(recipientId, "/topic/messages", messageEntity);
@@ -82,4 +68,5 @@ public class ChatService {
     private void sendMessageToAdmin(ChatMessage messageEntity) {
         messagingTemplate.convertAndSendToUser("ADMIN", "/topic/messages", messageEntity);
     }
+
 }

@@ -20,6 +20,8 @@ public class SecurityWhiteList {
             "/user/resetPassword",
             "/user/sentResetPasswordEmail",
             "/ws/**",
+            "/favicon.ico",
+            "/send-message",
             // 靜態資源路徑白名單   // 這邊之後邊用邊調整
             "/test.html",
             "/public/**",

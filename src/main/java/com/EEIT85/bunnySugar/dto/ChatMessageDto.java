@@ -6,6 +6,7 @@ public class ChatMessageDto {
     private String content;
     private String recipientId;
     private String senderId; // 新增發件人ID
+    private String jwt;
     private LocalDateTime timestamp; // 新增時間戳
 
     // 無參數構造函數
@@ -43,4 +44,8 @@ public class ChatMessageDto {
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp; // 新增設置時間戳的方法
     }
+
+    public String getJwt() { return jwt; }
+
+    public void setJwt(String jwt) { this.jwt = jwt; }
 }
