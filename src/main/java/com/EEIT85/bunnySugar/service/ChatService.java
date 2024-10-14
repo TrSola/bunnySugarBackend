@@ -29,8 +29,8 @@ public class ChatService {
         this.messagingTemplate = messagingTemplate;
     }
 
-    // 接收用戶傳過來的訊息
-    public void receiveMessage(ChatMessageDto chatMessageDto) {
+    // 接收用戶或客服發送的訊息
+    public void sendMessage(ChatMessageDto chatMessageDto) {
         Map<String, Object> claims = jwtUtil.parseJwtToken(chatMessageDto.getJwt());
         String senderId = claims.get("account").toString();
         logger.info("Received message: " + chatMessageDto.getContent() + " from account: " + senderId);
@@ -39,34 +39,18 @@ public class ChatService {
         ChatMessage messageEntity = new ChatMessage();
         messageEntity.setContent(chatMessageDto.getContent());
         messageEntity.setSenderId(senderId);
-        messageEntity.setRecipientId("ADMIN");
+        messageEntity.setRecipientId(chatMessageDto.getRecipientId());
         messageEntity.setTimestamp(LocalDateTime.now());
 
         // 儲存訊息到資料庫
         chatMessageRepository.save(messageEntity);
 
-        // 回覆給客服
-        sendMessageToAdmin(messageEntity);
+        // 發送訊息給目標用戶
+        messagingTemplate.convertAndSendToUser(chatMessageDto.getRecipientId(), "/topic/messages", messageEntity);
+
+        // 如果發送者是客服，則也要回覆給客服
+        if ("ADMIN".equals(senderId)) {
+            messagingTemplate.convertAndSendToUser("ADMIN", "/topic/messages", messageEntity);
+        }
     }
-
-    // 傳送訊息給用戶
-    public void sendMessageToUser(String content, String recipientId) {
-        ChatMessage messageEntity = new ChatMessage();
-        messageEntity.setContent(content);
-        messageEntity.setSenderId("ADMIN");
-        messageEntity.setRecipientId(recipientId);
-        messageEntity.setTimestamp(LocalDateTime.now());
-
-        // 儲存訊息到資料庫
-        chatMessageRepository.save(messageEntity);
-
-        // 發送訊息給用戶
-        messagingTemplate.convertAndSendToUser(recipientId, "/topic/messages", messageEntity);
-    }
-
-    // 回覆訊息給客服
-    private void sendMessageToAdmin(ChatMessage messageEntity) {
-        messagingTemplate.convertAndSendToUser("ADMIN", "/topic/messages", messageEntity);
-    }
-
 }
