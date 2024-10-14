@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,10 +24,11 @@ public interface SalesReportRepository extends JpaRepository<Orders, Long> {
             "FROM OrderDetails od " +
             "JOIN od.products p " +
             "JOIN od.orders o " +
-            "WHERE o.createTime BETWEEN :startTime AND :endTime " +
+            "WHERE o.createTime BETWEEN :startDateTime AND :endDateTime " +
             "GROUP BY p.id, p.productName, od.price")
-    List<ProductSalesDto> findSalesReportByTimeRange(@Param("startTime") LocalDateTime startTime,
-                                                     @Param("endTime") LocalDateTime endTime);
+    List<ProductSalesDto> findSalesReportByTimeRange(@Param("startDateTime") LocalDateTime startDateTime,
+                                                     @Param("endDateTime") LocalDateTime endDateTime);
+
 
     // 查詢所有產品的總營業額
     @Query("SELECT SUM(od.price * od.quantity) FROM OrderDetails od")
@@ -36,7 +38,7 @@ public interface SalesReportRepository extends JpaRepository<Orders, Long> {
     @Query("SELECT SUM(od.price * od.quantity) " +
             "FROM OrderDetails od " +
             "JOIN od.orders o " +
-            "WHERE o.createTime BETWEEN :startTime AND :endTime")
-    Double findTotalRevenueByTimeRange(@Param("startTime") LocalDateTime startTime,
-                                       @Param("endTime") LocalDateTime endTime);
+            "WHERE o.createTime BETWEEN :startDateTime AND :endDateTime")
+    Double findTotalRevenueByTimeRange(@Param("startDateTime") LocalDateTime startDateTime,
+                                       @Param("endDateTime") LocalDateTime endDateTime);
 }
