@@ -47,9 +47,9 @@ public class WishListService {
     }
 
     @Transactional
-    public void addProductToWishList(WishListInsertDto wishListInsertDto) {
+    public void addProductToWishList(WishListInsertDto wishListInsertDto, Long userId) {
         // 根據用戶ID查詢收藏清單
-        Optional<WishList> wishListOptional = wishListRepository.findByUsersId(wishListInsertDto.getUserId());
+        Optional<WishList> wishListOptional = wishListRepository.findByUsersId(userId);
 
         if (wishListOptional.isPresent()) {
             WishList wishList = wishListOptional.get();
@@ -75,7 +75,7 @@ public class WishListService {
                 throw new RuntimeException("該商品已經在收藏清單中");
             }
         } else {
-            throw new ResourceNotFoundException("Wish List not found for user ID: " + wishListInsertDto.getUserId());
+            throw new ResourceNotFoundException("Wish List not found for user ID: " + userId);
         }
     }
 

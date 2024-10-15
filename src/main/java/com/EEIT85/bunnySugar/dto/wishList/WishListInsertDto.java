@@ -4,21 +4,24 @@ import java.util.List;
 
 public class WishListInsertDto {
 
-    private Long userId;
+//    private Long userId;
     private Long productId;
 
-    public WishListInsertDto(Long userId, Long productId) {
-        this.userId = userId;
+    public WishListInsertDto() {
+    }
+
+    public WishListInsertDto(Long productId) {
+//        this.userId = userId;
         this.productId = productId;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
+//    public Long getUserId() {
+//        return userId;
+//    }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+//    public void setUserId(Long userId) {
+//        this.userId = userId;
+//    }
 
     public Long getProductId() {
         return productId;
