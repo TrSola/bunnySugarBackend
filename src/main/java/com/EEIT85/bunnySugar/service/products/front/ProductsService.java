@@ -8,7 +8,9 @@ import com.EEIT85.bunnySugar.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -43,8 +45,9 @@ public class ProductsService {
     }
 
     // 取回所有產品，並將其轉換為 DTO
-    public Page<ProductsSelectDto> getAll(Pageable pageable) {
-        Page<Products> productsPage = productsRepository.findAllEnabledProducts(pageable);
+    public Page<ProductsSelectDto> getAll(Pageable pageable, String sort) {
+        Pageable sortedPageable = createSortedPageable(pageable, sort);
+        Page<Products> productsPage = productsRepository.findAllEnabledProducts(sortedPageable);
         return productsPage.map(this::convertToDto);
     }
 
@@ -78,30 +81,33 @@ public class ProductsService {
         return new LinkedHashSet<>(flavors);
     }
 
-    // 根據category名稱查詢商品
-    public Page<ProductsSelectDto> getProductsByCategoryName(String categoryName, Pageable pageable) {
-        Page<Products> productsPage = productsRepository.findProductsByCategoryName(categoryName, pageable);
-        if (productsPage.isEmpty()) {
-            return Page.empty(pageable);
+    private Pageable createSortedPageable(Pageable pageable, String sort) {
+        if (sort != null && sort.equalsIgnoreCase("createTime")) {
+            return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "createTime"));
         }
+        // 如果排序參數為空，則返回默認的 pageable
+        return pageable;
+    }
+
+
+    // 根據category名稱查詢商品
+    public Page<ProductsSelectDto> getProductsByCategoryName(String categoryName, Pageable pageable, String sort) {
+        Pageable sortedPageable = createSortedPageable(pageable, sort);
+        Page<Products> productsPage = productsRepository.findProductsByCategoryName(categoryName, sortedPageable);
         return productsPage.map(this::convertToDto);
     }
 
     // 根據flavor名稱查詢商品
-    public Page<ProductsSelectDto> getProductsByFlavor(String flavor, Pageable pageable) {
-        Page<Products> productsPage = productsRepository.findProductsByFlavor(flavor, pageable);
-        if (productsPage.isEmpty()) {
-            return Page.empty(pageable);
-        }
+    public Page<ProductsSelectDto> getProductsByFlavor(String flavor, Pageable pageable, String sort) {
+        Pageable sortedPageable = createSortedPageable(pageable, sort);
+        Page<Products> productsPage = productsRepository.findProductsByFlavor(flavor, sortedPageable);
         return productsPage.map(this::convertToDto);
     }
 
     // 透過產品名稱模糊查詢
-    public Page<ProductsSelectDto> searchProductsByNameLike(String keyword, Pageable pageable) {
-        Page<Products> productsPage = productsRepository.findByProductNameContaining(keyword, pageable);
-        if (productsPage.isEmpty()) {
-            return Page.empty(pageable);  //返回空的Page
-        }
+    public Page<ProductsSelectDto> searchProductsByNameLike(String keyword, Pageable pageable, String sort) {
+        Pageable sortedPageable = createSortedPageable(pageable, sort);
+        Page<Products> productsPage = productsRepository.findByProductNameContaining(keyword, sortedPageable);
         return productsPage.map(this::convertToDto);
     }
 }
