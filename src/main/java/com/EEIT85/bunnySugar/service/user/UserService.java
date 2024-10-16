@@ -139,7 +139,7 @@ public class UserService {
         if (usersDetailsDto.getBirthday() != null) {
             user.setBirthday(usersDetailsDto.getBirthday());
         }
-        user.setBunnyCoin(0);
+        user.setBunnyCoin(50);
         user.setGameTimes(0);
         user.setDetailsCompleted(1);
         user.setCreateTime(LocalDateTime.now());
@@ -240,7 +240,7 @@ public class UserService {
                 user.setName(name);
                 user.setAccount(email);
                 user.setAccumulateSpent(0);
-                user.setBunnyCoin(0);
+                user.setBunnyCoin(50);
                 user.setUserVip("白兔");
                 user.setCreateTime(LocalDateTime.now());
                 user.setUpdateTime(LocalDateTime.now());
@@ -261,6 +261,7 @@ public class UserService {
                 userRepository.save(user);
             }
 
+            String account = user.getAccount();
             // 使用用戶的 ID 來生成 JWT
             Map<String, Object> claims = new HashMap<>();
             claims.put("id", user.getId());
@@ -273,6 +274,7 @@ public class UserService {
             String token = jwtUtil.generateToken(claims);
 
             response.put("status", "success");
+            response.put("account", account);
             response.put("token", token);
             response.put("user", role);
             return response;
