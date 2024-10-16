@@ -53,7 +53,7 @@ public class UserService {
                 existingUser.setAccumulateSpent(0);
                 existingUser.setUserVip("白兔");
                 existingUser.setUpdateTime(LocalDateTime.now());
-                user.setUserRole("USER");
+                user.setUserRole("ADMIN");
                 String verifyingToken = String.format("%06d", (int)(Math.random() * 1000000));
                 existingUser.setVerifyingToken(verifyingToken);
                 existingUser.setTokenExpirationTime(LocalDateTime.now().plusMinutes(10));
@@ -72,7 +72,7 @@ public class UserService {
         user.setUserVip("白兔");
         user.setCreateTime(LocalDateTime.now());
         user.setUpdateTime(LocalDateTime.now());
-        user.setUserRole("USER");
+        user.setUserRole("ADMIN");
         String verifyingToken = String.format("%06d", (int)(Math.random() * 1000000));
         user.setVerifyingToken(verifyingToken);
         user.setTokenExpirationTime(LocalDateTime.now().plusMinutes(10));
@@ -248,7 +248,7 @@ public class UserService {
                 user.setActive(1);  // 設置用戶狀態為已驗證
                 user.setDetailsCompleted(1);
                 user.setGoogleToken(googleId); // 將 user_id 存入 googleId 字段
-                user.setUserRole("USER");
+                user.setUserRole("ADMIN");
                 user = userRepository.save(user);  // 保存新用戶到資料庫
                 usersWishListService.createWishListForUser(user);
                 usersCartService.createCartForUser(user);
