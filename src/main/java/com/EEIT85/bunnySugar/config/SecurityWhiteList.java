@@ -31,6 +31,7 @@ public class SecurityWhiteList {
             "/js/**",       // 允許 JavaScript 資源
             "/css/**",      // 允許 CSS 資源
             "/images/**",    // 允許圖片資源
+            "/apidoc/**",
             "/swagger-ui/**",
             "/v3/api-docs/**"
     );
