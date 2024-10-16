@@ -30,7 +30,9 @@ public class SecurityWhiteList {
             "/favicon.ico", // 網站圖標
             "/js/**",       // 允許 JavaScript 資源
             "/css/**",      // 允許 CSS 資源
-            "/images/**"    // 允許圖片資源
+            "/images/**",    // 允許圖片資源
+            "/swagger-ui/**",
+            "/v3/api-docs/**"
     );
 
     // 提供方法來返回白名單路徑（作為 List）
