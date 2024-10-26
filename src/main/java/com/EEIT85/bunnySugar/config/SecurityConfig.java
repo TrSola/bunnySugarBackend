@@ -28,7 +28,9 @@ public class SecurityConfig {
                         .requestMatchers("/user/sentResetPasswordEmail").permitAll()
                         .requestMatchers(securityWhiteList.getWhitelistPathsAsArray()).permitAll() // 使用 SecurityWhitelist 中的路徑
                         .anyRequest().authenticated() // 其他請求需要認證
+
                 )
+
                 .addFilterBefore(jwtSecurityFilter, UsernamePasswordAuthenticationFilter.class); // 添加 JWT 过滤器
 
         return http.build();

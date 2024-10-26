@@ -1,0 +1,61 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bunny_sugar_web
+    restart: always
+    image: bunny-sugar
+    platform: linux/arm64/v8
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./src/main/resources/serviceAccountKey.json:/app/src/main/resources/serviceAccountKey.json
+    env_file:
+      - .env
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+    networks:
+      - bunny_sugar_network
+
+  db:
+    image: mysql:8.0
+    container_name: bunny_sugar_db
+    restart: always
+    platform: linux/arm64/v8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bunny_sugar
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "3307:3306"  # 添加 MySQL 端口映射
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - bunny_sugar_network
+
+  phpmyadmin:
+    image: arm64v8/phpmyadmin:latest
+    container_name: bunny_sugar_phpmyadmin
+    restart: always
+    platform: linux/arm64/v8
+    ports:
+      - "8890:80"
+    environment:
+      - PMA_HOST=db
+      - PMA_PORT=3306
+      - MYSQL_ROOT_PASSWORD=root
+      - PMA_ARBITRARY=1
+      - UPLOAD_LIMIT=300M
+    depends_on:
+      - db
+    networks:
+      - bunny_sugar_network
+
+volumes:
+  db_data:
+
+networks:
+  bunny_sugar_network:
+    driver: bridge
