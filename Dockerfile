@@ -8,6 +8,10 @@ WORKDIR /app
 COPY target/bunnySugar-0.0.1-SNAPSHOT.jar app.jar
 COPY src/main/resources/application.properties /app/application.properties
 COPY src/main/resources/serviceAccountKey.json /app/src/main/resources/serviceAccountKey.json
+COPY src/main/resources/payment_conf.xml /app/src/main/resources/payment_conf.xml
+COPY src/main/resources/EcpayPayment.xml /app/src/main/resources/EcpayPayment.xml
+COPY bunny_sugar-28.sql /docker-entrypoint-initdb.d/
+
 
 # 暴露應用運行的端口
 EXPOSE 8087

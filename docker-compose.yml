@@ -1,61 +1,73 @@
 services:
+  # Web 應用服務
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: bunny_sugar_web
-    restart: always
-    image: bunny-sugar
-    platform: linux/arm64/v8
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./src/main/resources/serviceAccountKey.json:/app/src/main/resources/serviceAccountKey.json
-    env_file:
-      - .env
-    environment:
-      - APACHE_DOCUMENT_ROOT=/var/www/html
-    networks:
-      - bunny_sugar_network
-
-  db:
-    image: mysql:8.0
-    container_name: bunny_sugar_db
-    restart: always
-    platform: linux/arm64/v8
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: bunny_sugar
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-    ports:
-      - "3307:3306"  # 添加 MySQL 端口映射
-    volumes:
-      - db_data:/var/lib/mysql
-    networks:
-      - bunny_sugar_network
-
-  phpmyadmin:
-    image: arm64v8/phpmyadmin:latest
-    container_name: bunny_sugar_phpmyadmin
-    restart: always
-    platform: linux/arm64/v8
-    ports:
-      - "8890:80"
-    environment:
-      - PMA_HOST=db
-      - PMA_PORT=3306
-      - MYSQL_ROOT_PASSWORD=root
-      - PMA_ARBITRARY=1
-      - UPLOAD_LIMIT=300M
     depends_on:
       - db
+    build:
+      context: .  # Dockerfile 所在的目錄
+      dockerfile: Dockerfile
+    container_name: bunny_sugar_web  # 容器名稱
+    restart: always  # 設定容器自動重啟
+    image: bunny-sugar  # 使用的 Docker 映像名稱
+    platform: linux/arm64/v8  # 指定平台架構
+    ports:
+      - "8080:8080"  # 將主機的 8080 埠映射到容器的 8080 埠
+    volumes:
+      # 掛載本地金鑰文件到容器內
+      # Windows 注意事項: 路徑格式使用 `./src/main/resources/serviceAccountKey.json:/app/src/main/resources/serviceAccountKey.json`
+      # 時可能出現路徑問題。若遇到錯誤，改用完整路徑或 Windows 特定格式
+      - ./src/main/resources/serviceAccountKey.json:/app/src/main/resources/serviceAccountKey.json
+    env_file:
+      - .env  # 指定環境變量文件
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html  # Apache 的文件根目錄環境變量
     networks:
-      - bunny_sugar_network
+      - bunny_sugar_network  # 使用自訂的網路
 
+
+  # MySQL 資料庫服務
+  db:
+    image: mysql:8.0  # 使用 MySQL 8.0 映像
+    container_name: bunny_sugar_db  # 容器名稱
+    restart: always  # 設定容器自動重啟
+    platform: linux/arm64/v8  # 指定平台架構
+    environment:
+      MYSQL_ROOT_PASSWORD: root  # MySQL root 使用者密碼
+      MYSQL_DATABASE: bunny_sugar  # 要建立的預設資料庫名稱
+      MYSQL_USER: root  # 預設的 MySQL 使用者名稱
+      MYSQL_PASSWORD: root  # 預設的 MySQL 使用者密碼
+    ports:
+      - "3307:3306"  # 主機的 3307 埠映射到容器的 3306 埠，避免與其他 MySQL 服務沖突
+    volumes:
+      - db_data:/var/lib/mysql  # 掛載數據庫數據，避免容器刪除時數據遺失
+      - ./bunny_sugar-28.sql:/docker-entrypoint-initdb.d/bunny_sugar-28.sql  # 將 SQL 檔案掛載到初始化目錄
+    networks:
+      - bunny_sugar_network  # 使用自訂的網路
+
+  # phpMyAdmin 管理服務
+  phpmyadmin:
+    image: arm64v8/phpmyadmin:latest  # 使用 phpMyAdmin 的映像
+    container_name: bunny_sugar_phpmyadmin  # 容器名稱
+    restart: always  # 設定容器自動重啟
+    platform: linux/arm64/v8  # 指定平台架構
+    ports:
+      - "8890:80"  # 主機的 8890 埠映射到容器的 80 埠，提供 phpMyAdmin 網頁界面
+    environment:
+      - PMA_HOST=db  # 設定 phpMyAdmin 的 MySQL 連接目標
+      - PMA_PORT=3306  # MySQL 的連接埠
+      - MYSQL_ROOT_PASSWORD=root  # phpMyAdmin 的 root 密碼
+      - PMA_ARBITRARY=1  # 啟用自訂 MySQL 伺服器設置
+      - UPLOAD_LIMIT=300M  # 上傳文件大小限制
+    depends_on:
+      - db  # 先啟動 db 容器
+    networks:
+      - bunny_sugar_network  # 使用自訂的網路
+
+# 定義資料卷（Volume）以保存資料庫數據
 volumes:
   db_data:
 
+# 定義自訂網路以連接所有服務
 networks:
   bunny_sugar_network:
     driver: bridge
